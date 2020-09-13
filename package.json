@@ -1,5 +1,13 @@
 {
   "name": "chartr",
+  "author": "Aman Harwara",
+  "license": "GPL-3.0",
+  "repository": {
+    "url": "https://github.com/amanharwara/chartr"
+  },
+  "bugs": {
+    "url": "https://github.com/amanharwara/chartr/issues"
+  },
   "version": "0.1.0",
   "private": true,
   "scripts": {
