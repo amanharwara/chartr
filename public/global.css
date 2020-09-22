@@ -1,63 +1,78 @@
-html, body {
-	position: relative;
-	width: 100%;
-	height: 100%;
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("./fonts/Inter.var.woff2") format("woff2"),
+    url("./fonts/Inter.ttf") format("truetype");
+}
+
+:root {
+  --focus-color: #52647c;
+}
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  scrollbar-color: dark;
 }
 
 body {
-	color: #333;
-	margin: 0;
-	padding: 8px;
-	box-sizing: border-box;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-a {
-	color: rgb(0,100,200);
-	text-decoration: none;
+input[type="text"],
+input[type="number"] {
+  background: #434a53;
+  color: #fff;
+  border: 0;
+  border-radius: 3px;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-a:hover {
-	text-decoration: underline;
+:focus {
+  outline: 2px solid #3f4246;
+  outline: 2px solid var(--focus-color);
 }
 
-a:visited {
-	color: rgb(0,80,160);
+.heading {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
-label {
-	display: block;
+::-webkit-scrollbar {
+  width: 0.5rem;
 }
 
-input, button, select, textarea {
-	font-family: inherit;
-	font-size: inherit;
-	-webkit-padding: 0.4em 0;
-	padding: 0.4em;
-	margin: 0 0 0.5em 0;
-	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-radius: 2px;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-input:disabled {
-	color: #ccc;
+::-webkit-scrollbar-thumb {
+  background: #202935;
+  border-radius: 10px;
 }
 
-button {
-	color: #333;
-	background-color: #f4f4f4;
-	outline: none;
-}
+@media screen and (min-width: 1367px) {
+  body {
+    font-size: 1vw;
+  }
 
-button:disabled {
-	color: #999;
-}
+  .heading {
+    font-size: 1.25vw;
+  }
 
-button:not(:disabled):active {
-	background-color: #ddd;
-}
-
-button:focus {
-	border-color: #666;
+  input[type="text"] {
+    font-size: 1vw;
+  }
 }
