@@ -18,5 +18,7 @@
 <main class="content">
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollage />
+  {:else if $currentChartStyle.includes('spotify')}
+    Please connect your Spotify account in the settings.
   {/if}
 </main>

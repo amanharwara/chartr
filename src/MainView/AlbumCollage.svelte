@@ -1,8 +1,6 @@
 <script>
-  import { albumCollageOptions } from "../store";
+  import { albumCollageOptions, current_list } from "../store";
   import Column from "./Column.svelte";
-
-  let current_list = [];
 
   const allowDrop = (e) => e.preventDefault();
 
@@ -73,11 +71,11 @@
       });
       new_list.push(row_array);
     });
-    current_list = new_list;
+    $current_list = new_list;
   };
 
   $: {
-    let _ = current_list;
+    let _ = $current_list;
     document.querySelectorAll(".column").forEach((column) => {
       if (column.children.length > 1) {
         column.lastChild.remove();
@@ -139,7 +137,7 @@
           <Column
             {row_index}
             {column_index}
-            {current_list}
+            current_list={$current_list}
             gap={$albumCollageOptions.gap}
             onDrop={dropCover}
             onDragOver={allowDrop}
@@ -156,8 +154,8 @@
         <div class="name-row">
           {#each { length: $albumCollageOptions.columns } as _, column_index}
             <div class="name">
-              {#if current_list[row_index] && current_list[row_index][column_index]}
-                {current_list[row_index][column_index].title}
+              {#if $current_list[row_index] && $current_list[row_index][column_index]}
+                {$current_list[row_index][column_index].title}
               {/if}
             </div>
           {/each}

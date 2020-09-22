@@ -8,6 +8,8 @@ let settings = writable({
   dataSaverMode: false,
 });
 
+let current_list = writable([]);
+
 let currentChartTitle = writable("Untitled Chart");
 
 let albumCollageOptions = writable({
@@ -32,4 +34,5 @@ export {
   spotifyOptions,
   settingsVisible,
   settings,
+  current_list,
 };

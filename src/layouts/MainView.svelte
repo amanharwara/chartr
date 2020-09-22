@@ -8,6 +8,7 @@
     albumCollageOptions,
     currentChartTitle,
     spotifyOptions,
+    current_list,
   } from "../store";
 
   const downloadChart = () => {
@@ -15,7 +16,7 @@
   };
 
   const resetChart = () => {
-    document.querySelectorAll(".column img").forEach((img) => img.remove());
+    current_list.set([]);
     currentChartStyle.set("album_collage");
     albumCollageOptions.set({
       showAlbumTitles: false,

@@ -4,12 +4,12 @@
 </script>
 
 <ChartOption
-  type="color"
+  type="text"
   label="Background:"
   labelFor="bg-color"
   bind:value={$spotifyOptions.background} />
 <ChartOption
-  type="color"
+  type="text"
   label="Foreground:"
   labelFor="fg-color"
   bind:value={$spotifyOptions.foreground} />

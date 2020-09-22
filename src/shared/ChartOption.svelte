@@ -49,25 +49,6 @@
       margin: 0 0.35rem 0 0;
     }
   }
-
-  .color-option .color {
-    display: flex;
-    align-items: center;
-
-    input {
-      margin-right: 0.5rem;
-      flex-grow: 2;
-      width: 100%;
-    }
-
-    .color-preview {
-      width: 2rem;
-      height: 2rem;
-      background: #000;
-      border-radius: 3px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-    }
-  }
 </style>
 
 <div class="chart-option {type}-option">
@@ -87,11 +68,6 @@
       </select>
     {:else if type === 'text'}
       <input type="text" id={labelFor} bind:value />
-    {:else if type === 'color'}
-      <div class="color">
-        <input type="text" id={labelFor} bind:value />
-        <div class="color-preview" style={`background: ${value}`} />
-      </div>
     {/if}
   {/if}
 </div>
