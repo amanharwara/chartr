@@ -38,6 +38,13 @@
       padding: 0;
     }
   }
+
+  @media screen and (max-width: 425px) {
+    .content {
+      display: block;
+      height: 100%;
+    }
+  }
 </style>
 
 <main class="content" class:center_content>

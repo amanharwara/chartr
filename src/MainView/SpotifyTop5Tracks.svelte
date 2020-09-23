@@ -183,6 +183,7 @@
 
 <div
   class="spotify-top5-tracks"
+  id="spotify-top5-tracks"
   style="background: {$spotifyOptions.background}; color: {$spotifyOptions.foreground};">
   <div class="chart-heading">
     <h1>My Top 5 Tracks</h1>

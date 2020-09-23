@@ -173,6 +173,7 @@
 
 <div
   class="spotify-top5-artists"
+  id="spotify-top5-artists"
   style="background: {$spotifyOptions.background}; color: {$spotifyOptions.foreground};">
   <div class="chart-heading">
     <h1>My Top 5 Artists</h1>

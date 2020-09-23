@@ -199,6 +199,12 @@
     height: 100% !important;
     border-radius: 0 !important;
   }
+
+  @media screen and (max-width: 425px) {
+    #album-collage {
+      max-width: auto;
+    }
+  }
 </style>
 
 <div id="album-collage" style="background: {$albumCollageOptions.background};">

@@ -30,8 +30,10 @@
 </script>
 
 <style lang="scss">
-  .column {
+  :root {
     --item-size: 12vw;
+  }
+  .column {
     background: #fff;
     width: var(--item-size);
     height: var(--item-size);
@@ -44,6 +46,11 @@
 
     &:last-child {
       margin-right: 0 !important;
+    }
+  }
+  @media screen and (max-width: 425px) {
+    :root {
+      --item-size: 30vw;
     }
   }
 </style>

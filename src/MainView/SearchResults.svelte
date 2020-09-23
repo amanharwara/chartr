@@ -29,6 +29,7 @@
     width: 5.35rem;
     height: 5.35rem;
     border-radius: 3px;
+    cursor: pointer;
   }
 
   @media screen and (max-width: 425px) {
@@ -67,6 +68,7 @@
       data-album={result.album}
       id={result.id}
       draggable="true"
+      on:click
       on:dragstart={dragCover} />
   {:else}
     <div class="fallback-message">
