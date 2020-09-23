@@ -8,10 +8,23 @@
   export let onDragOver;
   export let onDragStart;
 
+  const getDataUrl = (img) => {
+    // Create canvas
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    // Set width and height
+    canvas.width = img.width;
+    canvas.height = img.height;
+    // Draw the image
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    return canvas.toDataURL("image/jpeg");
+  };
+
   afterUpdate(() => {
     let column = document.getElementById(`column-${row_index}-${column_index}`);
-    if (column.children.length > 1) {
-      column.lastChild.remove();
+    if (column.children.length === 1 && column.firstChild.tagName === "IMG") {
+      let dataUrl = getDataUrl(column.firstChild);
+      column.firstChild.src = dataUrl;
     }
   });
 </script>
@@ -39,6 +52,8 @@
   class="column"
   id="column-{row_index}-{column_index}"
   style="margin-right: {gap}px;"
+  data-row_index={row_index}
+  data-column_index={column_index}
   on:drop={onDrop}
   on:dragover={onDragOver}
   on:dragstart={onDragStart}

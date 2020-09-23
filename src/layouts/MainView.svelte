@@ -10,9 +10,16 @@
     spotifyOptions,
     current_list,
   } from "../store";
+  import html2canvas from "html2canvas";
 
   const downloadChart = () => {
-    console.log("downloading chart");
+    let album_collage = document.getElementById("album-collage");
+    html2canvas(album_collage, { useCORS: true }).then((canvas) => {
+      let link = document.createElement("a");
+      link.download = `${$currentChartTitle}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    });
   };
 
   const resetChart = () => {

@@ -42,11 +42,27 @@
     user-select: none;
 
     label {
-      margin-bottom: 0;
+      margin-bottom: 0 !important;
     }
 
     input {
       margin: 0 0.35rem 0 0;
+    }
+  }
+
+  @media screen and (min-width: 1367px) {
+    .chart-option {
+      margin-bottom: 1vw;
+    }
+
+    select {
+      padding: 0.5vw;
+      font-size: 1vw;
+    }
+
+    label {
+      font-size: 1vw;
+      margin-bottom: 0.75vw !important;
     }
   }
 </style>

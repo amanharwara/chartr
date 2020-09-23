@@ -4,9 +4,7 @@ let currentChartStyle = writable("album_collage");
 
 let settingsVisible = writable(false);
 
-let settings = writable({
-  dataSaverMode: false,
-});
+let settings = writable({});
 
 let current_list = writable([]);
 

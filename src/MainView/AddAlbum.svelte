@@ -1,7 +1,6 @@
 <script>
   import Searchbox from "../shared/Searchbox.svelte";
   import SearchResults from "./SearchResults.svelte";
-  import { settings } from "../store";
   import Button from "../shared/Button.svelte";
 
   let currentSearchResults = [];
@@ -9,6 +8,18 @@
   const clearSearchResults = () => {
     currentSearchResults = [];
   };
+
+  function vwToPx(value) {
+    var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName("body")[0],
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight || e.clientHeight || g.clientHeight;
+
+    var result = (x * value) / 100;
+    return result;
+  }
 
   const handleSearch = (e) => {
     try {
@@ -27,17 +38,12 @@
               id: result.collectionId,
             };
 
-            if ($settings.dataSaverMode) {
-              search_result.img_url = result.artworkUrl100.replace(
-                "source/100x100",
-                "source/400x400"
-              );
-            } else {
-              search_result.img_url = result.artworkUrl100.replace(
-                "source/100x100",
-                "source/1000x1000"
-              );
-            }
+            let dimensions = Math.round(vwToPx(14));
+
+            search_result.img_url = result.artworkUrl100.replace(
+              "source/100x100",
+              `source/${dimensions}x${dimensions}`
+            );
 
             search_results = [...search_results, search_result];
           });

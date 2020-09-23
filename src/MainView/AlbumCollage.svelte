@@ -4,84 +4,158 @@
 
   const allowDrop = (e) => e.preventDefault();
 
+  $: {
+    let temp_list = $current_list;
+    for (
+      let row_index = 0;
+      row_index < $albumCollageOptions.rows;
+      row_index++
+    ) {
+      if (!$current_list[row_index]) {
+        let row = [];
+        for (
+          let column_index = 0;
+          column_index < $albumCollageOptions.columns;
+          column_index++
+        ) {
+          let column = undefined;
+          row.push(column);
+        }
+        temp_list.push(row);
+      } else {
+        for (
+          let column_index = 0;
+          column_index < $albumCollageOptions.columns;
+          column_index++
+        ) {
+          if (!temp_list[row_index][column_index]) {
+            temp_list[row_index][column_index] = undefined;
+          }
+        }
+      }
+    }
+    current_list.set(temp_list);
+  }
+
   const dropCover = (e) => {
     e.preventDefault();
     let data = e.dataTransfer.getData("text");
 
-    let dragged = document.getElementById(data);
-    let cloned = dragged.cloneNode();
-    cloned.id = "cloned-" + Math.random() * 100 + cloned.id;
+    let dragged_element = document.getElementById(data);
 
-    if (!dragged.closest(".column")) {
-      console.log("Dragging search result");
-      if (e.target.tagName === "IMG") {
-        console.log("Dragging onto image");
-        e.target.parentNode.replaceChild(cloned, e.target);
-      } else {
-        console.log("Dragging onto empty");
-        e.target.appendChild(cloned);
+    let dragged = {
+      row_index: undefined,
+      column_index: undefined,
+      img: undefined,
+    };
+    let target = {
+      row_index: undefined,
+      column_index: undefined,
+      img: undefined,
+    };
+
+    if (dragged_element && dragged_element.tagName === "IMG") {
+      dragged.img = {
+        artist: dragged_element.dataset.artist,
+        album: dragged_element.dataset.album,
+        title: dragged_element.alt,
+        id: dragged_element.id,
+        img_url: dragged_element.src,
+      };
+    }
+    if (dragged_element.closest(".column")) {
+      dragged.row_index = dragged_element.closest(".column").dataset.row_index;
+      dragged.column_index = dragged_element.closest(
+        ".column"
+      ).dataset.column_index;
+    }
+
+    if (e.target.tagName === "IMG") {
+      target.img = {
+        artist: e.target.dataset.artist,
+        album: e.target.dataset.album,
+        title: e.target.alt,
+        id: e.target.id,
+        img_url: e.target.src,
+      };
+
+      if (e.target.closest(".column")) {
+        target.row_index = e.target.closest(".column").dataset.row_index;
+        target.column_index = e.target.closest(".column").dataset.column_index;
       }
     } else {
-      console.log("Dragging chart element");
-      if (dragged.tagName === "IMG") {
-        console.log("Dragging chart image");
-        if (e.target.tagName === "IMG") {
-          console.log("Dragging onto image");
-          let cloned_target = e.target.cloneNode();
-          dragged.parentNode.replaceChild(cloned_target, dragged);
-          e.target.parentNode.replaceChild(cloned, e.target);
-        } else {
-          console.log("Dragging onto empty");
-          dragged.remove();
-          e.target.appendChild(cloned);
-        }
-      } else {
-        console.log("Dragging empty");
-        if (e.target.tagName === "IMG") {
-          console.log("Dragging onto image");
-          dragged.appendChild(e.target.cloneNode());
-          e.target.remove();
-        }
+      if (e.target.matches(".column")) {
+        target.row_index = e.target.dataset.row_index;
+        target.column_index = e.target.dataset.column_index;
       }
     }
 
-    updateCurrentList();
+    console.log({ dragged, target });
+
+    updateCurrentListAfterDrag(dragged, target);
   };
 
-  const updateCurrentList = () => {
-    let new_list = [];
-    document.querySelectorAll(".row").forEach((row) => {
-      let row_array = [];
-      row.childNodes.forEach((column, index) => {
-        if (column.nodeType !== 3) {
-          let img = column.firstChild;
+  const createImageElement = (image) => {
+    let image_el = document.createElement("img");
+    image_el.id = image.id;
+    image_el.src = image.img_url;
+    image_el.alt = image.title;
+    image_el.dataset = {
+      artist: image.artist,
+      album: image.album,
+    };
+    image_el.draggable = true;
+    image_el.ondragstart = dragCover;
 
-          if (img) {
-            row_array[index] = {
-              img_url: img.getAttribute("src"),
-              title: img.getAttribute("alt"),
-              artist: img.getAttribute("data-artist"),
-              album: img.getAttribute("data-album"),
-              id: img.id,
-            };
-          } else {
-            row_array[index] = "";
-          }
-        }
-      });
-      new_list.push(row_array);
-    });
-    $current_list = new_list;
+    return image_el;
   };
 
-  $: {
-    let _ = $current_list;
-    document.querySelectorAll(".column").forEach((column) => {
-      if (column.children.length > 1) {
-        column.lastChild.remove();
+  const updateCurrentListAfterDrag = (dragged, target) => {
+    let temp_list = $current_list;
+
+    if (!dragged.row_index && dragged.img) {
+      console.log("Dragging search result");
+      dragged.img.id = "cloned-" + Math.random() * 10 + dragged.img.id;
+
+      if (target.row_index && !target.img) {
+        console.log("Onto empty chart item");
+        temp_list[target.row_index][target.column_index] = dragged.img;
       }
-    });
-  }
+
+      if (target.row_index && target.img) {
+        console.log("Onto chart image");
+        temp_list[target.row_index][target.column_index] = dragged.img;
+      }
+    }
+
+    if (dragged.row_index && !dragged.img) {
+      console.log("Dragging empty chart item");
+
+      if (target.row_index && target.img) {
+        console.log("Onto chart image");
+        temp_list[target.row_index][target.column_index] = undefined;
+        temp_list[dragged.row_index][dragged.column_index] = target.img;
+      }
+    }
+
+    if (dragged.row_index && dragged.img) {
+      console.log("Dragging chart image");
+
+      if (target.row_index && !target.img) {
+        console.log("Onto empty chart item");
+        temp_list[target.row_index][target.column_index] = dragged.img;
+        temp_list[dragged.row_index][dragged.column_index] = undefined;
+      }
+
+      if (target.row_index && target.img) {
+        console.log("Onto chart image");
+        temp_list[target.row_index][target.column_index] = dragged.img;
+        temp_list[dragged.row_index][dragged.column_index] = target.img;
+      }
+    }
+
+    $current_list = temp_list;
+  };
 
   const dragCover = (e) => {
     e.dataTransfer.setData("text", e.target.id);

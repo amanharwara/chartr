@@ -72,7 +72,9 @@ input[type="number"] {
     font-size: 1.25vw;
   }
 
-  input[type="text"] {
+  input[type="text"],
+  input[type="number"] {
     font-size: 1vw;
+    padding: 0.5vw;
   }
 }

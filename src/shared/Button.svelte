@@ -32,7 +32,7 @@
     }
 
     &.labelOnly .label {
-      margin-left: 0;
+      margin-left: 0 !important;
     }
 
     &:hover {
@@ -52,6 +52,21 @@
       .label {
         display: none;
       }
+    }
+  }
+
+  @media screen and (min-width: 1367px) {
+    .button {
+      font-size: 0.9vw;
+      padding: 0.45vw 0.75vw;
+    }
+
+    .label {
+      margin-left: 0.5vw !important;
+    }
+
+    :global(.button svg) {
+      font-size: 1.2vw !important;
     }
   }
 
