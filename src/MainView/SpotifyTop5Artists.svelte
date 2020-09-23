@@ -12,33 +12,40 @@
 
   let token = $settings.spotifyToken;
 
+  if (token === null || token.length === 0) {
+    askForReAuth = true;
+    reAuthReason = "Not logged into Spotify.";
+  }
+
   $: {
-    fetch(
-      `https://api.spotify.com/v1/me/top/artists?time_range=${$spotifyOptions.time_range}&limit=5`,
-      {
-        headers: new Headers([
-          ["Accept", "application/json"],
-          ["Content-Type", "application/json"],
-          ["Authorization", `Bearer ${token}`],
-        ]),
-      }
-    )
-      .then((res) => res.json())
-      .then((results) => {
-        if (results.error) {
-          switch (results.error.message) {
-            case "The access token expired":
-              askForReAuth = true;
-              reAuthReason = results.error.message + ".";
-              break;
-            default:
-              break;
-          }
-        } else if (results.items) {
-          artists = results.items;
+    if (token && token.length > 0) {
+      fetch(
+        `https://api.spotify.com/v1/me/top/artists?time_range=${$spotifyOptions.time_range}&limit=5`,
+        {
+          headers: new Headers([
+            ["Accept", "application/json"],
+            ["Content-Type", "application/json"],
+            ["Authorization", `Bearer ${token}`],
+          ]),
         }
-      })
-      .catch((err) => console.error(err));
+      )
+        .then((res) => res.json())
+        .then((results) => {
+          if (results.error) {
+            switch (results.error.message) {
+              case "The access token expired":
+                askForReAuth = true;
+                reAuthReason = results.error.message + ".";
+                break;
+              default:
+                break;
+            }
+          } else if (results.items) {
+            artists = results.items;
+          }
+        })
+        .catch((err) => console.error(err));
+    }
   }
 </script>
 
@@ -190,7 +197,6 @@
   {#if askForReAuth}
     <div class="re-auth-overlay">
       <div class="reason">Error: {reAuthReason}</div>
-      <div class="plea">Please re-login to Spotify.</div>
       <Button label="Login with Spotify" onClick={authorizeSpotify}>
         <SpotifyIcon />
       </Button>
