@@ -28,15 +28,7 @@
   const handleSearch = (e) => {
     try {
       fetch(
-        `https://itunes.apple.com/search?entity=album&country=US&limit=25&term=${e.detail}`,
-        {
-          headers: new Headers([
-            [
-              "Access-Control-Allow-Origin",
-              location.protocol + "//" + location.host + location.pathname,
-            ],
-          ]),
-        }
+        `https://itunes.apple.com/search?entity=album&country=US&limit=25&term=${e.detail}`
       )
         .then((res) => res.json())
         .then((results) => {
