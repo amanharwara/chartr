@@ -1,10 +1,25 @@
 <script>
   import BackIcon from "../icons/BackIcon.svelte";
+  import SpotifyIcon from "../icons/SpotifyIcon.svelte";
   import Button from "../shared/Button.svelte";
   import Toggle from "../shared/Toggle.svelte";
   import { settings, settingsVisible } from "../store";
+  import authorizeSpotify from "../authorizeSpotify";
 
   const closeSettings = () => settingsVisible.update(() => !$settingsVisible);
+
+  const logOutSpotify = () => {
+    $settings.spotifyToken = "";
+    saveToLocalStorage();
+    window.location =
+      location.protocol + "//" + location.host + location.pathname;
+  };
+
+  const saveToLocalStorage = () => {
+    if (localStorage) {
+      localStorage.setItem("settings", JSON.stringify($settings));
+    }
+  };
 </script>
 
 <style lang="scss">
@@ -40,6 +55,10 @@
     color: #fff;
   }
 
+  a {
+    color: #fff;
+  }
+
   .title {
     display: flex;
     align-items: center;
@@ -59,14 +78,23 @@
     justify-content: space-between;
     color: #fff;
 
+    &.vertical {
+      flex-direction: column;
+
+      .info {
+        margin-bottom: 0.85rem;
+      }
+    }
+
     .title {
       font-weight: 600;
       font-size: 1.4rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.5rem;
     }
 
     .desc {
       font-weight: 200;
+      font-size: 1.05rem;
     }
 
     .info {
@@ -117,5 +145,35 @@
     </Button>
     <h1>Settings</h1>
   </div>
-  <div class="settings">No settings available yet.</div>
+  <div class="settings">
+    <div class="setting vertical">
+      <div class="info">
+        <div class="title">Connect to Spotify:</div>
+        <div class="desc">
+          If you want to create charts from your Spotify you need to connect
+          your Spotify account to Chartr. By logging into Spotify, you agree to
+          their <a
+            href="https://www.spotify.com/legal/privacy-policy/"
+            target="_blank"
+            rel="noreferrer noopener">privacy policy</a>.
+        </div>
+      </div>
+      {#if $settings.spotifyToken.length === 0}
+        <Button label="Login with Spotify" onClick={authorizeSpotify}>
+          <SpotifyIcon />
+        </Button>
+      {:else}
+        <div style="display: flex;">
+          <input
+            type="text"
+            id="spotify_token"
+            title="Your Spotify Token"
+            disabled
+            value={$settings.spotifyToken}
+            style="margin-right: 0.5rem" />
+          <Button label="Log Out" labelOnly outlined onClick={logOutSpotify} />
+        </div>
+      {/if}
+    </div>
+  </div>
 </main>

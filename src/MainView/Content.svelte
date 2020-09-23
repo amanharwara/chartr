@@ -1,6 +1,19 @@
 <script>
   import { currentChartStyle } from "../store";
   import AlbumCollage from "./AlbumCollage.svelte";
+  import SpotifyTop5Artists from "./SpotifyTop5Artists.svelte";
+
+  let center_content = false;
+
+  $: {
+    switch ($currentChartStyle) {
+      case "spotify_top5_artists":
+        center_content = true;
+        break;
+      default:
+        break;
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -12,12 +25,21 @@
 
     box-sizing: border-box;
     overflow: auto;
+
+    &.center_content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
   }
 </style>
 
-<main class="content">
+<main class="content" class:center_content>
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollage />
+  {:else if $currentChartStyle === 'spotify_top5_artists'}
+    <SpotifyTop5Artists />
   {:else if $currentChartStyle.includes('spotify')}
     Please connect your Spotify account in the settings.
   {/if}

@@ -8,9 +8,40 @@
     albumCollageOptions,
     currentChartTitle,
     spotifyOptions,
+    settings,
     current_list,
   } from "../store";
   import html2canvas from "html2canvas";
+
+  const saveSettings = () => {
+    if (localStorage) {
+      localStorage.setItem("settings", JSON.stringify($settings));
+    }
+  };
+
+  if (window.location.hash.length > 0) {
+    let access_token = window.location.hash
+      .substring(1)
+      .split("&")
+      .map((key) => key.split("="))[0][1];
+
+    $settings = {
+      ...$settings,
+      spotifyToken: access_token,
+    };
+
+    saveSettings();
+  }
+
+  const loadSettings = () => {
+    if (localStorage && localStorage.getItem("settings")) {
+      $settings = JSON.parse(localStorage.getItem("settings"));
+    } else {
+      localStorage.setItem("settings", JSON.stringify($settings));
+    }
+  };
+
+  loadSettings();
 
   const downloadChart = () => {
     let album_collage = document.getElementById("album-collage");
@@ -65,7 +96,7 @@
   }
 </style>
 
-<div class="main-view">
+<div class="main-view" loadSettings>
   <Header on:download-chart={downloadChart} on:reset-chart={resetChart} />
   <Content />
   <LeftSidebar />

@@ -1,10 +1,13 @@
 import { writable } from "svelte/store";
 
-let currentChartStyle = writable("album_collage");
+let currentChartStyle = writable("spotify_top5_artists");
 
 let settingsVisible = writable(false);
 
-let settings = writable({});
+let settings = writable({
+  spotifyToken: "",
+  discogsToken: "",
+});
 
 let current_list = writable([]);
 
@@ -23,6 +26,7 @@ let albumCollageOptions = writable({
 let spotifyOptions = writable({
   background: "#0E161E",
   foreground: "#D4FC79",
+  time_range: "short_term",
 });
 
 export {

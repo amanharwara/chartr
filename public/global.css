@@ -38,6 +38,12 @@ input[type="number"] {
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
+input[disabled] {
+  color: #9c9c9c;
+  user-select: none;
+  cursor: not-allowed;
+}
+
 :focus {
   outline: 2px solid #3f4246;
   outline: 2px solid var(--focus-color);
