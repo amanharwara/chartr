@@ -4,7 +4,7 @@
   import SpotifyIcon from "../icons/SpotifyIcon.svelte";
   import authorizeSpotify from "../authorizeSpotify";
 
-  let artists = [];
+  let tracks = [];
 
   let askForReAuth = false;
 
@@ -20,7 +20,7 @@
   const getResults = (time_range) => {
     if (token && token.length > 0) {
       fetch(
-        `https://api.spotify.com/v1/me/top/artists?time_range=${time_range}&limit=5`,
+        `https://api.spotify.com/v1/me/top/tracks?time_range=${time_range}&limit=5`,
         {
           headers: new Headers([
             ["Accept", "application/json"],
@@ -41,7 +41,8 @@
                 break;
             }
           } else if (results.items) {
-            artists = results.items;
+            tracks = results.items;
+            console.log(tracks);
           }
         })
         .catch((err) => console.error(err));
@@ -70,7 +71,7 @@
     }
   }
 
-  .spotify-top5-artists {
+  .spotify-top5-tracks {
     background: #0e161e;
     color: #d4fc79;
     padding: 1.25vw 2vw;
@@ -102,13 +103,13 @@
     z-index: -1;
   }
 
-  .artists {
+  .tracks {
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
   }
 
-  .artist {
+  .track {
     display: flex;
     align-items: flex-end;
     margin-bottom: 1vw;
@@ -118,13 +119,22 @@
     }
 
     .name {
-      font-weight: 600;
-      font-size: 2.15vw;
       padding-bottom: 0.35vw;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .artist,
+    .track-name {
       max-width: 100%;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    .track-name {
+      font-weight: 600;
+      font-size: 2.15vw;
     }
 
     .overlay {
@@ -172,10 +182,10 @@
 </style>
 
 <div
-  class="spotify-top5-artists"
+  class="spotify-top5-tracks"
   style="background: {$spotifyOptions.background}; color: {$spotifyOptions.foreground};">
   <div class="chart-heading">
-    <h1>My Top 5 Artists</h1>
+    <h1>My Top 5 Tracks</h1>
     <h4>
       {#if $spotifyOptions.time_range === 'short_term'}
         Last 4 weeks
@@ -184,15 +194,18 @@
       {:else if $spotifyOptions.time_range === 'long_term'}All Time{/if}
     </h4>
   </div>
-  <div class="artists">
-    {#each artists as artist, index}
-      <div class="artist">
+  <div class="tracks">
+    {#each tracks as track, index}
+      <div class="track">
         <div class="img">
-          <img src={artist.images[0].url} alt={artist.name} />
+          <img src={track.album.images[0].url} alt={track.name} />
           <div class="overlay" />
           <div class="number">{index + 1}.</div>
         </div>
-        <div class="name">{artist.name}</div>
+        <div class="name">
+          <div class="artist">{track.album.artists[0].name}</div>
+          <div class="track-name">{track.name}</div>
+        </div>
       </div>
     {/each}
   </div>

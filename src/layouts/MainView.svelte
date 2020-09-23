@@ -12,6 +12,7 @@
     current_list,
   } from "../store";
   import html2canvas from "html2canvas";
+  import { onMount } from "svelte";
 
   const saveSettings = () => {
     if (localStorage) {
@@ -41,7 +42,9 @@
     }
   };
 
-  loadSettings();
+  onMount(() => {
+    loadSettings();
+  });
 
   const downloadChart = () => {
     let album_collage = document.getElementById("album-collage");

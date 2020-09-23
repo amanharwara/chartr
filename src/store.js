@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-let currentChartStyle = writable("spotify_top5_artists");
+let currentChartStyle = writable("spotify_top5_tracks");
 
 let settingsVisible = writable(false);
 
