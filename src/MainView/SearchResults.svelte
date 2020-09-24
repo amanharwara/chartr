@@ -76,6 +76,17 @@
     }
   }
 
+  @media screen and (min-width: 540px) and (max-width: 1024px) {
+    .search-results {
+      max-height: 46vh;
+    }
+    .search-result {
+      --item-size: 10%;
+      width: var(--item-size);
+      height: var(--item-size);
+    }
+  }
+
   @media screen and (min-width: 1367px) {
     .search-results {
       gap: 0.5vw;

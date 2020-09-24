@@ -56,6 +56,8 @@
     .right-sidebar {
       grid-row: 3 / 4;
       grid-column: 2 / 3;
+      max-height: 100%;
+      overflow: hidden;
     }
   }
 </style>
