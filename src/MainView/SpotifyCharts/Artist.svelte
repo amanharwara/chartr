@@ -1,5 +1,4 @@
 <script>
-  import { afterUpdate } from "svelte/internal";
   export let artist;
   export let index;
 
@@ -15,13 +14,13 @@
     return canvas.toDataURL("image/jpeg");
   };
 
-  afterUpdate(() => {
-    let img = document.getElementById(artist.name + index);
+  const onImgLoad = (e) => {
+    let img = e.target;
     if (img && img.tagName === "IMG") {
       let dataUrl = getDataUrl(img);
-      img.src = dataUrl;
+      e.target.src = dataUrl;
     }
-  });
+  };
 </script>
 
 <style lang="scss">
@@ -79,7 +78,8 @@
     <img
       src={artist.images[0].url}
       alt={artist.name}
-      id={artist.name + index} />
+      id={artist.name + index}
+      on:load={onImgLoad} />
     <div class="overlay" />
     <div class="number">{index + 1}.</div>
   </div>
