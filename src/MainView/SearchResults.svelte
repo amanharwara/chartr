@@ -4,6 +4,36 @@
   const dragCover = (e) => {
     e.dataTransfer.setData("text", e.target.id);
   };
+
+  const blobToDataUrl = (blob, callback) => {
+    let a = new FileReader();
+    a.onload = function (e) {
+      callback(e.target.result);
+    };
+    a.readAsDataURL(blob);
+  };
+
+  const onImgLoad = async (e) => {
+    let img = e.target;
+    if (img.src.includes("data:")) {
+      return;
+    } else {
+      if (img && img.tagName === "IMG") {
+        let img_blob = await fetch(
+          "https://chartr-cors-proxy.herokuapp.com/" +
+            e.target.src.replace("https://", "").replace(".com/", ".com:443/")
+        );
+        img_blob = await img_blob.blob();
+        blobToDataUrl(img_blob, (data_url) => {
+          if (e.target) {
+            e.target.src = data_url;
+          } else if (e.path) {
+            e.path[0].src = data_url;
+          }
+        });
+      }
+    }
+  };
 </script>
 
 <style lang="scss">
@@ -69,7 +99,8 @@
       id={result.id}
       draggable="true"
       on:click
-      on:dragstart={dragCover} />
+      on:dragstart={dragCover}
+      on:load={onImgLoad} />
   {:else}
     <div class="fallback-message">
       Use the search box to search for albums to add.

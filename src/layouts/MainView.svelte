@@ -47,26 +47,9 @@
   });
 
   const downloadChart = () => {
-    let element;
-
-    switch ($currentChartStyle) {
-      case "album_collage":
-        element = document.getElementById("album-collage");
-        break;
-      case "spotify_top5_artists":
-        console.log("spotify top 5 artist");
-        element = document.getElementById("spotify-top5-artists");
-        break;
-      case "spotify_top5_tracks":
-        console.log("spotify top 5 track");
-        element = document.getElementById("spotify-top5-tracks");
-        break;
-      default:
-        element = document.getElementById("album-collage");
-        break;
-    }
-
-    html2canvas(element, { foreignObjectRendering: true }).then((canvas) => {
+    html2canvas(
+      document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
+    ).then((canvas) => {
       let link = document.createElement("a");
       link.download = `${$currentChartTitle}.png`;
       link.href = canvas.toDataURL();

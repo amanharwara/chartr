@@ -2,23 +2,25 @@
   export let track;
   export let index;
 
-  const getDataUrl = (img) => {
-    // Create canvas
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    // Set width and height
-    canvas.width = img.width;
-    canvas.height = img.height;
-    // Draw the image
-    ctx.drawImage(img, 0, 0, img.width, img.height);
-    return canvas.toDataURL("image/jpeg");
+  const blobToDataUrl = (blob, callback) => {
+    let a = new FileReader();
+    a.onload = function (e) {
+      callback(e.target.result);
+    };
+    a.readAsDataURL(blob);
   };
 
-  const onImgLoad = (e) => {
+  const onImgLoad = async (e) => {
     let img = e.target;
     if (img && img.tagName === "IMG") {
-      let dataUrl = getDataUrl(img);
-      e.target.src = dataUrl;
+      let img_blob = await fetch(
+        "https://chartr-cors-proxy.herokuapp.com/" +
+          e.target.src.replace("https://", "").replace(".co/", ".co:443/")
+      );
+      img_blob = await img_blob.blob();
+      blobToDataUrl(img_blob, (data_url) => {
+        e.target.src = data_url;
+      });
     }
   };
 </script>
@@ -88,7 +90,7 @@
       src={track.album.images[0].url}
       alt={track.name}
       id={track.name + index}
-      on:load={onImgLoad} />
+      on:load|once={onImgLoad} />
     <div class="overlay" />
     <div class="number">{index + 1}.</div>
   </div>

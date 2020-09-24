@@ -2,23 +2,33 @@
   export let artist;
   export let index;
 
-  const getDataUrl = (img) => {
-    // Create canvas
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    // Set width and height
-    canvas.width = img.width;
-    canvas.height = img.height;
-    // Draw the image
-    ctx.drawImage(img, 0, 0, img.width, img.height);
-    return canvas.toDataURL("image/jpeg");
+  const blobToDataUrl = (blob, callback) => {
+    let a = new FileReader();
+    a.onload = function (e) {
+      callback(e.target.result);
+    };
+    a.readAsDataURL(blob);
   };
 
-  const onImgLoad = (e) => {
+  const onImgLoad = async (e) => {
     let img = e.target;
-    if (img && img.tagName === "IMG") {
-      let dataUrl = getDataUrl(img);
-      e.target.src = dataUrl;
+    if (img.src.includes("data:")) {
+      return;
+    } else {
+      if (img && img.tagName === "IMG") {
+        let img_blob = await fetch(
+          "https://chartr-cors-proxy.herokuapp.com/" +
+            e.target.src.replace("https://", "").replace(".co/", ".co:443/")
+        );
+        img_blob = await img_blob.blob();
+        blobToDataUrl(img_blob, (data_url) => {
+          if (e.target) {
+            e.target.src = data_url;
+          } else if (e.path) {
+            e.path[0].src = data_url;
+          }
+        });
+      }
     }
   };
 </script>

@@ -43,7 +43,6 @@
             }
           } else if (results.items) {
             tracks = results.items;
-            console.log(tracks);
           }
         })
         .catch((err) => console.error(err));

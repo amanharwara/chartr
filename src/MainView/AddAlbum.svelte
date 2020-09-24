@@ -25,54 +25,42 @@
     return result;
   };
 
-  const blobToDataUrl = (blob, callback) => {
-    let a = new FileReader();
-    a.onload = function (e) {
-      callback(e.target.result);
-    };
-    a.readAsDataURL(blob);
-  };
-
   const handleSearch = (e) => {
-    fetch(
-      `https://chartr-cors-proxy.herokuapp.com/itunes.apple.com:443/search?entity=album&country=US&limit=25&term=${e.detail}`
-    )
-      .then((res) => res.json())
-      .then(async (results) => {
-        let search_results = [];
+    try {
+      fetch(
+        `https://chartr-cors-proxy.herokuapp.com/itunes.apple.com:443/search?entity=album&country=US&limit=25&term=${e.detail}`
+      )
+        .then((res) => res.json())
+        .then((results) => {
+          let search_results = [];
 
-        Array.from(results.results).forEach(async (result) => {
-          let search_result = {
-            artist: result.artistName,
-            album: result.collectionName,
-            title: `${result.artistName} - ${result.collectionName}`,
-            id: result.collectionId,
-          };
+          Array.from(results.results).forEach((result) => {
+            let search_result = {
+              artist: result.artistName,
+              album: result.collectionName,
+              title: `${result.artistName} - ${result.collectionName}`,
+              id: result.collectionId,
+            };
 
-          let dimensions = Math.round(vwToPx(24));
+            let dimensions = Math.round(vwToPx(24));
 
-          if (getClientWidth() < 500) {
-            dimensions = Math.round(vwToPx(40));
-          }
+            if (getClientWidth() < 500) {
+              dimensions = Math.round(vwToPx(40));
+            }
 
-          let img_blob = await fetch(
-            result.artworkUrl100
-              .replace(".com/image", ".com:443/image")
-              .replace("https://", "https://chartr-cors-proxy.herokuapp.com/")
-              .replace("source/100x100", `source/${dimensions}x${dimensions}`)
-          );
-
-          img_blob = await img_blob.blob();
-
-          blobToDataUrl(img_blob, (data_url) => {
-            search_result.img_url = data_url;
+            search_result.img_url = result.artworkUrl100.replace(
+              "source/100x100",
+              `source/${dimensions}x${dimensions}`
+            );
 
             search_results = [...search_results, search_result];
           });
-        });
 
-        currentSearchResults = search_results;
-      });
+          currentSearchResults = search_results;
+        });
+    } catch {
+      console.error("Could not search.");
+    }
   };
 
   const onClickResult = (e) => {
