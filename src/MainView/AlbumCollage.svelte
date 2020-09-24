@@ -54,7 +54,11 @@
       img: undefined,
     };
 
-    if (dragged_element && dragged_element.tagName === "IMG") {
+    if (
+      dragged_element &&
+      dragged_element.tagName === "IMG" &&
+      dragged_element.src.length > 0
+    ) {
       dragged.img = {
         artist: dragged_element.dataset.artist,
         album: dragged_element.dataset.album,
@@ -63,6 +67,7 @@
         img_url: dragged_element.src,
       };
     }
+
     if (dragged_element.closest(".column")) {
       dragged.row_index = dragged_element.closest(".column").dataset.row_index;
       dragged.column_index = dragged_element.closest(
@@ -95,21 +100,6 @@
     updateCurrentListAfterDrag(dragged, target);
   };
 
-  const createImageElement = (image) => {
-    let image_el = document.createElement("img");
-    image_el.id = image.id;
-    image_el.src = image.img_url;
-    image_el.alt = image.title;
-    image_el.dataset = {
-      artist: image.artist,
-      album: image.album,
-    };
-    image_el.draggable = true;
-    image_el.ondragstart = dragCover;
-
-    return image_el;
-  };
-
   const updateCurrentListAfterDrag = (dragged, target) => {
     let temp_list = $current_list;
 
@@ -125,6 +115,15 @@
       if (target.row_index && target.img) {
         console.log("Onto chart image");
         temp_list[target.row_index][target.column_index] = dragged.img;
+      }
+    }
+
+    if (!dragged.row_index && !dragged.img) {
+      console.log("Dragging empty search result");
+
+      if (target.row_index && target.img) {
+        console.log("Onto chart image");
+        temp_list[target.row_index][target.column_index] = undefined;
       }
     }
 
@@ -159,6 +158,13 @@
 
   const dragCover = (e) => {
     e.dataTransfer.setData("text", e.target.id);
+  };
+
+  const deleteColumn = (e) => {
+    let temp_list = $current_list;
+    let { row_index, column_index } = e.detail;
+    temp_list[row_index][column_index] = undefined;
+    $current_list = temp_list;
   };
 </script>
 
@@ -221,7 +227,8 @@
             gap={$albumCollageOptions.gap}
             onDrop={dropCover}
             onDragOver={allowDrop}
-            onDragStart={dragCover} />
+            onDragStart={dragCover}
+            on:delete-column={deleteColumn} />
         {/each}
       </div>
     {/each}

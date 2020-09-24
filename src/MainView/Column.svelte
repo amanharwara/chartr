@@ -1,4 +1,8 @@
 <script>
+  import DeleteIcon from "../icons/DeleteIcon.svelte";
+  import Button from "../shared/Button.svelte";
+  import { createEventDispatcher } from "svelte";
+
   export let row_index;
   export let column_index;
   export let current_list;
@@ -6,6 +10,8 @@
   export let onDrop;
   export let onDragOver;
   export let onDragStart;
+
+  let dispatch = createEventDispatcher();
 
   const blobToDataUrl = (blob, callback) => {
     let a = new FileReader();
@@ -52,10 +58,20 @@
     max-height: var(--item-size);
     margin-right: 5px;
     user-select: none;
+    position: relative;
 
     &:last-child {
       margin-right: 0 !important;
     }
+  }
+  :global(.column button) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: none !important;
+  }
+  :global(.column:hover button, .column:focus button) {
+    display: flex !important;
   }
   @media screen and (max-width: 540px) {
     :root {
@@ -89,5 +105,12 @@
       draggable="true"
       on:dragstart={onDragStart}
       on:load={onImgLoad} />
+    <Button
+      iconOnly
+      id="delete-{row_index}-{column_index}"
+      onClick={() => dispatch('delete-column', { row_index, column_index })}
+      extraProps={{ 'data-row_index': row_index, 'data-column_index': column_index }}>
+      <DeleteIcon />
+    </Button>
   {/if}
 </div>

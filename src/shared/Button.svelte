@@ -5,6 +5,7 @@
   export let iconOnly = false;
   export let labelOnly = false;
   export let onClick = () => {};
+  export let extraProps = {};
 </script>
 
 <style lang="scss">
@@ -76,6 +77,7 @@
   class:labelOnly
   class:outlined
   on:click={onClick}
+  {...extraProps}
   {id}>
   <slot />
   <div class="label">{label}</div>

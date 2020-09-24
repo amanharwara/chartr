@@ -62,6 +62,10 @@
     cursor: pointer;
   }
 
+  .empty {
+    background: #fff;
+  }
+
   @media screen and (max-width: 425px) {
     .search-results {
       gap: 0.5rem;
@@ -101,17 +105,26 @@
 
 <div class="search-results">
   {#each results as result}
-    <img
-      class="search-result"
-      src={result.img_url}
-      alt={result.title}
-      data-artist={result.artist}
-      data-album={result.album}
-      id={result.id}
-      draggable="true"
-      on:click
-      on:dragstart={dragCover}
-      on:load={onImgLoad} />
+    {#if result}
+      <img
+        class="search-result"
+        src={result.img_url}
+        alt={result.title}
+        data-artist={result.artist}
+        data-album={result.album}
+        id={result.id}
+        draggable="true"
+        on:click
+        on:dragstart={dragCover}
+        on:load={onImgLoad} />
+    {:else}
+      <div
+        class="search-result empty"
+        draggable="true"
+        on:dragstart={dragCover}
+        title="Drag this over an existing item to clear it."
+        id="clear-item" />
+    {/if}
   {:else}
     <div class="fallback-message">
       Use the search box to search for albums to add.

@@ -63,7 +63,9 @@
             search_results = [...search_results, search_result];
           });
 
-          currentSearchResults = search_results;
+          let clear_item = undefined;
+
+          currentSearchResults = [...search_results, clear_item];
           showLoader = false;
         });
     } catch {
