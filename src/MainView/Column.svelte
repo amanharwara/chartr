@@ -6,6 +6,36 @@
   export let onDrop;
   export let onDragOver;
   export let onDragStart;
+
+  const blobToDataUrl = (blob, callback) => {
+    let a = new FileReader();
+    a.onload = function (e) {
+      callback(e.target.result);
+    };
+    a.readAsDataURL(blob);
+  };
+
+  const onImgLoad = async (e) => {
+    let img = e.target;
+    if (img.src.includes("data:")) {
+      return;
+    } else {
+      if (img && img.tagName === "IMG") {
+        let img_blob = await fetch(
+          "https://chartr-cors-proxy.herokuapp.com/" +
+            e.target.src.replace("https://", "").replace(".com/", ".com:443/")
+        );
+        img_blob = await img_blob.blob();
+        blobToDataUrl(img_blob, (data_url) => {
+          if (e.target) {
+            e.target.src = data_url;
+          } else if (e.path) {
+            e.path[0].src = data_url;
+          }
+        });
+      }
+    }
+  };
 </script>
 
 <style lang="scss">
@@ -52,6 +82,7 @@
       data-album={current_list[row_index][column_index].album}
       id={current_list[row_index][column_index].id}
       draggable="true"
-      on:dragstart={onDragStart} />
+      on:dragstart={onDragStart}
+      on:load={onImgLoad} />
   {/if}
 </div>
