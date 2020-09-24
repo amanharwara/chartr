@@ -9,10 +9,12 @@
   $: {
     switch ($currentChartStyle) {
       case "spotify_top5_artists":
-        center_content = true;
+        center_content =
+          document.documentElement.clientWidth < 500 ? false : true;
         break;
       case "spotify_top5_tracks":
-        center_content = true;
+        center_content =
+          document.documentElement.clientWidth < 500 ? false : true;
         break;
       default:
         center_content = false;
@@ -39,10 +41,18 @@
     }
   }
 
-  @media screen and (max-width: 425px) {
+  @media screen and (max-width: 539px) {
     .content {
       display: block;
       height: 100%;
+      grid-column: auto;
+      grid-row: 2 / 3;
+    }
+  }
+
+  @media screen and (min-width: 540px) and (max-width: 1024px) {
+    .content {
+      grid-column: 1 / 3;
     }
   }
 </style>

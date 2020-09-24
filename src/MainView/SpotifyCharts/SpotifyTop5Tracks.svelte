@@ -126,10 +126,40 @@
   }
 
   .circle-bottom {
-    width: 17vw;
-    height: 17vw;
-    left: -7%;
+    width: 18vw;
+    height: 18vw;
+    right: -5%;
     bottom: -15%;
+  }
+
+  @media screen and (max-width: 450px) {
+    .spotify-top5-tracks {
+      width: 100%;
+      padding: 1.25rem 2rem;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    h4 {
+      margin-top: 0.45rem;
+      font-size: 1.5rem;
+    }
+
+    .circle-top {
+      width: 11rem;
+      height: 11rem;
+      left: -5%;
+      top: -15%;
+    }
+
+    .circle-bottom {
+      width: 17rem;
+      height: 17rem;
+      bottom: -17%;
+    }
   }
 </style>
 

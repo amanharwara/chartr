@@ -47,12 +47,6 @@
         background: #434a53;
       }
     }
-
-    @media screen and (max-width: 425px) {
-      .label {
-        display: none;
-      }
-    }
   }
 
   @media screen and (min-width: 1367px) {

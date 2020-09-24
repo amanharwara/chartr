@@ -76,12 +76,6 @@
       foreground: "#D4FC79",
     });
   };
-
-  $: {
-    if (document.documentElement.clientWidth < 450) {
-      console.log("Mobile");
-    }
-  }
 </script>
 
 <style lang="scss">
@@ -98,27 +92,24 @@
     grid-template-rows: 0.25fr 3.25fr;
   }
 
-  @media screen and (max-width: 450px) {
+  @media screen and (max-width: 539px) {
     .main-view {
+      /* grid-template-columns: 1fr;
+      grid-template-rows: 0.25fr auto 1fr 1fr; */
       display: flex;
       flex-direction: column;
     }
   }
 
-  @media screen and (min-width: 450px) and (max-width: 800px) {
+  @media screen and (min-width: 540px) and (max-width: 1024px) {
     .main-view {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-  }
-
-  @media screen and (min-width: 800px) and (max-width: 1000px) {
-    .main-view {
-      grid-template-columns: 0.9fr 1.5fr 0.9fr;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 0.25fr auto auto;
     }
   }
 </style>
 
-<div class="main-view" loadSettings>
+<div class="main-view">
   <Header on:download-chart={downloadChart} on:reset-chart={resetChart} />
   <Content />
   <LeftSidebar />

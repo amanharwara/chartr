@@ -103,6 +103,23 @@
     }
   }
 
+  @media screen and (max-width: 550px) {
+    main {
+      padding: 3.5rem;
+    }
+    .settings {
+      max-width: 100%;
+    }
+    .setting {
+      .title {
+        max-width: 100%;
+      }
+      .info {
+        margin-right: 0;
+      }
+    }
+  }
+
   @media screen and (min-width: 1367px) {
     main {
       padding-top: 3vw;

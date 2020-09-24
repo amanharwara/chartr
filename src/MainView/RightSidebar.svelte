@@ -1,6 +1,26 @@
 <script>
   import AddAlbum from "./AddAlbum.svelte";
   import { currentChartStyle } from "../store";
+
+  let hidden = false;
+
+  let clientWidth = document.documentElement.clientWidth;
+
+  $: {
+    if (clientWidth < 539) {
+      switch ($currentChartStyle) {
+        case "album_collage":
+          hidden = false;
+          break;
+        case "album_top5":
+          hidden = false;
+          break;
+        default:
+          hidden = true;
+          break;
+      }
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -15,14 +35,32 @@
     text-align: center;
   }
 
+  .hidden {
+    display: none;
+  }
+
+  @media screen and (max-width: 539px) {
+    .right-sidebar {
+      grid-column: auto;
+      grid-row: 4 / 5;
+    }
+  }
+
   @media screen and (min-width: 1367px) {
     .right-sidebar {
       padding: 0.5vw 0.75vw;
     }
   }
+
+  @media screen and (min-width: 540px) and (max-width: 1024px) {
+    .right-sidebar {
+      grid-row: 3 / 4;
+      grid-column: 2 / 3;
+    }
+  }
 </style>
 
-<aside class="right-sidebar">
+<aside class="right-sidebar" class:hidden>
   {#if $currentChartStyle === 'album_collage' || $currentChartStyle === 'album_top5'}
     <AddAlbum />
   {:else}

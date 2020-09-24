@@ -108,6 +108,22 @@
 
     $current_list = temp_list;
   };
+
+  let collapsed = false;
+
+  const collapseIfMobile = (e) => {
+    if (document.documentElement.clientWidth < 539) {
+      if (!e) {
+        collapsed = !collapsed;
+      } else if (e.target && e.target.id !== "clear-search-results") {
+        collapsed = !collapsed;
+      }
+    } else {
+      collapsed = false;
+    }
+  };
+
+  collapseIfMobile();
 </script>
 
 <style lang="scss">
@@ -123,8 +139,8 @@
   }
 </style>
 
-<div class="add-album">
-  <div class="search-heading">
+<div class="add-album" class:collapsed>
+  <div class="search-heading" on:click={collapseIfMobile}>
     <div class="heading">Add Album:</div>
     <Button
       label="Clear"

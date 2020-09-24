@@ -1,12 +1,20 @@
 <script>
-  import {
-    albumCollageOptions,
-    currentChartStyle,
-    currentChartTitle,
-  } from "../store";
+  import { currentChartStyle } from "../store";
   import AlbumCollageOptions from "./AlbumCollageOptions.svelte";
   import SpotifyChartOptions from "./SpotifyCharts/SpotifyChartOptions.svelte";
   import ChartOption from "../shared/ChartOption.svelte";
+
+  let collapsed = false;
+
+  const collapseIfMobile = () => {
+    if (document.documentElement.clientWidth < 539) {
+      collapsed = !collapsed;
+    } else {
+      collapsed = false;
+    }
+  };
+
+  collapseIfMobile();
 </script>
 
 <style lang="scss">
@@ -31,10 +39,24 @@
       padding: 0.5vw 0.75vw;
     }
   }
+
+  @media screen and (max-width: 539px) {
+    .left-sidebar {
+      grid-column: auto;
+      grid-row: 3 / 4;
+    }
+  }
+
+  @media screen and (min-width: 540px) and (max-width: 1024px) {
+    .left-sidebar {
+      grid-row: 3 / 4;
+      grid-column: 1 / 2;
+    }
+  }
 </style>
 
-<aside class="left-sidebar">
-  <div class="heading">Chart Options:</div>
+<aside class="left-sidebar" class:collapsed>
+  <div class="heading" on:click={collapseIfMobile}>Chart Options:</div>
 
   <ChartOption
     type="select"

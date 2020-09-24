@@ -90,6 +90,36 @@
       max-height: 5vw;
     }
   }
+
+  @media screen and (max-width: 450px) {
+    .track {
+      margin-bottom: 1rem;
+
+      .name {
+        padding-bottom: 0.2rem;
+      }
+
+      .track-name {
+        font-weight: 600;
+        font-size: 1.85rem;
+      }
+
+      .img {
+        margin-right: 1rem;
+      }
+
+      .number {
+        font-size: 1.5rem;
+        right: 0.75rem;
+        bottom: 0.35rem;
+      }
+
+      img {
+        max-width: 4rem;
+        max-height: 4rem;
+      }
+    }
+  }
 </style>
 
 <div class="track">

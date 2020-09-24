@@ -81,6 +81,32 @@
       max-height: 5vw;
     }
   }
+
+  @media screen and (max-width: 450px) {
+    .artist {
+      margin-bottom: 1rem;
+
+      .name {
+        font-size: 1.85rem;
+        padding-bottom: 0.35rem;
+      }
+
+      .img {
+        margin-right: 1rem;
+      }
+
+      .number {
+        font-size: 1.5rem;
+        right: 0.75rem;
+        bottom: 0.35rem;
+      }
+
+      img {
+        max-width: 4rem;
+        max-height: 4rem;
+      }
+    }
+  }
 </style>
 
 <div class="artist">

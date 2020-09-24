@@ -84,3 +84,14 @@ input[disabled] {
     padding: 0.5vw;
   }
 }
+
+.collapsed :not(.heading):not(.search-heading) {
+  display: none !important;
+}
+
+.collapsed .heading::after {
+  content: "Click To Expand";
+  font-weight: 100;
+  font-size: 1.1rem;
+  margin-left: 1rem;
+}

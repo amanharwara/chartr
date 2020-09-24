@@ -9,6 +9,8 @@
 
   let dispatch = createEventDispatcher();
 
+  let iconOnly = false;
+
   const handleClick = (e) => {
     if (e.target.closest("#download-chart")) {
       dispatch("download-chart", true);
@@ -20,6 +22,14 @@
       settingsVisible.update(() => !$settingsVisible);
     }
   };
+
+  $: {
+    if (document.documentElement.clientWidth < 500) {
+      iconOnly = true;
+    } else {
+      iconOnly = false;
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -65,44 +75,23 @@
     margin-left: 1rem;
   }
 
-  @media screen and (max-width: 450px) {
+  @media screen and (max-width: 800px) {
     header {
-      display: block;
-    }
-
-    input {
-      text-align: left;
-    }
-
-    .left {
-      width: 100%;
-      padding: 1rem;
-      color: #fff;
-      font-size: 1.5rem;
+      grid-template-columns: 1fr 0.25fr;
+      grid-template-rows: 1fr 1fr;
       box-sizing: border-box;
     }
-
-    .center,
-    .right {
-      display: inline-block;
-      padding: 0.25rem;
-      color: #fff;
+    .left {
+      grid-column: 1 / 3;
+      justify-content: space-between;
     }
-
     .center {
-      width: 60%;
-
-      input {
-        box-sizing: border-box;
-      }
+      padding: 0 1rem;
+      padding-left: 0.5rem;
     }
-
-    .right {
-      width: auto;
-    }
-
-    :global(.right > .button) {
-      display: inline-flex !important;
+    input {
+      text-align: left;
+      width: 100%;
     }
   }
 
@@ -137,10 +126,10 @@
     <input type="text" bind:value={$currentChartTitle} />
   </div>
   <div class="right">
-    <Button label="Download" id="download-chart">
+    <Button label="Download" {iconOnly} id="download-chart">
       <DownloadIcon />
     </Button>
-    <Button label="Reset" outlined={true} id="reset-chart">
+    <Button label="Reset" {iconOnly} outlined={true} id="reset-chart">
       <ResetIcon />
     </Button>
   </div>
