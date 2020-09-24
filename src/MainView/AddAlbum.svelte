@@ -3,8 +3,10 @@
   import SearchResults from "./SearchResults.svelte";
   import Button from "../shared/Button.svelte";
   import { current_list } from "../store";
+  import Loader from "../shared/Loader.svelte";
 
   let currentSearchResults = [];
+  let showLoader = false;
 
   const clearSearchResults = () => {
     currentSearchResults = [];
@@ -27,6 +29,7 @@
 
   const handleSearch = (e) => {
     try {
+      showLoader = true;
       fetch(
         `https://chartr-cors-proxy.herokuapp.com/itunes.apple.com:443/search?entity=album&country=US&limit=25&term=${e.detail}`
       )
@@ -57,9 +60,11 @@
           });
 
           currentSearchResults = search_results;
+          showLoader = false;
         });
     } catch {
       console.error("Could not search.");
+      showLoader = false;
     }
   };
 
@@ -129,5 +134,9 @@
       onClick={clearSearchResults} />
   </div>
   <Searchbox on:search={handleSearch} />
-  <SearchResults results={currentSearchResults} on:click={onClickResult} />
+  {#if showLoader}
+    <Loader />
+  {:else}
+    <SearchResults results={currentSearchResults} on:click={onClickResult} />
+  {/if}
 </div>

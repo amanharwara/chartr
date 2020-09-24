@@ -1,6 +1,7 @@
 <script>
   import { settings, spotifyOptions } from "../../store";
   import Button from "../../shared/Button.svelte";
+  import Loader from "../../shared/Loader.svelte";
   import SpotifyIcon from "../../icons/SpotifyIcon.svelte";
   import authorizeSpotify from "../../authorizeSpotify";
   import TrackStyle1 from "./TrackStyle1.svelte";
@@ -11,6 +12,8 @@
 
   let reAuthReason = null;
 
+  let showLoader = false;
+
   let token = $settings.spotifyToken;
 
   if (token === null || token.length === 0) {
@@ -20,6 +23,7 @@
 
   const getResults = (time_range) => {
     if (token && token.length > 0) {
+      showLoader = true;
       fetch(
         `https://api.spotify.com/v1/me/top/tracks?time_range=${time_range}&limit=5`,
         {
@@ -41,11 +45,16 @@
               default:
                 break;
             }
+            showLoader = false;
           } else if (results.items) {
             tracks = results.items;
+            showLoader = false;
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          showLoader = false;
+        });
     }
   };
 
@@ -53,7 +62,7 @@
 </script>
 
 <style lang="scss">
-  .re-auth-overlay {
+  .overlay {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -138,13 +147,19 @@
       {:else if $spotifyOptions.time_range === 'long_term'}All Time{/if}
     </h4>
   </div>
-  <div class="tracks">
-    {#each tracks as track, index}
-      <TrackStyle1 {track} {index} />
-    {/each}
-  </div>
+  {#if showLoader}
+    <div class="overlay">
+      <Loader />
+    </div>
+  {:else}
+    <div class="tracks">
+      {#each tracks as track, index}
+        <TrackStyle1 {track} {index} />
+      {/each}
+    </div>
+  {/if}
   {#if askForReAuth}
-    <div class="re-auth-overlay">
+    <div class="overlay">
       <div class="reason">Error: {reAuthReason}</div>
       <Button label="Login with Spotify" onClick={authorizeSpotify}>
         <SpotifyIcon />

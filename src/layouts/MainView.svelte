@@ -76,6 +76,12 @@
       foreground: "#D4FC79",
     });
   };
+
+  $: {
+    if (document.documentElement.clientWidth < 450) {
+      console.log("Mobile");
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -96,6 +102,18 @@
     .main-view {
       display: flex;
       flex-direction: column;
+    }
+  }
+
+  @media screen and (min-width: 450px) and (max-width: 800px) {
+    .main-view {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  @media screen and (min-width: 800px) and (max-width: 1000px) {
+    .main-view {
+      grid-template-columns: 0.9fr 1.5fr 0.9fr;
     }
   }
 </style>

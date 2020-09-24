@@ -4,12 +4,15 @@
   import SpotifyIcon from "../../icons/SpotifyIcon.svelte";
   import authorizeSpotify from "../../authorizeSpotify";
   import Artist from "./Artist.svelte";
+  import Loader from "../../shared/Loader.svelte";
 
   let artists = [];
 
   let askForReAuth = false;
 
   let reAuthReason = null;
+
+  let showLoader = false;
 
   let token = $settings.spotifyToken;
 
@@ -20,6 +23,7 @@
 
   const getResults = (time_range) => {
     if (token && token.length > 0) {
+      showLoader = true;
       fetch(
         `https://api.spotify.com/v1/me/top/artists?time_range=${time_range}&limit=5`,
         {
@@ -41,11 +45,16 @@
               default:
                 break;
             }
+            showLoader = false;
           } else if (results.items) {
             artists = results.items;
+            showLoader = false;
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          showLoader = false;
+        });
     }
   };
 
@@ -53,7 +62,7 @@
 </script>
 
 <style lang="scss">
-  .re-auth-overlay {
+  .overlay {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -138,13 +147,19 @@
       {:else if $spotifyOptions.time_range === 'long_term'}All Time{/if}
     </h4>
   </div>
-  <div class="artists">
-    {#each artists as artist, index}
-      <Artist {artist} {index} />
-    {/each}
-  </div>
+  {#if showLoader}
+    <div class="overlay">
+      <Loader />
+    </div>
+  {:else}
+    <div class="artists">
+      {#each artists as artist, index}
+        <Artist {artist} {index} />
+      {/each}
+    </div>
+  {/if}
   {#if askForReAuth}
-    <div class="re-auth-overlay">
+    <div class="overlay">
       <div class="reason">Error: {reAuthReason}</div>
       <Button label="Login with Spotify" onClick={authorizeSpotify}>
         <SpotifyIcon />
