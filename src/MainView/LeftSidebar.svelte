@@ -5,7 +5,7 @@
     currentChartTitle,
   } from "../store";
   import AlbumCollageOptions from "./AlbumCollageOptions.svelte";
-  import SpotifyChartOptions from "./SpotifyChartOptions.svelte";
+  import SpotifyChartOptions from "./SpotifyCharts/SpotifyChartOptions.svelte";
   import ChartOption from "../shared/ChartOption.svelte";
 </script>
 

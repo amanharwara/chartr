@@ -1,8 +1,8 @@
 <script>
   import { currentChartStyle } from "../store";
   import AlbumCollage from "./AlbumCollage.svelte";
-  import SpotifyTop5Artists from "./SpotifyTop5Artists.svelte";
-  import SpotifyTop5Tracks from "./SpotifyTop5Tracks.svelte";
+  import SpotifyTop5Artists from "./SpotifyCharts/SpotifyTop5Artists.svelte";
+  import SpotifyTop5Tracks from "./SpotifyCharts/SpotifyTop5Tracks.svelte";
 
   let center_content = false;
 

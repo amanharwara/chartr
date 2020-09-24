@@ -1,10 +1,11 @@
 <script>
-  import { settings, spotifyOptions } from "../store";
-  import Button from "../shared/Button.svelte";
-  import SpotifyIcon from "../icons/SpotifyIcon.svelte";
-  import authorizeSpotify from "../authorizeSpotify";
+  import { settings, spotifyOptions } from "../../store";
+  import Button from "../../shared/Button.svelte";
+  import SpotifyIcon from "../../icons/SpotifyIcon.svelte";
+  import authorizeSpotify from "../../authorizeSpotify";
+  import Artist from "./Artist.svelte";
 
-  let tracks = [];
+  let artists = [];
 
   let askForReAuth = false;
 
@@ -20,7 +21,7 @@
   const getResults = (time_range) => {
     if (token && token.length > 0) {
       fetch(
-        `https://api.spotify.com/v1/me/top/tracks?time_range=${time_range}&limit=5`,
+        `https://api.spotify.com/v1/me/top/artists?time_range=${time_range}&limit=5`,
         {
           headers: new Headers([
             ["Accept", "application/json"],
@@ -41,8 +42,7 @@
                 break;
             }
           } else if (results.items) {
-            tracks = results.items;
-            console.log(tracks);
+            artists = results.items;
           }
         })
         .catch((err) => console.error(err));
@@ -71,7 +71,7 @@
     }
   }
 
-  .spotify-top5-tracks {
+  .spotify-top5-artists {
     background: #0e161e;
     color: #d4fc79;
     padding: 1.25vw 2vw;
@@ -103,67 +103,10 @@
     z-index: -1;
   }
 
-  .tracks {
+  .artists {
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
-  }
-
-  .track {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 1vw;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    .name {
-      padding-bottom: 0.35vw;
-      max-width: 100%;
-      overflow: hidden;
-    }
-
-    .artist,
-    .track-name {
-      max-width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .track-name {
-      font-weight: 600;
-      font-size: 2.15vw;
-    }
-
-    .overlay {
-      background: rgba(0, 0, 0, 0.5);
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .img {
-      margin-right: 1vw;
-      position: relative;
-      display: flex;
-    }
-
-    .number {
-      position: absolute;
-      font-size: 2vw;
-      font-weight: 600;
-      right: 0.75vw;
-      bottom: 0.35vw;
-    }
-
-    img {
-      max-width: 5vw;
-      max-height: 5vw;
-    }
   }
 
   .circle-top {
@@ -182,11 +125,11 @@
 </style>
 
 <div
-  class="spotify-top5-tracks"
-  id="spotify-top5-tracks"
+  class="spotify-top5-artists"
+  id="spotify-top5-artists"
   style="background: {$spotifyOptions.background}; color: {$spotifyOptions.foreground};">
   <div class="chart-heading">
-    <h1>My Top 5 Tracks</h1>
+    <h1>My Top 5 Artists</h1>
     <h4>
       {#if $spotifyOptions.time_range === 'short_term'}
         Last 4 weeks
@@ -195,19 +138,9 @@
       {:else if $spotifyOptions.time_range === 'long_term'}All Time{/if}
     </h4>
   </div>
-  <div class="tracks">
-    {#each tracks as track, index}
-      <div class="track">
-        <div class="img">
-          <img src={track.album.images[0].url} alt={track.name} />
-          <div class="overlay" />
-          <div class="number">{index + 1}.</div>
-        </div>
-        <div class="name">
-          <div class="artist">{track.album.artists[0].name}</div>
-          <div class="track-name">{track.name}</div>
-        </div>
-      </div>
+  <div class="artists">
+    {#each artists as artist, index}
+      <Artist {artist} {index} />
     {/each}
   </div>
   {#if askForReAuth}

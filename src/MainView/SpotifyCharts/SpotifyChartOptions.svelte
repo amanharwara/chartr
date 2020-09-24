@@ -1,6 +1,6 @@
 <script>
-  import { spotifyOptions } from "../store";
-  import ChartOption from "../shared/ChartOption.svelte";
+  import { spotifyOptions } from "../../store";
+  import ChartOption from "../../shared/ChartOption.svelte";
 </script>
 
 <ChartOption
