@@ -57,9 +57,14 @@
       margin-right: 0 !important;
     }
   }
-  @media screen and (max-width: 425px) {
+  @media screen and (max-width: 540px) {
     :root {
-      --item-size: 30vw;
+      --item-size: 35vw;
+    }
+  }
+  @media screen and (min-width: 540px) and (max-width: 1024px) {
+    :root {
+      --item-size: 20vw;
     }
   }
 </style>

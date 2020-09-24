@@ -45,10 +45,14 @@
               id: result.collectionId,
             };
 
-            let dimensions = Math.round(vwToPx(24));
+            let dimensions = Math.round(vwToPx(16));
 
-            if (getClientWidth() < 500) {
+            if (getClientWidth() < 540) {
               dimensions = Math.round(vwToPx(40));
+            }
+
+            if (getClientWidth() > 540 && getClientWidth() < 1024) {
+              dimensions = Math.round(vwToPx(25));
             }
 
             search_result.img_url = result.artworkUrl100.replace(

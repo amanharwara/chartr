@@ -200,9 +200,9 @@
     border-radius: 0 !important;
   }
 
-  @media screen and (max-width: 425px) {
+  @media screen and (max-width: 1024px) {
     #album-collage {
-      max-width: auto;
+      max-width: none;
     }
   }
 </style>
