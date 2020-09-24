@@ -12,15 +12,23 @@
 
   const onImgLoad = async (e) => {
     let img = e.target;
-    if (img && img.tagName === "IMG") {
-      let img_blob = await fetch(
-        "https://chartr-cors-proxy.herokuapp.com/" +
-          e.target.src.replace("https://", "").replace(".co/", ".co:443/")
-      );
-      img_blob = await img_blob.blob();
-      blobToDataUrl(img_blob, (data_url) => {
-        e.target.src = data_url;
-      });
+    if (img.src.includes("data:")) {
+      return;
+    } else {
+      if (img && img.tagName === "IMG") {
+        let img_blob = await fetch(
+          "https://chartr-cors-proxy.herokuapp.com/" +
+            e.target.src.replace("https://", "").replace(".co/", ".co:443/")
+        );
+        img_blob = await img_blob.blob();
+        blobToDataUrl(img_blob, (data_url) => {
+          if (e.target) {
+            e.target.src = data_url;
+          } else if (e.path) {
+            e.path[0].src = data_url;
+          }
+        });
+      }
     }
   };
 </script>
@@ -90,7 +98,7 @@
       src={track.album.images[0].url}
       alt={track.name}
       id={track.name + index}
-      on:load|once={onImgLoad} />
+      on:load={onImgLoad} />
     <div class="overlay" />
     <div class="number">{index + 1}.</div>
   </div>
