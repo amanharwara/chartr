@@ -1,9 +1,10 @@
 # [Chartr](https://chartr.vercel.app)
 
-Chartr is a free, open-source web app which allows you to create your own, customized music chartrs.
+Chartr is a free, open-source web app which allows you to create your own, customized music chartrs. 
 
-<a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a> [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Famanharwara%2Fchartr) [![GitHub issues](https://img.shields.io/github/issues/amanharwara/chartr?color=%230aa2fc&style=for-the-badge)](https://github.com/amanharwara/chartr/issues) [![Discord](https://img.shields.io/discord/758989035837718538?color=%23738AD6&label=Discord&style=for-the-badge)](https://discord.gg/haBPMvn) [![Matrix Badge](https://img.shields.io/badge/Matrix%20Room-Join-green)](https://matrix.to/#/!teVYOmxkzmeoismAjI:matrix.org?via=matrix.org)
 
+<a href="https://liberapay.com/~1670630/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a> [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U3114IH) 
 ### Demo Video:
 
 ![Chartr Demo Video](chartr-demo.gif)
