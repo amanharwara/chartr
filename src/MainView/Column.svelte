@@ -42,6 +42,10 @@
       }
     }
   };
+
+  const onDragEnter = (e) => {
+    e.preventDefault();
+  };
 </script>
 
 <style lang="scss">
@@ -94,6 +98,7 @@
   on:drop={onDrop}
   on:dragover={onDragOver}
   on:dragstart={onDragStart}
+  on:dragenter={onDragEnter}
   draggable="true">
   {#if current_list[row_index] && current_list[row_index][column_index]}
     <img

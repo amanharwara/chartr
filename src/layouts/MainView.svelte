@@ -15,6 +15,7 @@
   import { onMount } from "svelte";
   import SupportModal from "../shared/SupportModal.svelte";
   import { saveAs } from "file-saver";
+  import { polyfill } from "mobile-drag-drop";
 
   const saveSettings = () => {
     if (localStorage) {
@@ -46,6 +47,7 @@
 
   onMount(() => {
     loadSettings();
+    polyfill();
   });
 
   const downloadChart = () => {
