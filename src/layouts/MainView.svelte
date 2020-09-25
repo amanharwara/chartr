@@ -13,6 +13,7 @@
   } from "../store";
   import html2canvas from "html2canvas";
   import { onMount } from "svelte";
+  import SupportModal from "../shared/SupportModal.svelte";
 
   const saveSettings = () => {
     if (localStorage) {
@@ -76,6 +77,10 @@
       foreground: "#D4FC79",
     });
   };
+
+  let supportModalVisible = false;
+
+  const toggleModal = () => (supportModalVisible = !supportModalVisible);
 </script>
 
 <style lang="scss">
@@ -110,8 +115,14 @@
 </style>
 
 <div class="main-view">
-  <Header on:download-chart={downloadChart} on:reset-chart={resetChart} />
+  <Header
+    on:download-chart={downloadChart}
+    on:reset-chart={resetChart}
+    on:toggle-modal={toggleModal} />
   <Content />
   <LeftSidebar />
   <RightSidebar />
+  {#if supportModalVisible}
+    <SupportModal on:close-modal={() => (supportModalVisible = false)} />
+  {/if}
 </div>

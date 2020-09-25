@@ -11,6 +11,9 @@
     font-weight: 800;
     color: #fff;
     font-size: 1.5rem;
+    user-select: none;
+    text-decoration: none;
+    margin-right: 1rem;
   }
 
   @media screen and (min-width: 1367px) {
@@ -24,6 +27,4 @@
   }
 </style>
 
-<header>
-  <div class="logo">CHARTR.</div>
-</header>
+<header><a class="logo" href="/">CHARTR.</a></header>

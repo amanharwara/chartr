@@ -21,6 +21,9 @@
     if (e.target.closest("#toggle-settings")) {
       settingsVisible.update(() => !$settingsVisible);
     }
+    if (e.target.closest("#toggle-support-modal")) {
+      dispatch("toggle-modal", true);
+    }
   };
 
   $: {
@@ -51,6 +54,7 @@
   .logo {
     font-weight: 800;
     font-size: 1.55rem;
+    user-select: none;
   }
   .center {
     display: flex;
@@ -110,14 +114,10 @@
   <div class="left">
     <div class="logo">CHARTR.</div>
     <div class="buttons">
-      <Button label="" iconOnly={true} outlined={true} id="toggle-settings">
+      <Button iconOnly={true} outlined={true} id="toggle-settings">
         <SettingsIcon />
       </Button>
-      <Button
-        label=""
-        iconOnly={true}
-        outlined={true}
-        id="toggle-support-modal">
+      <Button iconOnly={true} outlined={true} id="toggle-support-modal">
         <SupportIcon />
       </Button>
     </div>
