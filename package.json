@@ -18,6 +18,7 @@
     "svelte-preprocess": "^4.3.0"
   },
   "dependencies": {
+    "file-saver": "^2.0.2",
     "html2canvas": "^1.0.0-rc.7",
     "sirv-cli": "^1.0.0"
   }

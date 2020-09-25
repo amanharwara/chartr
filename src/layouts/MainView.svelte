@@ -14,6 +14,7 @@
   import html2canvas from "html2canvas";
   import { onMount } from "svelte";
   import SupportModal from "../shared/SupportModal.svelte";
+  import { saveAs } from "file-saver";
 
   const saveSettings = () => {
     if (localStorage) {
@@ -51,11 +52,22 @@
     html2canvas(
       document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
     ).then((canvas) => {
-      let link = document.createElement("a");
-      link.download = `${$currentChartTitle}.png`;
-      link.href = canvas.toDataURL();
-      link.target = "_blank";
-      link.click();
+      try {
+        let isFileSaverSupported = !!new Blob();
+
+        if (isFileSaverSupported) {
+          canvas.toBlob((blob) => {
+            console.log(blob);
+            saveAs(blob, `${$currentChartTitle}.png`);
+          });
+        }
+      } catch (e) {
+        let link = document.createElement("a");
+        link.download = `${$currentChartTitle}.png`;
+        link.href = canvas.toDataURL();
+        link.target = "_blank";
+        link.click();
+      }
     });
   };
 
