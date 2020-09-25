@@ -54,6 +54,7 @@
       let link = document.createElement("a");
       link.download = `${$currentChartTitle}.png`;
       link.href = canvas.toDataURL();
+      link.target = "_blank";
       link.click();
     });
   };
