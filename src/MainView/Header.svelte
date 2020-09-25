@@ -126,7 +126,7 @@
         outlined={true}
         id="go-to-issues"
         label="Report Bug/Issue"
-        onClick={() => (window.location = 'https://github.com/amanharwara/chartr/issues')}>
+        onClick={() => window.open('https://github.com/amanharwara/chartr/issues', '_blank', 'noopener,noreferrer')}>
         <BugIcon />
       </Button>
     </div>

@@ -5,6 +5,7 @@
   import SpotifyIcon from "../../icons/SpotifyIcon.svelte";
   import authorizeSpotify from "../../authorizeSpotify";
   import TrackStyle1 from "./TrackStyle1.svelte";
+  import TrackStyle2 from "./TrackStyle2.svelte";
 
   let tracks = [];
 
@@ -25,7 +26,9 @@
     if (token && token.length > 0) {
       showLoader = true;
       fetch(
-        `https://api.spotify.com/v1/me/top/tracks?time_range=${time_range}&limit=5`,
+        `https://api.spotify.com/v1/me/top/tracks?time_range=${time_range}&limit=${
+          $spotifyOptions.tracks_style === "top_5" ? 5 : 10
+        }`,
         {
           headers: new Headers([
             ["Accept", "application/json"],
@@ -80,7 +83,7 @@
     }
   }
 
-  .spotify-top5-tracks {
+  .spotify-top-tracks {
     background: #0e161e;
     color: #d4fc79;
     padding: 1.25vw 2vw;
@@ -89,6 +92,19 @@
     position: relative;
     overflow: hidden;
     z-index: 0;
+
+    &.top_10 {
+      padding: 0;
+      width: 33vw;
+
+      .tracks {
+        margin-top: 0;
+      }
+
+      .chart-heading {
+        padding: 1rem;
+      }
+    }
   }
 
   h1 {
@@ -133,8 +149,8 @@
   }
 
   @media screen and (max-width: 450px) {
-    .spotify-top5-tracks {
-      width: 100%;
+    .spotify-top-tracks {
+      width: 100% !important;
       padding: 1.25rem 2rem;
       box-sizing: border-box;
     }
@@ -164,11 +180,13 @@
 </style>
 
 <div
-  class="spotify-top5-tracks"
-  id="spotify-top5-tracks"
+  class="spotify-top-tracks {$spotifyOptions.tracks_style}"
+  id="spotify-top-tracks"
   style="background: {$spotifyOptions.background}; color: {$spotifyOptions.foreground};">
   <div class="chart-heading">
-    <h1>My Top 5 Tracks</h1>
+    <h1>
+      My {#if $spotifyOptions.tracks_style === 'top_5'}Top 5{:else}Top 10{/if} Tracks
+    </h1>
     <h4>
       {#if $spotifyOptions.time_range === 'short_term'}
         Last 4 weeks
@@ -183,9 +201,15 @@
     </div>
   {:else}
     <div class="tracks">
-      {#each tracks as track, index}
-        <TrackStyle1 {track} {index} />
-      {/each}
+      {#if $spotifyOptions.tracks_style === 'top_5'}
+        {#each tracks as track, index}
+          <TrackStyle1 {track} {index} />
+        {/each}
+      {:else}
+        {#each tracks as track, index}
+          <TrackStyle2 {track} {index} />
+        {/each}
+      {/if}
     </div>
   {/if}
   {#if askForReAuth}
@@ -196,6 +220,8 @@
       </Button>
     </div>
   {/if}
-  <div class="circle circle-top" />
-  <div class="circle circle-bottom" />
+  {#if $spotifyOptions.tracks_style === 'top_5'}
+    <div class="circle circle-top" />
+    <div class="circle circle-bottom" />
+  {/if}
 </div>

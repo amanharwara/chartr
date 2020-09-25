@@ -11,7 +11,7 @@
     settings,
     current_list,
   } from "../store";
-  import html2canvas from "html2canvas";
+  import domtoimage from "dom-to-image-more";
   import { onMount } from "svelte";
   import SupportModal from "../shared/SupportModal.svelte";
   import { saveAs } from "file-saver";
@@ -50,27 +50,49 @@
     polyfill();
   });
 
-  const downloadChart = () => {
-    html2canvas(
-      document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
-    ).then((canvas) => {
-      try {
-        let isFileSaverSupported = !!new Blob();
+  function dataURItoBlob(dataURI) {
+    var byteString = atob(dataURI.split(",")[1]);
+    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    var blob = new Blob([ab], { type: mimeString });
+    return blob;
+  }
 
-        if (isFileSaverSupported) {
-          canvas.toBlob((blob) => {
-            console.log(blob);
+  console.log("oi");
+
+  const downloadChart = () => {
+    console.log(
+      "start render",
+      document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
+    );
+    domtoimage
+      .toPng(
+        document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
+      )
+      .then((res) => {
+        console.log("render complete", res);
+        try {
+          let isFileSaverSupported = !!new Blob();
+
+          if (isFileSaverSupported) {
+            let blob = dataURItoBlob(res);
+            console.log("using saveAs");
             saveAs(blob, `${$currentChartTitle}.png`);
-          });
+          }
+        } catch (e) {
+          console.log("using link");
+          let link = document.createElement("a");
+          link.download = `${$currentChartTitle}.png`;
+          link.href = res;
+          link.target = "_blank";
+          link.click();
         }
-      } catch (e) {
-        let link = document.createElement("a");
-        link.download = `${$currentChartTitle}.png`;
-        link.href = canvas.toDataURL();
-        link.target = "_blank";
-        link.click();
-      }
-    });
+      })
+      .catch((err) => console.error(err));
   };
 
   const resetChart = () => {

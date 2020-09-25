@@ -68,14 +68,14 @@
     <option slot="select" value="spotify_top5_artists">
       Spotify: Top 5 Artists
     </option>
-    <option slot="select" value="spotify_top5_tracks">
-      Spotify: Top 5 Tracks
+    <option slot="select" value="spotify_top_tracks">
+      Spotify: Top Tracks
     </option>
   </ChartOption>
 
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollageOptions />
-  {:else if $currentChartStyle === 'spotify_top5_artists' || $currentChartStyle === 'spotify_top5_tracks'}
-    <SpotifyChartOptions />
+  {:else if $currentChartStyle === 'spotify_top5_artists' || $currentChartStyle === 'spotify_top_tracks'}
+    <SpotifyChartOptions style={$currentChartStyle} />
   {/if}
 </aside>

@@ -27,6 +27,7 @@ let spotifyOptions = writable({
   background: "#0E161E",
   foreground: "#D4FC79",
   time_range: "short_term",
+  tracks_style: "top_10",
 });
 
 export {

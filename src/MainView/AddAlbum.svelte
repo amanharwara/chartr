@@ -18,7 +18,6 @@
       e = d.documentElement,
       g = d.getElementsByTagName("body")[0],
       x = w.innerWidth || e.clientWidth || g.clientWidth;
-
     return x;
   };
 
@@ -45,12 +44,11 @@
               id: result.collectionId,
             };
 
-            let dimensions = Math.round(vwToPx(16));
+            let dimensions = 1000;
 
             if (getClientWidth() < 540) {
-              dimensions = Math.round(vwToPx(40));
+              dimensions = Math.round(vwToPx(50));
             }
-
             if (getClientWidth() > 540 && getClientWidth() < 1024) {
               dimensions = Math.round(vwToPx(25));
             }

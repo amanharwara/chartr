@@ -18,8 +18,8 @@
     "svelte-preprocess": "^4.3.0"
   },
   "dependencies": {
+    "dom-to-image-more": "^2.8.0",
     "file-saver": "^2.0.2",
-    "html2canvas": "^1.0.0-rc.7",
     "mobile-drag-drop": "^2.3.0-rc.2",
     "sirv-cli": "^1.0.0"
   }

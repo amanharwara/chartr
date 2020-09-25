@@ -1,8 +1,19 @@
 <script>
   import { spotifyOptions } from "../../store";
   import ChartOption from "../../shared/ChartOption.svelte";
+  export let style;
 </script>
 
+{#if style === 'spotify_top_tracks'}
+  <ChartOption
+    type="select"
+    label="Style:"
+    labelFor="spotify_tracks_style"
+    bind:value={$spotifyOptions.tracks_style}>
+    <option slot="select" value="top_5">Top 5</option>
+    <option slot="select" value="top_10">Top 10</option>
+  </ChartOption>
+{/if}
 <ChartOption
   type="text"
   label="Background:"

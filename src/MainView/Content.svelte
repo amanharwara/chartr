@@ -2,7 +2,7 @@
   import { currentChartStyle } from "../store";
   import AlbumCollage from "./AlbumCollage.svelte";
   import SpotifyTop5Artists from "./SpotifyCharts/SpotifyTop5Artists.svelte";
-  import SpotifyTop5Tracks from "./SpotifyCharts/SpotifyTop5Tracks.svelte";
+  import SpotifyTopTracks from "./SpotifyCharts/SpotifyTopTracks.svelte";
 
   let center_content = false;
 
@@ -12,7 +12,7 @@
         center_content =
           document.documentElement.clientWidth < 500 ? false : true;
         break;
-      case "spotify_top5_tracks":
+      case "spotify_top_tracks":
         center_content =
           document.documentElement.clientWidth < 500 ? false : true;
         break;
@@ -62,8 +62,8 @@
     <AlbumCollage />
   {:else if $currentChartStyle === 'spotify_top5_artists'}
     <SpotifyTop5Artists />
-  {:else if $currentChartStyle === 'spotify_top5_tracks'}
-    <SpotifyTop5Tracks />
+  {:else if $currentChartStyle === 'spotify_top_tracks'}
+    <SpotifyTopTracks />
   {:else if $currentChartStyle.includes('spotify')}
     Please connect your Spotify account in the settings.
   {/if}
