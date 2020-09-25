@@ -6,6 +6,7 @@
   import { createEventDispatcher } from "svelte";
   import SettingsIcon from "../icons/SettingsIcon.svelte";
   import SupportIcon from "../icons/SupportIcon.svelte";
+  import BugIcon from "../icons/BugIcon.svelte";
 
   let dispatch = createEventDispatcher();
 
@@ -71,7 +72,7 @@
     padding: 0 0.75rem;
   }
   :global(.right > :first-child),
-  :global(.buttons > :first-child) {
+  :global(.buttons > :not(:last-child)) {
     margin-right: 0.5rem;
   }
   .buttons {
@@ -119,6 +120,14 @@
       </Button>
       <Button iconOnly={true} outlined={true} id="toggle-support-modal">
         <SupportIcon />
+      </Button>
+      <Button
+        iconOnly={true}
+        outlined={true}
+        id="go-to-issues"
+        label="Report Bug/Issue"
+        onClick={() => (window.location = 'https://github.com/amanharwara/chartr/issues')}>
+        <BugIcon />
       </Button>
     </div>
   </div>

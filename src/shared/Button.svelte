@@ -77,6 +77,7 @@
   class:labelOnly
   class:outlined
   on:click={onClick}
+  title={label}
   {...extraProps}
   {id}>
   <slot />
