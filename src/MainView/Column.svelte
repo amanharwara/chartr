@@ -82,6 +82,11 @@
       --item-size: 35vw;
     }
   }
+  @media screen and (max-width: 380px) {
+    :root {
+      --item-size: 30vw;
+    }
+  }
   @media screen and (min-width: 540px) and (max-width: 1024px) {
     :root {
       --item-size: 20vw;

@@ -21,6 +21,7 @@ let albumCollageOptions = writable({
   font: "Courier",
   gap: 5,
   padding: 7,
+  fontColor: "#fff",
 });
 
 let spotifyOptions = writable({

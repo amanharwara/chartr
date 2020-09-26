@@ -20,15 +20,15 @@
   }
   .content {
     z-index: 1;
-    background: #1b242e;
-    padding: 1rem;
+    background: #222a33;
+    padding: 1.05rem;
     border-radius: 3px;
     max-width: 37vw;
   }
   .overlay {
     width: 100%;
     height: 100%;
-    background: rgba(7, 11, 15, 0.9);
+    background: rgba(3, 4, 6, 0.9);
     position: absolute;
     top: 0;
     left: 0;

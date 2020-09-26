@@ -209,6 +209,7 @@
   @media screen and (max-width: 1024px) {
     #album-collage {
       max-width: none;
+      box-sizing: border-box;
     }
   }
 </style>
@@ -236,7 +237,7 @@
   {#if $albumCollageOptions.showAlbumTitles === true}
     <div
       id="name-container"
-      style="background: {$albumCollageOptions.background}; font-family: {$albumCollageOptions.font}; padding: {$albumCollageOptions.padding}px;">
+      style="background: {$albumCollageOptions.background}; color: {$albumCollageOptions.fontColor}; font-family: {$albumCollageOptions.font}; padding: {$albumCollageOptions.padding}px;">
       {#each { length: $albumCollageOptions.rows } as _, row_index}
         <div class="name-row">
           {#each { length: $albumCollageOptions.columns } as _, column_index}

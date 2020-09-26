@@ -43,7 +43,6 @@
 
   @media screen and (max-width: 539px) {
     .content {
-      display: block;
       height: 100%;
       grid-column: auto;
       grid-row: 2 / 3;

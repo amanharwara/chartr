@@ -25,9 +25,14 @@
   bind:value={$albumCollageOptions.font} />
 <ChartOption
   type="text"
-  label="Background:"
+  label="Background Color:"
   labelFor="bg-color"
   bind:value={$albumCollageOptions.background} />
+<ChartOption
+  type="text"
+  label="Font Color:"
+  labelFor="font-color"
+  bind:value={$albumCollageOptions.fontColor} />
 <ChartOption
   type="range"
   label="Padding:"

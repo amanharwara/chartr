@@ -64,7 +64,6 @@
     labelFor="chart-style-select"
     bind:value={$currentChartStyle}>
     <option slot="select" value="album_collage">Album Collage</option>
-    <option slot="select" value="album_top5">Top 5 Albums</option>
     <option slot="select" value="spotify_top5_artists">
       Spotify: Top 5 Artists
     </option>

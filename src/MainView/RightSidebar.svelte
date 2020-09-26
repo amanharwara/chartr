@@ -12,9 +12,6 @@
         case "album_collage":
           hidden = false;
           break;
-        case "album_top5":
-          hidden = false;
-          break;
         default:
           hidden = true;
           break;
