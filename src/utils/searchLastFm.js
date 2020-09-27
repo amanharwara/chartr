@@ -1,8 +1,6 @@
 const searchLastFm = async (query) => {
-  console.log("start search lastfm");
-  let api_key = "LASTFM_KEY";
   let fetch_results = await fetch(
-    `https://ws.audioscrobbler.com/2.0/?method=album.search&album=${query}&limit=25&api_key=${api_key}&format=json`
+    `https://ws.audioscrobbler.com/2.0/?method=album.search&album=${query}&limit=25&api_key=LASTFM_KEY&format=json`
   );
   let results_to_json = await fetch_results.json();
   let search_results = [];
