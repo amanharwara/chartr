@@ -105,18 +105,20 @@
 
 <div class="search-results">
   {#each results as result}
-    {#if result && result.img_url}
-      <img
-        class="search-result"
-        src={result.img_url}
-        alt={result.title}
-        data-artist={result.artist}
-        data-album={result.album}
-        id={result.id}
-        draggable="true"
-        on:click
-        on:dragstart={dragCover}
-        on:load={onImgLoad} />
+    {#if result}
+      {#if result.img_url}
+        <img
+          class="search-result"
+          src={result.img_url}
+          alt={result.title}
+          data-artist={result.artist}
+          data-album={result.album}
+          id={result.id}
+          draggable="true"
+          on:click
+          on:dragstart={dragCover}
+          on:load={onImgLoad} />
+      {/if}
     {:else}
       <div
         class="search-result empty"
