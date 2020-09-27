@@ -59,6 +59,9 @@ export default {
       ...(process.env.DISCOGS_KEY && {
         DISCOGS_KEY: process.env.DISCOGS_KEY,
       }),
+      ...(process.env.LASTFM_KEY && {
+        LASTFM_KEY: process.env.LASTFM_KEY,
+      }),
       ...(process.env.DISCOGS_SECRET && {
         DISCOGS_SECRET: process.env.DISCOGS_SECRET,
       }),
