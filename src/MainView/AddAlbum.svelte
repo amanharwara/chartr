@@ -2,8 +2,10 @@
   import Searchbox from "../shared/Searchbox.svelte";
   import SearchResults from "./SearchResults.svelte";
   import Button from "../shared/Button.svelte";
-  import { current_list } from "../store";
+  import { current_list, searchProvider } from "../store";
   import Loader from "../shared/Loader.svelte";
+  import searchItunes from "../utils/searchItunes";
+  import searchDiscogs from "../utils/searchDiscogs";
 
   let currentSearchResults = [];
   let showLoader = false;
@@ -12,60 +14,23 @@
     currentSearchResults = [];
   };
 
-  const getClientWidth = () => {
-    const w = window,
-      d = document,
-      e = d.documentElement,
-      g = d.getElementsByTagName("body")[0],
-      x = w.innerWidth || e.clientWidth || g.clientWidth;
-    return x;
-  };
-
-  const vwToPx = (value) => {
-    const result = (getClientWidth() * value) / 100;
-    return result;
-  };
-
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     try {
       showLoader = true;
-      fetch(
-        `https://chartr-cors-proxy.herokuapp.com/itunes.apple.com:443/search?entity=album&country=US&limit=25&term=${e.detail}`
-      )
-        .then((res) => res.json())
-        .then((results) => {
-          let search_results = [];
-
-          Array.from(results.results).forEach((result) => {
-            let search_result = {
-              artist: result.artistName,
-              album: result.collectionName,
-              title: `${result.artistName} - ${result.collectionName}`,
-              id: result.collectionId,
-            };
-
-            let dimensions = 1000;
-
-            if (getClientWidth() < 540) {
-              dimensions = Math.round(vwToPx(50));
-            }
-            if (getClientWidth() > 540 && getClientWidth() < 1024) {
-              dimensions = Math.round(vwToPx(25));
-            }
-
-            search_result.img_url = result.artworkUrl100.replace(
-              "source/100x100",
-              `source/${dimensions}x${dimensions}`
-            );
-
-            search_results = [...search_results, search_result];
-          });
-
-          let clear_item = undefined;
-
-          currentSearchResults = [...search_results, clear_item];
+      switch ($searchProvider) {
+        case "itunes":
+          currentSearchResults = await searchItunes(e.detail);
           showLoader = false;
-        });
+          break;
+        case "discogs":
+          currentSearchResults = await searchDiscogs(e.detail);
+          showLoader = false;
+          break;
+        default:
+          currentSearchResults = await searchItunes(e.detail);
+          showLoader = false;
+          break;
+      }
     } catch {
       console.error("Could not search.");
       showLoader = false;

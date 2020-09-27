@@ -3,8 +3,8 @@
   import SpotifyIcon from "../icons/SpotifyIcon.svelte";
   import Button from "../shared/Button.svelte";
   import Toggle from "../shared/Toggle.svelte";
-  import { settings, settingsVisible } from "../store";
-  import authorizeSpotify from "../authorizeSpotify";
+  import { settings, settingsVisible, searchProvider } from "../store";
+  import authorizeSpotify from "../utils/authorizeSpotify";
 
   const closeSettings = () => settingsVisible.update(() => !$settingsVisible);
 
@@ -18,8 +18,15 @@
   const saveToLocalStorage = () => {
     if (localStorage) {
       localStorage.setItem("settings", JSON.stringify($settings));
+      localStorage.setItem("searchProvider", JSON.stringify($searchProvider));
     }
   };
+
+  $: {
+    if ($searchProvider) {
+      saveToLocalStorage();
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -103,6 +110,14 @@
     }
   }
 
+  select {
+    margin-bottom: 1rem;
+    padding: 0.35rem;
+    font-size: 1.05rem;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }
+
   @media screen and (max-width: 550px) {
     main {
       padding: 3.5rem;
@@ -163,6 +178,22 @@
     <h1>Settings</h1>
   </div>
   <div class="settings">
+    <div class="setting vertical">
+      <div class="info">
+        <div class="title">Search Provider:</div>
+        <div class="desc">
+          Select which search provider you want to use for getting the album
+          art. Different search providers may show different results.
+        </div>
+      </div>
+      <select
+        id="search-provider-select"
+        bind:value={$searchProvider}
+        default="itunes">
+        <option value="itunes">iTunes</option>
+        <option value="discogs">Discogs</option>
+      </select>
+    </div>
     <div class="setting vertical">
       <div class="info">
         <div class="title">Connect to Spotify:</div>

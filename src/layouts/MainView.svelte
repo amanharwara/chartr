@@ -10,6 +10,7 @@
     spotifyOptions,
     settings,
     current_list,
+    searchProvider,
   } from "../store";
   import domtoimage from "dom-to-image-more";
   import { onMount } from "svelte";
@@ -20,6 +21,7 @@
   const saveSettings = () => {
     if (localStorage) {
       localStorage.setItem("settings", JSON.stringify($settings));
+      localStorage.setItem("searchProvider", JSON.stringify($searchProvider));
     }
   };
 
@@ -40,8 +42,17 @@
   const loadSettings = () => {
     if (localStorage && localStorage.getItem("settings")) {
       $settings = JSON.parse(localStorage.getItem("settings"));
+      $searchProvider = JSON.parse(localStorage.getItem("searchProvider"));
     } else {
       localStorage.setItem("settings", JSON.stringify($settings));
+    }
+
+    if (localStorage && localStorage.getItem("searchProvider")) {
+      $searchProvider = JSON.parse(localStorage.getItem("searchProvider"));
+    } else {
+      if ($searchProvider) {
+        localStorage.setItem("searchProvider", $searchProvider);
+      }
     }
   };
 
@@ -61,8 +72,6 @@
     var blob = new Blob([ab], { type: mimeString });
     return blob;
   }
-
-  console.log("oi");
 
   const downloadChart = () => {
     console.log(

@@ -3,7 +3,7 @@
   import Button from "../../shared/Button.svelte";
   import Loader from "../../shared/Loader.svelte";
   import SpotifyIcon from "../../icons/SpotifyIcon.svelte";
-  import authorizeSpotify from "../../authorizeSpotify";
+  import authorizeSpotify from "../../utils/authorizeSpotify";
   import TrackStyle1 from "./TrackStyle1.svelte";
   import TrackStyle2 from "./TrackStyle2.svelte";
 

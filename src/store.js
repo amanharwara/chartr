@@ -1,8 +1,15 @@
 import { writable } from "svelte/store";
 
+// 1. album_collage (default)
+// 2. spotify_top_tracks
+// 3. spotify_top5_artists
 let currentChartStyle = writable("album_collage");
 
 let settingsVisible = writable(false);
+
+// 1. itunes (default)
+// 2. discogs
+let searchProvider = writable("discogs");
 
 let settings = writable({
   spotifyToken: "",
@@ -39,4 +46,5 @@ export {
   settingsVisible,
   settings,
   current_list,
+  searchProvider,
 };

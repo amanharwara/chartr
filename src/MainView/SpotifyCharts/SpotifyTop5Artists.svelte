@@ -2,7 +2,7 @@
   import { settings, spotifyOptions } from "../../store";
   import Button from "../../shared/Button.svelte";
   import SpotifyIcon from "../../icons/SpotifyIcon.svelte";
-  import authorizeSpotify from "../../authorizeSpotify";
+  import authorizeSpotify from "../../utils/authorizeSpotify";
   import Artist from "./Artist.svelte";
   import Loader from "../../shared/Loader.svelte";
 
