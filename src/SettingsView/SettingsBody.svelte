@@ -1,15 +1,24 @@
 <script>
   import BackIcon from "../icons/BackIcon.svelte";
   import SpotifyIcon from "../icons/SpotifyIcon.svelte";
+  import LastFmIcon from "../icons/LastFmIcon.svelte";
   import Button from "../shared/Button.svelte";
   import Toggle from "../shared/Toggle.svelte";
   import { settings, settingsVisible, searchProvider } from "../store";
   import authorizeSpotify from "../utils/authorizeSpotify";
+  import authorizeLastFm from "../utils/authorizeLastFm";
 
   const closeSettings = () => settingsVisible.update(() => !$settingsVisible);
 
   const logOutSpotify = () => {
     $settings.spotifyToken = "";
+    saveToLocalStorage();
+    window.location =
+      location.protocol + "//" + location.host + location.pathname;
+  };
+
+  const logOutLastFm = () => {
+    $settings.lastFmToken = "";
     saveToLocalStorage();
     window.location =
       location.protocol + "//" + location.host + location.pathname;
@@ -84,6 +93,7 @@
     align-items: flex-start;
     justify-content: space-between;
     color: #fff;
+    margin-bottom: 1.5rem;
 
     &.vertical {
       flex-direction: column;
@@ -111,7 +121,7 @@
   }
 
   select {
-    margin-bottom: 1rem;
+    margin: 0;
     padding: 0.35rem;
     font-size: 1.05rem;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -192,6 +202,7 @@
         default="itunes">
         <option value="itunes">iTunes</option>
         <option value="discogs">Discogs</option>
+        <option value="lastfm">Last.fm</option>
       </select>
     </div>
     <div class="setting vertical">
@@ -221,6 +232,36 @@
             value={$settings.spotifyToken}
             style="margin-right: 0.5rem" />
           <Button label="Log Out" labelOnly outlined onClick={logOutSpotify} />
+        </div>
+      {/if}
+    </div>
+    <div class="setting vertical">
+      <div class="info">
+        <div class="title">Connect to Last.fm:</div>
+        <div class="desc">
+          If you want to use Last.fm for personalized charts (coming soon), you
+          need to connect your Last.fm account to Chartr. By logging into
+          Last.fm, you agree to their
+          <a
+            href="https://www.last.fm/legal/privacy"
+            target="_blank"
+            rel="noreferrer noopener">privacy policy</a>.
+        </div>
+      </div>
+      {#if $settings.lastFmToken.length === 0}
+        <Button label="Login with Last.fm" onClick={authorizeLastFm}>
+          <LastFmIcon />
+        </Button>
+      {:else}
+        <div style="display: flex;">
+          <input
+            type="text"
+            id="lastfm_token"
+            title="Your Last.fm Token"
+            disabled
+            value={$settings.lastFmToken}
+            style="margin-right: 0.5rem" />
+          <Button label="Log Out" labelOnly outlined onClick={logOutLastFm} />
         </div>
       {/if}
     </div>

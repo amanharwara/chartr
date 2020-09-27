@@ -25,15 +25,28 @@
     }
   };
 
-  if (window.location.hash.length > 0) {
-    let access_token = window.location.hash
-      .substring(1)
-      .split("&")
-      .map((key) => key.split("="))[0][1];
+  if (window.location.toString().includes("authorizeSpotify")) {
+    if (window.location.hash.length > 0) {
+      let access_token = window.location.hash
+        .substring(1)
+        .split("&")
+        .map((key) => key.split("="))[0][1];
+
+      $settings = {
+        ...$settings,
+        spotifyToken: access_token,
+      };
+
+      saveSettings();
+    }
+  }
+
+  if (window.location.toString().includes("authorizeLastFm")) {
+    let access_token = window.location.href.split("&")[1].split("=")[1];
 
     $settings = {
       ...$settings,
-      spotifyToken: access_token,
+      lastFmToken: access_token,
     };
 
     saveSettings();
@@ -41,7 +54,13 @@
 
   const loadSettings = () => {
     if (localStorage && localStorage.getItem("settings")) {
-      $settings = JSON.parse(localStorage.getItem("settings"));
+      let _settings = JSON.parse(localStorage.getItem("settings"));
+      Object.keys($settings).forEach((key) => {
+        if (!_settings[key]) {
+          _settings[key] = $settings[key];
+        }
+      });
+      $settings = _settings;
     } else {
       localStorage.setItem("settings", JSON.stringify($settings));
     }

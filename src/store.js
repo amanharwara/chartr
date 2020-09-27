@@ -9,11 +9,13 @@ let settingsVisible = writable(false);
 
 // 1. itunes (default)
 // 2. discogs
+// 3. lastfm
 let searchProvider = writable("itunes");
 
 let settings = writable({
   spotifyToken: "",
   discogsToken: "",
+  lastFmToken: "",
 });
 
 let current_list = writable([]);

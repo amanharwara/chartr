@@ -105,7 +105,7 @@
 
 <div class="search-results">
   {#each results as result}
-    {#if result}
+    {#if result && result.img_url}
       <img
         class="search-result"
         src={result.img_url}

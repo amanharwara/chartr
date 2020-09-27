@@ -7,7 +7,13 @@ const authorizeSpotify = () => {
     client_id +
     "&redirect_uri=" +
     encodeURIComponent(
-      [location.protocol, "//", location.host, location.pathname].join("")
+      [
+        location.protocol,
+        "//",
+        location.host,
+        location.pathname,
+        "?authorizeSpotify",
+      ].join("")
     ) +
     "&scope=user-top-read" +
     "&response_type=token";

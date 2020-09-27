@@ -6,6 +6,7 @@
   import Loader from "../shared/Loader.svelte";
   import searchItunes from "../utils/searchItunes";
   import searchDiscogs from "../utils/searchDiscogs";
+  import searchLastFm from "../utils/searchLastFm";
 
   let currentSearchResults = [];
   let showLoader = false;
@@ -24,6 +25,10 @@
           break;
         case "discogs":
           currentSearchResults = await searchDiscogs(e.detail);
+          showLoader = false;
+          break;
+        case "lastfm":
+          currentSearchResults = await searchLastFm(e.detail);
           showLoader = false;
           break;
         default:
