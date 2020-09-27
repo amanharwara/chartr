@@ -9,7 +9,7 @@ let settingsVisible = writable(false);
 
 // 1. itunes (default)
 // 2. discogs
-let searchProvider = writable("discogs");
+let searchProvider = writable("itunes");
 
 let settings = writable({
   spotifyToken: "",
