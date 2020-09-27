@@ -1,45 +1,52 @@
 <style>
-  .loader,
-  .loader:after {
-    border-radius: 50%;
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-  .loader {
-    margin: 60px auto;
-    font-size: 10px;
+  .cp-spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: inline-block;
+    box-sizing: border-box;
     position: relative;
-    text-indent: -9999em;
-    border-top: 0.5em solid rgba(255, 255, 255, 0.2);
-    border-right: 0.5em solid rgba(255, 255, 255, 0.2);
-    border-bottom: 0.5em solid rgba(255, 255, 255, 0.2);
-    border-left: 0.5em solid #ffffff;
-    -webkit-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-animation: load8 1.1s infinite linear;
-    animation: load8 1.1s infinite linear;
+    align-self: center;
+    margin-top: 2.5rem;
   }
-  @-webkit-keyframes load8 {
+  .cp-round:before {
+    border-radius: 50%;
+    content: " ";
+    width: 2.5rem;
+    height: 2.5rem;
+    display: inline-block;
+    box-sizing: border-box;
+    border-top: solid 6px #606060;
+    border-right: solid 6px #606060;
+    border-bottom: solid 6px #606060;
+    border-left: solid 6px #606060;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .cp-round:after {
+    border-radius: 50%;
+    content: " ";
+    width: 2.5rem;
+    height: 2.5rem;
+    display: inline-block;
+    box-sizing: border-box;
+    border-top: solid 6px #fff;
+    border-right: solid 6px transparent;
+    border-bottom: solid 6px transparent;
+    border-left: solid 6px transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: cp-round-animate 1s ease-in-out infinite;
+  }
+  @keyframes cp-round-animate {
     0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
+      transform: rotate(0);
     }
     100% {
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes load8 {
-    0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-    100% {
-      -webkit-transform: rotate(360deg);
       transform: rotate(360deg);
     }
   }
 </style>
 
-<div class="loader">Loading...</div>
+<div class="cp-spinner cp-round" />

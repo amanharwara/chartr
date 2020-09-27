@@ -141,9 +141,14 @@
       margin-bottom: 0;
     }
   }
+
+  .center {
+    display: flex;
+    flex-direction: column;
+  }
 </style>
 
-<div class="add-album" class:collapsed>
+<div class="add-album" class:collapsed class:center={showLoader}>
   <div class="search-heading" on:click={collapseIfMobile}>
     <div class="heading">Add Album:</div>
     <Button
