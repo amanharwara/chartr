@@ -42,16 +42,19 @@
   const loadSettings = () => {
     if (localStorage && localStorage.getItem("settings")) {
       $settings = JSON.parse(localStorage.getItem("settings"));
-      $searchProvider = JSON.parse(localStorage.getItem("searchProvider"));
     } else {
       localStorage.setItem("settings", JSON.stringify($settings));
     }
 
     if (localStorage && localStorage.getItem("searchProvider")) {
-      $searchProvider = JSON.parse(localStorage.getItem("searchProvider"));
+      $searchProvider = localStorage
+        .getItem("searchProvider")
+        .toString()
+        .replaceAll(/\W/g, "");
+      console.log($searchProvider);
     } else {
       if ($searchProvider) {
-        localStorage.setItem("searchProvider", $searchProvider);
+        localStorage.setItem("searchProvider", $searchProvider.toString());
       }
     }
   };

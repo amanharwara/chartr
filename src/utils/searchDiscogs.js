@@ -3,10 +3,7 @@ const searchDiscogs = async (query) => {
     `https://api.discogs.com/database/search?q=${query}&type=release`,
     {
       headers: new Headers([
-        [
-          "Authorization",
-          `Discogs key=${process.env.DISCOGS_KEY}, secret=${process.env.DISCOGS_SECRET}`,
-        ],
+        ["Authorization", `Discogs key=DISCOGS_KEY, secret=DISCOGS_SECRET`],
       ]),
     }
   );

@@ -18,7 +18,7 @@
   const saveToLocalStorage = () => {
     if (localStorage) {
       localStorage.setItem("settings", JSON.stringify($settings));
-      localStorage.setItem("searchProvider", JSON.stringify($searchProvider));
+      localStorage.setItem("searchProvider", $searchProvider);
     }
   };
 
@@ -200,7 +200,8 @@
         <div class="desc">
           If you want to create charts from your Spotify you need to connect
           your Spotify account to Chartr. By logging into Spotify, you agree to
-          their <a
+          their
+          <a
             href="https://www.spotify.com/legal/privacy-policy/"
             target="_blank"
             rel="noreferrer noopener">privacy policy</a>.

@@ -55,10 +55,12 @@ export default {
     }),
 
     replace({
-      process: JSON.stringify({
-        env: {
-          ...config().parsed,
-        },
+      ...config().parsed,
+      ...(process.env.DISCOGS_KEY && {
+        DISCOGS_KEY: process.env.DISCOGS_KEY,
+      }),
+      ...(process.env.DISCOGS_SECRET && {
+        DISCOGS_SECRET: process.env.DISCOGS_SECRET,
       }),
     }),
 
