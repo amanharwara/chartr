@@ -7,6 +7,8 @@
   import SettingsIcon from "../icons/SettingsIcon.svelte";
   import SupportIcon from "../icons/SupportIcon.svelte";
   import BugIcon from "../icons/BugIcon.svelte";
+  import ChartrLogo from "../icons/ChartrLogoMark.svelte";
+  import ChartrLogoText from "../icons/ChartrLogoText.svelte";
 
   let dispatch = createEventDispatcher();
 
@@ -51,11 +53,19 @@
     align-items: center;
     background: #11161c;
     padding: 0.5rem 0.75rem;
+    justify-content: space-between;
   }
   .logo {
     font-weight: 800;
-    font-size: 1.55rem;
+    font-size: 1.25rem;
     user-select: none;
+    fill: #fff;
+    display: flex;
+    align-items: center;
+  }
+  :global(.logo :first-child) {
+    margin-right: 0.5rem;
+    font-size: 1.65rem;
   }
   .center {
     display: flex;
@@ -88,7 +98,6 @@
     }
     .left {
       grid-column: 1 / 3;
-      justify-content: space-between;
     }
     .center {
       padding: 0 1rem;
@@ -108,12 +117,20 @@
     .logo {
       font-size: 1.5vw;
     }
+
+    :global(.logo :first-child) {
+      font-size: 1.65vw;
+      margin-right: 0.5vw;
+    }
   }
 </style>
 
 <header on:click={handleClick}>
   <div class="left">
-    <div class="logo">CHARTR.</div>
+    <div class="logo">
+      <ChartrLogo />
+      <ChartrLogoText />
+    </div>
     <div class="buttons">
       <Button iconOnly={true} outlined={true} id="toggle-settings">
         <SettingsIcon />
