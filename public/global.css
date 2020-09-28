@@ -16,6 +16,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+  scrollbar-width: thin;
   scrollbar-color: dark;
 }
 
@@ -54,19 +55,6 @@ input[disabled] {
   font-size: 1.2rem;
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
-}
-
-::-webkit-scrollbar {
-  width: 0.5rem;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #202935;
-  border-radius: 10px;
 }
 
 @media screen and (min-width: 1367px) {
