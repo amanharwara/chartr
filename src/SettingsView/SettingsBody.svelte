@@ -1,24 +1,23 @@
 <script>
   import BackIcon from "../icons/BackIcon.svelte";
   import SpotifyIcon from "../icons/SpotifyIcon.svelte";
-  import LastFmIcon from "../icons/LastFmIcon.svelte";
   import Button from "../shared/Button.svelte";
   import Toggle from "../shared/Toggle.svelte";
-  import { settings, settingsVisible, searchProvider } from "../store";
+  import {
+    settings,
+    settingsVisible,
+    searchProvider,
+    currentChartStyle,
+  } from "../store";
   import authorizeSpotify from "../utils/authorizeSpotify";
-  import authorizeLastFm from "../utils/authorizeLastFm";
 
-  const closeSettings = () => settingsVisible.update(() => !$settingsVisible);
+  const closeSettings = () => {
+    saveToLocalStorage();
+    settingsVisible.update(() => !$settingsVisible);
+  };
 
   const logOutSpotify = () => {
     $settings.spotifyToken = "";
-    saveToLocalStorage();
-    window.location =
-      location.protocol + "//" + location.host + location.pathname;
-  };
-
-  const logOutLastFm = () => {
-    $settings.lastFmToken = "";
     saveToLocalStorage();
     window.location =
       location.protocol + "//" + location.host + location.pathname;
@@ -28,6 +27,7 @@
     if (localStorage) {
       localStorage.setItem("settings", JSON.stringify($settings));
       localStorage.setItem("searchProvider", $searchProvider);
+      localStorage.setItem("currentChartStyle", $currentChartStyle);
     }
   };
 
@@ -128,6 +128,10 @@
       Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
 
+  input[type="text"] {
+    width: 100%;
+  }
+
   @media screen and (max-width: 550px) {
     main {
       padding: 3.5rem;
@@ -190,6 +194,24 @@
   <div class="settings">
     <div class="setting vertical">
       <div class="info">
+        <div class="title">Default Chart Style:</div>
+        <div class="desc">
+          The chart style you want to show first whenever you load the app.
+        </div>
+      </div>
+      <select
+        id="chart-style-select"
+        bind:value={$currentChartStyle}
+        on:input={() => saveToLocalStorage()}
+        default="album_collage">
+        <option value="album_collage">Album Collage</option>
+        <option value="spotify_top_tracks">Spotify Top Tracks</option>
+        <option value="spotify_top5_artists">Spotify Top 5 Artists</option>
+        <option value="lastfm_top5">Last.fm Top 5</option>
+      </select>
+    </div>
+    <div class="setting vertical">
+      <div class="info">
         <div class="title">Search Provider:</div>
         <div class="desc">
           Select which search provider you want to use for getting the album
@@ -237,33 +259,24 @@
     </div>
     <div class="setting vertical">
       <div class="info">
-        <div class="title">Connect to Last.fm:</div>
+        <div class="title">Last.fm Username:</div>
         <div class="desc">
-          If you want to use Last.fm for personalized charts (coming soon), you
-          need to connect your Last.fm account to Chartr. By logging into
-          Last.fm, you agree to their
+          If you want to create charts based on your Last.fm scrobbles, you need
+          to put in your username. Since this uses Last.fm's API, you agree to
+          their
           <a
             href="https://www.last.fm/legal/privacy"
             target="_blank"
             rel="noreferrer noopener">privacy policy</a>.
         </div>
       </div>
-      {#if $settings.lastFmToken.length === 0}
-        <Button label="Login with Last.fm" onClick={authorizeLastFm}>
-          <LastFmIcon />
-        </Button>
-      {:else}
-        <div style="display: flex;">
-          <input
-            type="text"
-            id="lastfm_token"
-            title="Your Last.fm Token"
-            disabled
-            value={$settings.lastFmToken}
-            style="margin-right: 0.5rem" />
-          <Button label="Log Out" labelOnly outlined onClick={logOutLastFm} />
-        </div>
-      {/if}
+      <input
+        type="text"
+        id="lastfm_username"
+        title="Your Last.fm username"
+        bind:value={$settings.lastFmUsername}
+        on:input={() => saveToLocalStorage()}
+        style="margin-right: 0.5rem" />
     </div>
   </div>
 </main>

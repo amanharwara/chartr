@@ -18,13 +18,6 @@
   import { saveAs } from "file-saver";
   import { polyfill } from "mobile-drag-drop";
 
-  const saveSettings = () => {
-    if (localStorage) {
-      localStorage.setItem("settings", JSON.stringify($settings));
-      localStorage.setItem("searchProvider", JSON.stringify($searchProvider));
-    }
-  };
-
   if (window.location.toString().includes("authorizeSpotify")) {
     if (window.location.hash.length > 0) {
       let access_token = window.location.hash
@@ -32,24 +25,23 @@
         .split("&")
         .map((key) => key.split("="))[0][1];
 
+      let _settings = [];
+
+      if (localStorage.getItem("settings")) {
+        _settings = JSON.parse(localStorage.getItem("settings"));
+      }
+
+      if (_settings.length === 0) {
+        _settings = $settings;
+      }
+
       $settings = {
-        ...$settings,
+        ..._settings,
         spotifyToken: access_token,
       };
 
-      saveSettings();
+      localStorage.setItem("settings", JSON.stringify($settings));
     }
-  }
-
-  if (window.location.toString().includes("authorizeLastFm")) {
-    let access_token = window.location.href.split("&")[1].split("=")[1];
-
-    $settings = {
-      ...$settings,
-      lastFmToken: access_token,
-    };
-
-    saveSettings();
   }
 
   const loadSettings = () => {
@@ -70,10 +62,23 @@
         .getItem("searchProvider")
         .toString()
         .replaceAll(/\W/g, "");
-      console.log($searchProvider);
     } else {
       if ($searchProvider) {
         localStorage.setItem("searchProvider", $searchProvider.toString());
+      }
+    }
+
+    if (localStorage && localStorage.getItem("currentChartStyle")) {
+      $currentChartStyle = localStorage
+        .getItem("currentChartStyle")
+        .toString()
+        .replaceAll(/\W/g, "");
+    } else {
+      if ($currentChartStyle) {
+        localStorage.setItem(
+          "currentChartStyle",
+          $currentChartStyle.toString()
+        );
       }
     }
   };

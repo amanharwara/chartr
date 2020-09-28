@@ -1,6 +1,7 @@
 <script>
   import { currentChartStyle } from "../store";
   import AlbumCollage from "./AlbumCollage.svelte";
+  import LastFmChart from "./LastFmChart/LastFmChart.svelte";
   import SpotifyTop5Artists from "./SpotifyCharts/SpotifyTop5Artists.svelte";
   import SpotifyTopTracks from "./SpotifyCharts/SpotifyTopTracks.svelte";
 
@@ -13,6 +14,10 @@
           document.documentElement.clientWidth < 500 ? false : true;
         break;
       case "spotify_top_tracks":
+        center_content =
+          document.documentElement.clientWidth < 500 ? false : true;
+        break;
+      case "lastfm_top5":
         center_content =
           document.documentElement.clientWidth < 500 ? false : true;
         break;
@@ -63,7 +68,7 @@
     <SpotifyTop5Artists />
   {:else if $currentChartStyle === 'spotify_top_tracks'}
     <SpotifyTopTracks />
-  {:else if $currentChartStyle.includes('spotify')}
-    Please connect your Spotify account in the settings.
+  {:else if $currentChartStyle === 'lastfm_top5'}
+    <LastFmChart />
   {/if}
 </main>

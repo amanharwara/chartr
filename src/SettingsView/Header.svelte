@@ -1,3 +1,8 @@
+<script>
+  import ChartrLogo from "../icons/ChartrLogoMark.svelte";
+  import ChartrLogoText from "../icons/ChartrLogoText.svelte";
+</script>
+
 <style lang="scss">
   header {
     background: #151c24;
@@ -9,11 +14,15 @@
 
   .logo {
     font-weight: 800;
-    color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     user-select: none;
-    text-decoration: none;
-    margin-right: 1rem;
+    fill: #fff;
+    display: flex;
+    align-items: center;
+  }
+  :global(.logo :first-child) {
+    margin-right: 0.5rem;
+    font-size: 1.65rem;
   }
 
   @media screen and (min-width: 1367px) {
@@ -27,4 +36,8 @@
   }
 </style>
 
-<header><a class="logo" href="/">CHARTR.</a></header>
+<header>
+  <a class="logo" href="/">
+    <ChartrLogo />
+    <ChartrLogoText /></a>
+</header>

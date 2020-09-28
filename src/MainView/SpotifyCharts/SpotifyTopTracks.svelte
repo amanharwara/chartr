@@ -120,32 +120,10 @@
     font-size: 1.5vw;
   }
 
-  .circle {
-    background: inherit;
-    position: absolute;
-    border-radius: 100%;
-    filter: brightness(1.75);
-    z-index: -1;
-  }
-
   .tracks {
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
-  }
-
-  .circle-top {
-    width: 11vw;
-    height: 11vw;
-    right: 15%;
-    top: -15%;
-  }
-
-  .circle-bottom {
-    width: 18vw;
-    height: 18vw;
-    right: -5%;
-    bottom: -15%;
   }
 
   @media screen and (max-width: 450px) {
@@ -163,19 +141,6 @@
       margin-top: 0.45rem;
       font-size: 1.5rem;
     }
-
-    .circle-top {
-      width: 11rem;
-      height: 11rem;
-      left: -5%;
-      top: -15%;
-    }
-
-    .circle-bottom {
-      width: 17rem;
-      height: 17rem;
-      bottom: -17%;
-    }
   }
 </style>
 
@@ -185,7 +150,9 @@
   style="background: {$spotifyOptions.background}; color: {$spotifyOptions.foreground};">
   <div class="chart-heading">
     <h1>
-      My {#if $spotifyOptions.tracks_style === 'top_5'}Top 5{:else}Top 10{/if} Tracks
+      My
+      {#if $spotifyOptions.tracks_style === 'top_5'}Top 5{:else}Top 10{/if}
+      Tracks
     </h1>
     <h4>
       {#if $spotifyOptions.time_range === 'short_term'}
@@ -219,9 +186,5 @@
         <SpotifyIcon />
       </Button>
     </div>
-  {/if}
-  {#if $spotifyOptions.tracks_style === 'top_5'}
-    <div class="circle circle-top" />
-    <div class="circle circle-bottom" />
   {/if}
 </div>

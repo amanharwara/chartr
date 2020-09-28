@@ -2,6 +2,7 @@
   import { currentChartStyle } from "../store";
   import AlbumCollageOptions from "./AlbumCollageOptions.svelte";
   import SpotifyChartOptions from "./SpotifyCharts/SpotifyChartOptions.svelte";
+  import LastFmChartOptions from "./LastFmChart/LastFmChartOptions.svelte";
   import ChartOption from "../shared/ChartOption.svelte";
 
   let collapsed = false;
@@ -70,11 +71,14 @@
     <option slot="select" value="spotify_top_tracks">
       Spotify: Top Tracks
     </option>
+    <option slot="select" value="lastfm_top5">Last.fm Top 5</option>
   </ChartOption>
 
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollageOptions />
   {:else if $currentChartStyle === 'spotify_top5_artists' || $currentChartStyle === 'spotify_top_tracks'}
     <SpotifyChartOptions style={$currentChartStyle} />
+  {:else if $currentChartStyle === 'lastfm_top5'}
+    <LastFmChartOptions />
   {/if}
 </aside>
