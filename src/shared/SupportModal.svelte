@@ -70,6 +70,38 @@
   .donate-links {
     margin-bottom: 1rem;
   }
+
+  @media screen and (min-width: 1367px) {
+    .content {
+      padding: 1.05vw;
+    }
+    .title {
+      font-size: 1.75vw;
+    }
+    p {
+      margin: 0 0 1vw 0;
+      font-size: 1.05vw;
+    }
+    .modal-header {
+      margin-bottom: 0.75vw;
+    }
+    .close-icon {
+      font-size: 2.5vw;
+    }
+    .sub-header {
+      font-size: 1.25vw;
+      margin-bottom: 0.5vw;
+    }
+    .donate-links {
+      margin-bottom: 1vw;
+    }
+  }
+
+  @media screen and (min-width: 2000px) {
+    img {
+      height: 1.75vw;
+    }
+  }
 </style>
 
 <div class="support-modal">
@@ -91,22 +123,24 @@
         href="https://ko-fi.com/U7U3114IH"
         target="_blank"
         rel="noreferrer noopener"><img
-          src="https://www.ko-fi.com/img/githubbutton_sm.svg"
+          src="kofi-button.svg"
           alt="Buy Me a Coffee at ko-fi.com" /></a>
       <a
         href="https://liberapay.com/aman_harwara/donate"
         target="_blank"
         rel="noreferrer noopener"><img
           alt="Donate using Liberapay"
-          src="https://liberapay.com/assets/widgets/donate.svg" /></a>
+          src="liberapay.svg" /></a>
     </div>
     <div class="sub-header">Contribute in other ways:</div>
     <p>
       If you cannot donate money, that’s not a problem! Since Chartr is open
-      source, you can help Chartr in many other ways such as helping fix <a
+      source, you can help Chartr in many other ways such as helping fix
+      <a
         href="https://github.com/amanharwara/chartr/issues"
         target="_blank"
-        rel="noopener noreferrer">bugs/issues</a>, contributing to the <a
+        rel="noopener noreferrer">bugs/issues</a>, contributing to the
+      <a
         href="https://github.com/amanharwara/chartr/"
         target="_blank"
         rel="noopener noreferrer">code</a>, etc.
