@@ -265,7 +265,9 @@
   {#if askForReAuth}
     <div class="overlay">
       <div class="reason">Error: {reAuthReason}</div>
-      <Button label="Add LastFm Username" onClick={settingsVisible.set(true)}>
+      <Button
+        label="Add LastFm Username"
+        onClick={() => settingsVisible.set(true)}>
         <LastFmIcon />
       </Button>
     </div>
