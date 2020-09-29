@@ -23,7 +23,7 @@
 
   const onImgLoad = async (e) => {
     let img = e.target;
-    if (img.src.includes("data:")) {
+    if (img.src.includes("data:") || img.src.includes("favicon.png")) {
       return;
     } else {
       if (img && img.tagName === "IMG") {
@@ -49,11 +49,8 @@
 </script>
 
 <style lang="scss">
-  :root {
-    --item-size: 12vw;
-  }
   .column {
-    background: #fff;
+    background: transparent;
     width: var(--item-size);
     height: var(--item-size);
     min-width: var(--item-size);
@@ -67,6 +64,9 @@
     &:last-child {
       margin-right: 0 !important;
     }
+  }
+  .empty {
+    background: #fff;
   }
   :global(.column button) {
     position: absolute;
@@ -104,6 +104,7 @@
   on:dragover={onDragOver}
   on:dragstart={onDragStart}
   on:dragenter={onDragEnter}
+  class:empty={current_list[row_index][column_index] === undefined}
   draggable="true">
   {#if current_list[row_index] && current_list[row_index][column_index]}
     <img

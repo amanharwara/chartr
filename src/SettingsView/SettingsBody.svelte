@@ -11,6 +11,8 @@
   } from "../store";
   import authorizeSpotify from "../utils/authorizeSpotify";
 
+  const isProduction = isProd;
+
   const closeSettings = () => {
     saveToLocalStorage();
     settingsVisible.update(() => !$settingsVisible);
@@ -225,6 +227,9 @@
         <option value="itunes">iTunes</option>
         <option value="discogs">Discogs</option>
         <option value="lastfm">Last.fm</option>
+        {#if !isProduction}
+          <option value="test">Test</option>
+        {/if}
       </select>
     </div>
     <div class="setting vertical">

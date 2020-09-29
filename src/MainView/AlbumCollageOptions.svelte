@@ -8,6 +8,13 @@
   label="Show Album Titles"
   labelFor="show-album-titles"
   bind:value={$albumCollageOptions.showAlbumTitles} />
+{#if $albumCollageOptions.showAlbumTitles}
+  <ChartOption
+    type="checkbox"
+    label="Album Title Below Cover"
+    labelFor="title-below-cover"
+    bind:value={$albumCollageOptions.titlesBelowCover} />
+{/if}
 <ChartOption
   type="range"
   label="Rows:"

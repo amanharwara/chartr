@@ -15,7 +15,7 @@
 
   const onImgLoad = async (e) => {
     let img = e.target;
-    if (img.src.includes("data:")) {
+    if (img.src.includes("data:") || img.src.includes("favicon.png")) {
       return;
     } else {
       if (img && img.tagName === "IMG") {

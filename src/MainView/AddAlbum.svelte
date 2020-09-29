@@ -14,31 +14,43 @@
   const clearSearchResults = () => {
     currentSearchResults = [];
   };
-
   const handleSearch = async (e) => {
-    try {
-      showLoader = true;
-      switch ($searchProvider) {
-        case "itunes":
-          currentSearchResults = await searchItunes(e.detail);
-          showLoader = false;
-          break;
-        case "discogs":
-          currentSearchResults = await searchDiscogs(e.detail);
-          showLoader = false;
-          break;
-        case "lastfm":
-          currentSearchResults = await searchLastFm(e.detail);
-          showLoader = false;
-          break;
-        default:
-          currentSearchResults = await searchItunes(e.detail);
-          showLoader = false;
-          break;
+    if (!isProd && $searchProvider === "test") {
+      currentSearchResults = [
+        {
+          artist: "Brian Eno",
+          album: "Ambient 1/Music For Airports",
+          title: `Brian Eno - Ambient 1/Music For Airports`,
+          id: "somtringe",
+          img_url: "/favicon.png",
+        },
+        undefined,
+      ];
+    } else {
+      try {
+        showLoader = true;
+        switch ($searchProvider) {
+          case "itunes":
+            currentSearchResults = await searchItunes(e.detail);
+            showLoader = false;
+            break;
+          case "discogs":
+            currentSearchResults = await searchDiscogs(e.detail);
+            showLoader = false;
+            break;
+          case "lastfm":
+            currentSearchResults = await searchLastFm(e.detail);
+            showLoader = false;
+            break;
+          default:
+            currentSearchResults = await searchItunes(e.detail);
+            showLoader = false;
+            break;
+        }
+      } catch {
+        console.error("Could not search.");
+        showLoader = false;
       }
-    } catch {
-      console.error("Could not search.");
-      showLoader = false;
     }
   };
 

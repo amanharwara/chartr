@@ -65,6 +65,7 @@ export default {
       ...(process.env.DISCOGS_SECRET && {
         DISCOGS_SECRET: process.env.DISCOGS_SECRET,
       }),
+      isProd: production,
     }),
 
     // If you have external dependencies installed from

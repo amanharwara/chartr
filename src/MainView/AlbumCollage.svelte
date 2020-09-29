@@ -200,6 +200,34 @@
     }
   }
 
+  :root {
+    --item-size: 12vw;
+  }
+
+  .inline-name-row {
+    display: flex;
+    width: 100%;
+  }
+
+  .inline-name-row:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .inline-name-row .name {
+    max-width: var(--item-size);
+    text-align: center;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:last-child {
+      margin-right: 0 !important;
+    }
+  }
+
   :global(.column img) {
     width: inherit !important;
     height: 100% !important;
@@ -219,7 +247,10 @@
     id="collage-container"
     style="background: {$albumCollageOptions.background}; padding: {$albumCollageOptions.padding}px">
     {#each { length: $albumCollageOptions.rows } as _, row_index}
-      <div class="row" style="margin-bottom: {$albumCollageOptions.gap}px;">
+      <div
+        class="row"
+        style="margin-bottom: {$albumCollageOptions.gap}px;"
+        class:addExtraMargin={$albumCollageOptions.titlesBelowCover}>
         {#each { length: $albumCollageOptions.columns } as _, column_index}
           <Column
             {row_index}
@@ -232,9 +263,24 @@
             on:delete-column={deleteColumn} />
         {/each}
       </div>
+      {#if $albumCollageOptions.showAlbumTitles && $albumCollageOptions.titlesBelowCover}
+        <div
+          class="inline-name-row"
+          style="margin-bottom: {$albumCollageOptions.gap}px;">
+          {#each { length: $albumCollageOptions.columns } as _, column_index}
+            <div
+              class="name"
+              style="margin-right: {$albumCollageOptions.gap}px;">
+              {#if $current_list[row_index][column_index]}
+                {$current_list[row_index][column_index].title}
+              {/if}
+            </div>
+          {/each}
+        </div>
+      {/if}
     {/each}
   </div>
-  {#if $albumCollageOptions.showAlbumTitles === true}
+  {#if $albumCollageOptions.showAlbumTitles && !$albumCollageOptions.titlesBelowCover}
     <div
       id="name-container"
       style="background: {$albumCollageOptions.background}; color: {$albumCollageOptions.fontColor}; font-family: {$albumCollageOptions.font}; padding: {$albumCollageOptions.padding}px;">

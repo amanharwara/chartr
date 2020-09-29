@@ -11,6 +11,7 @@ let settingsVisible = writable(false);
 // 1. itunes (default)
 // 2. discogs
 // 3. lastfm
+// 4. test (only available during development)
 let searchProvider = writable("itunes");
 
 let settings = writable({
@@ -25,6 +26,7 @@ let currentChartTitle = writable("Untitled Chart");
 
 let albumCollageOptions = writable({
   showAlbumTitles: false,
+  titlesBelowCover: false,
   rows: 3,
   columns: 3,
   background: "#000",
