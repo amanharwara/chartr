@@ -242,7 +242,9 @@
   }
 </style>
 
-<div id="album-collage" style="background: {$albumCollageOptions.background};">
+<div
+  id="album-collage"
+  style="background: {$albumCollageOptions.background}; font-family: {$albumCollageOptions.font};">
   <div
     id="collage-container"
     style="background: {$albumCollageOptions.background}; padding: {$albumCollageOptions.padding}px">
@@ -283,7 +285,7 @@
   {#if $albumCollageOptions.showAlbumTitles && !$albumCollageOptions.titlesBelowCover}
     <div
       id="name-container"
-      style="background: {$albumCollageOptions.background}; color: {$albumCollageOptions.fontColor}; font-family: {$albumCollageOptions.font}; padding: {$albumCollageOptions.padding}px;">
+      style="background: {$albumCollageOptions.background}; color: {$albumCollageOptions.fontColor};  padding: {$albumCollageOptions.padding}px;">
       {#each { length: $albumCollageOptions.rows } as _, row_index}
         <div class="name-row">
           {#each { length: $albumCollageOptions.columns } as _, column_index}

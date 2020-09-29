@@ -30,7 +30,7 @@ let albumCollageOptions = writable({
   rows: 3,
   columns: 3,
   background: "#000",
-  font: "Courier",
+  font: "Inter",
   gap: 5,
   padding: 7,
   fontColor: "#fff",
