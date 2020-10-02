@@ -1,54 +1,34 @@
 import { writable } from "svelte/store";
+import defaults from "./defaults";
 
 // 1. album_collage (default)
 // 2. spotify_top_tracks
 // 3. spotify_top5_artists
 // 4. lastfm_top5
-let currentChartStyle = writable("album_collage");
+// 5. tier_list
+let currentChartStyle = writable(defaults.currentChartStyle);
 
-let settingsVisible = writable(false);
+let settingsVisible = writable(defaults.settingsVisible);
 
 // 1. itunes (default)
 // 2. discogs
 // 3. lastfm
 // 4. test (only available during development)
-let searchProvider = writable("itunes");
+let searchProvider = writable(defaults.searchProvider);
 
-let settings = writable({
-  spotifyToken: "",
-  discogsToken: "",
-  lastFmUsername: "",
-});
+let settings = writable(defaults.settings);
 
-let current_list = writable([]);
+let current_list = writable([...defaults.current_list]);
 
-let currentChartTitle = writable("Untitled Chart");
+let current_tier_list = writable({ ...defaults.current_tier_list });
 
-let albumCollageOptions = writable({
-  showAlbumTitles: false,
-  titlesBelowCover: false,
-  rows: 3,
-  columns: 3,
-  background: "#000",
-  font: "Inter",
-  gap: 5,
-  padding: 7,
-  fontColor: "#fff",
-});
+let currentChartTitle = writable(defaults.currentChartTitle);
 
-let spotifyOptions = writable({
-  background: "#0E161E",
-  foreground: "#D4FC79",
-  time_range: "short_term",
-  tracks_style: "top_10",
-});
+let albumCollageOptions = writable({ ...defaults.albumCollageOptions });
 
-let lastFmOptions = writable({
-  background: "#070B0F",
-  foreground: "#E84646",
-  time_range: "overall", // overall | 7day | 1month | 3month | 6month | 12month
-  type: "albums", // artists | tracks | albums
-});
+let spotifyOptions = writable({ ...defaults.spotifyOptions });
+
+let lastFmOptions = writable({ ...defaults.lastFmOptions });
 
 export {
   currentChartStyle,
@@ -58,6 +38,7 @@ export {
   settingsVisible,
   settings,
   current_list,
+  current_tier_list,
   searchProvider,
   lastFmOptions,
 };

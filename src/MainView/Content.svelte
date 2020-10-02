@@ -4,6 +4,7 @@
   import LastFmChart from "./LastFmChart/LastFmChart.svelte";
   import SpotifyTop5Artists from "./SpotifyCharts/SpotifyTop5Artists.svelte";
   import SpotifyTopTracks from "./SpotifyCharts/SpotifyTopTracks.svelte";
+  import TierList from "./TierList/TierList.svelte";
 
   let center_content = false;
 
@@ -31,7 +32,7 @@
 <style lang="scss">
   .content {
     grid-column: 2 / 3;
-    grid-row: 2 / 3;
+    grid-row: 1 / 3;
 
     padding: 1rem;
 
@@ -64,6 +65,8 @@
 <main class="content" class:center_content>
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollage />
+  {:else if $currentChartStyle === 'tier_list'}
+    <TierList />
   {:else if $currentChartStyle === 'spotify_top5_artists'}
     <SpotifyTop5Artists />
   {:else if $currentChartStyle === 'spotify_top_tracks'}

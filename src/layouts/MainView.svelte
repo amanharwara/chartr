@@ -5,18 +5,20 @@
   import RightSidebar from "../MainView/RightSidebar.svelte";
   import {
     currentChartStyle,
-    albumCollageOptions,
     currentChartTitle,
-    spotifyOptions,
     settings,
-    current_list,
     searchProvider,
+    current_list,
+    current_tier_list,
+    albumCollageOptions,
+    spotifyOptions,
   } from "../store";
   import domtoimage from "dom-to-image-more";
   import { onMount } from "svelte";
   import SupportModal from "../shared/SupportModal.svelte";
   import { saveAs } from "file-saver";
   import { polyfill } from "mobile-drag-drop";
+  import defaults from "../defaults";
 
   if (window.location.toString().includes("authorizeSpotify")) {
     if (window.location.hash.length > 0) {
@@ -132,23 +134,12 @@
   };
 
   const resetChart = () => {
-    current_list.set([]);
-    currentChartStyle.set("album_collage");
-    albumCollageOptions.set({
-      showAlbumTitles: false,
-      showShadows: false,
-      rows: 3,
-      columns: 3,
-      background: "#000",
-      font: "Courier",
-      gap: 5,
-      padding: 7,
-    });
-    currentChartTitle.set("Untitled Chart");
-    spotifyOptions.set({
-      background: "#0E161E",
-      foreground: "#D4FC79",
-    });
+    console.log(defaults.current_tier_list);
+    $current_list = defaults.current_list;
+    $current_tier_list = defaults.current_tier_list;
+    $albumCollageOptions = defaults.albumCollageOptions;
+    $currentChartTitle = defaults.currentChartTitle;
+    $spotifyOptions = defaults.spotifyOptions;
   };
 
   let supportModalVisible = false;
@@ -170,12 +161,24 @@
     grid-template-rows: 0.25fr 3.25fr;
   }
 
+  .main-content {
+    display: grid;
+    grid-template-columns: 0.85fr 2fr 0.85fr;
+    grid-column: 1 / 4;
+    grid-row: 2 / 3;
+    overflow: hidden;
+  }
+
   @media screen and (max-width: 539px) {
     .main-view {
-      /* grid-template-columns: 1fr;
-      grid-template-rows: 0.25fr auto 1fr 1fr; */
       display: flex;
       flex-direction: column;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
   }
 
@@ -192,9 +195,11 @@
     on:download-chart={downloadChart}
     on:reset-chart={resetChart}
     on:toggle-modal={toggleModal} />
-  <Content />
-  <LeftSidebar />
-  <RightSidebar />
+  <div class="main-content">
+    <Content />
+    <LeftSidebar />
+    <RightSidebar />
+  </div>
   {#if supportModalVisible}
     <SupportModal on:close-modal={() => (supportModalVisible = false)} />
   {/if}

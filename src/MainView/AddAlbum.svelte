@@ -2,7 +2,7 @@
   import Searchbox from "../shared/Searchbox.svelte";
   import SearchResults from "./SearchResults.svelte";
   import Button from "../shared/Button.svelte";
-  import { current_list, searchProvider } from "../store";
+  import { currentChartStyle, current_list, searchProvider } from "../store";
   import Loader from "../shared/Loader.svelte";
   import searchItunes from "../utils/searchItunes";
   import searchDiscogs from "../utils/searchDiscogs";
@@ -63,10 +63,12 @@
       id: "cloned" + Math.random() * 10 + e.target.id,
     };
 
-    addAlbum(img);
+    if ($currentChartStyle === "album_collage") {
+      addAlbumToCollage(img);
+    }
   };
 
-  const addAlbum = (img) => {
+  const addAlbumToCollage = (img) => {
     let temp_list = $current_list;
 
     let empty_spot = {

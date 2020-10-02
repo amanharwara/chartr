@@ -6,11 +6,15 @@ const searchLastFm = async (query) => {
   let search_results = [];
 
   Array.from(results_to_json.results.albummatches.album).forEach((result) => {
+    console.log(result);
+
     let search_result = {
       artist: result.artist,
       album: result.name,
       title: `${result.artist} - ${result.name}`,
-      id: result.mbid,
+      id: `${result.artist}-${result.name}-${
+        Math.random() * 69 + 420
+      }`.toLowerCase(),
       img_url: result.image[3]["#text"],
     };
 

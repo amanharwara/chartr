@@ -20,7 +20,7 @@
 
 <style lang="scss">
   .left-sidebar {
-    grid-row: 2 / 3;
+    grid-row: 1 / 3;
     grid-column: 1 / 2;
 
     background: #11161c;
@@ -65,6 +65,7 @@
     labelFor="chart-style-select"
     bind:value={$currentChartStyle}>
     <option slot="select" value="album_collage">Album Collage</option>
+    <option slot="select" value="tier_list">Tier List</option>
     <option slot="select" value="spotify_top5_artists">
       Spotify: Top 5 Artists
     </option>

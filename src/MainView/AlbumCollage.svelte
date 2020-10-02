@@ -214,6 +214,7 @@
   }
 
   .inline-name-row .name {
+    min-width: var(--item-size);
     max-width: var(--item-size);
     text-align: center;
     white-space: normal;
@@ -272,6 +273,10 @@
           {#each { length: $albumCollageOptions.columns } as _, column_index}
             <div
               class="name"
+              contenteditable={$albumCollageOptions.allowEditTitles}
+              on:input={(e) => {
+                $current_list[row_index][column_index].title = e.target.textContent;
+              }}
               style="margin-right: {$albumCollageOptions.gap}px;">
               {#if $current_list[row_index][column_index]}
                 {$current_list[row_index][column_index].title}
@@ -289,7 +294,12 @@
       {#each { length: $albumCollageOptions.rows } as _, row_index}
         <div class="name-row">
           {#each { length: $albumCollageOptions.columns } as _, column_index}
-            <div class="name">
+            <div
+              class="name"
+              contenteditable={$albumCollageOptions.allowEditTitles}
+              on:input={(e) => {
+                $current_list[row_index][column_index].title = e.target.textContent;
+              }}>
               {#if $current_list[row_index] && $current_list[row_index][column_index]}
                 {$current_list[row_index][column_index].title}
               {/if}

@@ -207,6 +207,7 @@
         on:input={() => saveToLocalStorage()}
         default="album_collage">
         <option value="album_collage">Album Collage</option>
+        <option value="tier_list">Tier List</option>
         <option value="spotify_top_tracks">Spotify Top Tracks</option>
         <option value="spotify_top5_artists">Spotify Top 5 Artists</option>
         <option value="lastfm_top5">Last.fm Top 5</option>

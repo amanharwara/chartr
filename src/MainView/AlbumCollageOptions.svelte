@@ -14,6 +14,11 @@
     label="Album Title Below Cover"
     labelFor="title-below-cover"
     bind:value={$albumCollageOptions.titlesBelowCover} />
+  <ChartOption
+    type="checkbox"
+    label="Allow Editing Titles"
+    labelFor="allow-edit-titles"
+    bind:value={$albumCollageOptions.allowEditTitles} />
 {/if}
 <ChartOption
   type="range"

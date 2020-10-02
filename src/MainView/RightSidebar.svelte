@@ -12,6 +12,9 @@
         case "album_collage":
           hidden = false;
           break;
+        case "tier_list":
+          hidden = false;
+          break;
         default:
           hidden = true;
           break;
@@ -24,7 +27,7 @@
   .right-sidebar {
     background: #11161c;
 
-    grid-row: 2 / 3;
+    grid-row: 1 / 3;
     grid-column: 3 / 4;
     padding: 0.5rem 0.75rem;
   }
@@ -60,7 +63,7 @@
 </style>
 
 <aside class="right-sidebar" class:hidden>
-  {#if $currentChartStyle === 'album_collage' || $currentChartStyle === 'album_top5'}
+  {#if $currentChartStyle === 'album_collage' || $currentChartStyle === 'tier_list'}
     <AddAlbum />
   {:else}
     <p>No extra options available for this chart.</p>
