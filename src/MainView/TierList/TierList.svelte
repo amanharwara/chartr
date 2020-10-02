@@ -1,19 +1,15 @@
 <script>
   import { current_tier_list } from "../../store";
   import Tier from "./Tier.svelte";
-
-  $: {
-    console.log($current_tier_list);
-  }
 </script>
 
 <style lang="scss">
-  .tier-list {
+  #tier-list {
     background: #000;
   }
 </style>
 
-<div class="tier-list">
+<div id="tier-list">
   <Tier tier="s" />
   <Tier tier="a" />
   <Tier tier="b" />
