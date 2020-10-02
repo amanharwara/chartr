@@ -112,7 +112,6 @@
         document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
       )
       .then((res) => {
-        console.log("render complete", res);
         try {
           let isFileSaverSupported = !!new Blob();
 
