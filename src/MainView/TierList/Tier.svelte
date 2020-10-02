@@ -1,6 +1,7 @@
 <script>
-  import { each } from "svelte/internal";
-  import { current_tier_list } from "../../store";
+  import Button from "../../shared/Button.svelte";
+  import DeleteIcon from "../../icons/DeleteIcon.svelte";
+  import { currentChartStyle, current_tier_list } from "../../store";
   export let tier;
 
   const onDragStart = (e) => {
@@ -39,6 +40,14 @@
 
   const preventDefault = (e) => {
     e.preventDefault();
+  };
+
+  const removeTierItem = (tier, id) => {
+    let temp_tier_list = $current_tier_list;
+    temp_tier_list[`tier_${tier}`] = temp_tier_list[`tier_${tier}`].filter(
+      (item) => item.id !== id
+    );
+    $current_tier_list = temp_tier_list;
   };
 </script>
 
@@ -85,6 +94,21 @@
     background: #c167eb;
   }
 
+  .item {
+    position: relative;
+    display: flex;
+  }
+
+  :global(.item button) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: none !important;
+  }
+  :global(.item:hover button, .column:focus button) {
+    display: flex !important;
+  }
+
   @media screen and (min-width: 1367px) {
     img {
       max-width: 6vw;
@@ -102,7 +126,18 @@
   <div class="tier-label label-{tier}">{tier.toUpperCase()}</div>
   <div class="tier-content">
     {#each $current_tier_list[`tier_${tier}`] as item}
-      <img src={item.src} alt={item.title} title={item.title} id={item.id} />
+      <div class="item">
+        <img src={item.src} alt={item.title} title={item.title} id={item.id} />
+        <Button
+          iconOnly
+          id="delete-{item.id}"
+          onClick={() => {
+            removeTierItem(tier, item.id);
+          }}
+          extraProps={{ 'data-id': item.id, 'data-tier': tier }}>
+          <DeleteIcon />
+        </Button>
+      </div>
     {/each}
   </div>
 </div>

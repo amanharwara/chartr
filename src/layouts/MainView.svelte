@@ -133,7 +133,6 @@
   };
 
   const resetChart = () => {
-    console.log(defaults.current_tier_list);
     $current_list = defaults.current_list;
     $current_tier_list = defaults.current_tier_list;
     $albumCollageOptions = defaults.albumCollageOptions;
