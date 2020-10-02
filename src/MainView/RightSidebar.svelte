@@ -1,24 +1,15 @@
 <script>
   import AddAlbum from "./AddAlbum.svelte";
-  import { currentChartStyle } from "../store";
+  import { currentChartStyle, screenWidth } from "../store";
+  import AddAlbumModal from "./AddAlbumModal.svelte";
 
   let hidden = false;
 
-  let clientWidth = document.documentElement.clientWidth;
-
   $: {
-    if (clientWidth < 539) {
-      switch ($currentChartStyle) {
-        case "album_collage":
-          hidden = false;
-          break;
-        case "tier_list":
-          hidden = false;
-          break;
-        default:
-          hidden = true;
-          break;
-      }
+    if ($screenWidth < 539) {
+      hidden = true;
+    } else {
+      hidden = false;
     }
   }
 </script>

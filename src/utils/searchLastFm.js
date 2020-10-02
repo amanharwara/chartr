@@ -6,8 +6,6 @@ const searchLastFm = async (query) => {
   let search_results = [];
 
   Array.from(results_to_json.results.albummatches.album).forEach((result) => {
-    console.log(result);
-
     let search_result = {
       artist: result.artist,
       album: result.name,

@@ -1,4 +1,6 @@
 <script>
+  import { screenWidth } from "../store";
+
   export let results = [];
 
   const dragCover = (e) => {
@@ -119,7 +121,7 @@
           on:dragstart={dragCover}
           on:load={onImgLoad} />
       {/if}
-    {:else}
+    {:else if $screenWidth > 539}
       <div
         class="search-result empty"
         draggable="true"

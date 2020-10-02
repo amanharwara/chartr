@@ -1,5 +1,5 @@
 <script>
-  import { currentChartStyle } from "../store";
+  import { currentChartStyle, screenWidth } from "../store";
   import AlbumCollageOptions from "./AlbumCollageOptions.svelte";
   import SpotifyChartOptions from "./SpotifyCharts/SpotifyChartOptions.svelte";
   import LastFmChartOptions from "./LastFmChart/LastFmChartOptions.svelte";
@@ -8,12 +8,20 @@
   let collapsed = false;
 
   const collapseIfMobile = () => {
-    if (document.documentElement.clientWidth < 539) {
+    if ($screenWidth < 539) {
       collapsed = !collapsed;
     } else {
       collapsed = false;
     }
   };
+
+  $: {
+    if ($screenWidth < 539) {
+      collapsed = true;
+    } else {
+      collapsed = false;
+    }
+  }
 
   collapseIfMobile();
 </script>

@@ -2,6 +2,12 @@
   import DeleteIcon from "../icons/DeleteIcon.svelte";
   import Button from "../shared/Button.svelte";
   import { createEventDispatcher } from "svelte";
+  import AddIcon from "../icons/AddIcon.svelte";
+  import { albumCollageOptions, screenWidth } from "../store";
+  import CaretUp from "../icons/CaretUp.svelte";
+  import CaretDown from "../icons/CaretDown.svelte";
+  import CaretLeft from "../icons/CaretLeft.svelte";
+  import CaretRight from "../icons/CaretRight.svelte";
 
   export let row_index;
   export let column_index;
@@ -46,6 +52,22 @@
   const onDragEnter = (e) => {
     e.preventDefault();
   };
+
+  let clicked = 0;
+
+  let buttonsHidden = true;
+
+  const showButtons = (e) => {
+    if (clicked === 0) {
+      e.preventDefault();
+      clicked++;
+    } else {
+      buttonsHidden = false;
+    }
+  };
+  const hideButtons = () => {
+    buttonsHidden = true;
+  };
 </script>
 
 <style lang="scss">
@@ -70,21 +92,58 @@
   }
   :global(.column button) {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    display: none !important;
+    display: flex;
   }
-  :global(.column:hover button, .column:focus button) {
+  :global(.column .delete-item-button) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  :global(.column .move-up-button) {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  :global(.column .move-down-button) {
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  :global(.column .move-left-button) {
+    left: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.45rem !important;
+  }
+  :global(.column .move-right-button) {
+    right: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.45rem !important;
+  }
+  :global(.empty button) {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
     display: flex !important;
+    background: transparent !important;
+    fill: #000 !important;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  :global(.empty button svg) {
+    font-size: 2.5rem !important;
   }
   @media screen and (max-width: 540px) {
     :root {
-      --item-size: 35vw;
+      --item-size: 38vw;
     }
   }
   @media screen and (max-width: 380px) {
     :root {
-      --item-size: 30vw;
+      --item-size: 35vw;
     }
   }
   @media screen and (min-width: 540px) and (max-width: 1024px) {
@@ -93,6 +152,13 @@
     }
   }
 </style>
+
+<svelte:body
+  on:click={(e) => {
+    if (!e.target.closest('.column')) {
+      hideButtons();
+    }
+  }} />
 
 <div
   class="column"
@@ -104,6 +170,7 @@
   on:dragover={onDragOver}
   on:dragstart={onDragStart}
   on:dragenter={onDragEnter}
+  on:click={showButtons}
   class:empty={current_list[row_index][column_index] === undefined}
   draggable="true">
   {#if current_list[row_index] && current_list[row_index][column_index]}
@@ -113,15 +180,69 @@
       data-artist={current_list[row_index][column_index].artist}
       data-album={current_list[row_index][column_index].album}
       id={current_list[row_index][column_index].id}
+      on:click={showButtons}
       draggable="true"
       on:dragstart={onDragStart}
       on:load={onImgLoad} />
+    <div style="display: {buttonsHidden ? 'none' : 'block'}">
+      <Button
+        iconOnly
+        className="delete-item-button"
+        id="delete-{row_index}-{column_index}"
+        onClick={() => {
+          if (document.getElementById(`delete-${row_index}-${column_index}`).style.display !== 'none') {
+            dispatch('delete-column', { row_index, column_index });
+          }
+        }}
+        extraProps={{ 'data-row_index': row_index, 'data-column_index': column_index }}>
+        <DeleteIcon />
+      </Button>
+      {#if row_index !== 0}
+        <Button
+          iconOnly
+          id="move-up-{row_index}-{column_index}"
+          className="move-up-button"
+          onClick={() => dispatch('move-up', { row_index, column_index })}>
+          <CaretUp />
+        </Button>
+      {/if}
+      {#if row_index !== $albumCollageOptions.rows - 1}
+        <Button
+          iconOnly
+          id="move-down-{row_index}-{column_index}"
+          className="move-down-button"
+          onClick={() => dispatch('move-down', { row_index, column_index })}>
+          <CaretDown />
+        </Button>
+      {/if}
+      {#if column_index !== 0}
+        <Button
+          iconOnly
+          id="move-left-{row_index}-{column_index}"
+          className="move-left-button"
+          onClick={() => dispatch('move-left', { row_index, column_index })}>
+          <CaretLeft />
+        </Button>
+      {/if}
+      {#if column_index !== $albumCollageOptions.columns - 1}
+        <Button
+          iconOnly
+          id="move-right-{row_index}-{column_index}"
+          className="move-right-button"
+          onClick={() => dispatch('move-right', { row_index, column_index })}>
+          <CaretRight />
+        </Button>
+      {/if}
+    </div>
+  {/if}
+  {#if current_list[row_index][column_index] === undefined && $screenWidth < 539}
     <Button
       iconOnly
-      id="delete-{row_index}-{column_index}"
-      onClick={() => dispatch('delete-column', { row_index, column_index })}
+      id="add-{row_index}-{column_index}"
+      className="add-album-button"
+      onClick={() => dispatch('add-album', { row_index, column_index })}
       extraProps={{ 'data-row_index': row_index, 'data-column_index': column_index }}>
-      <DeleteIcon />
+      <AddIcon />
     </Button>
   {/if}
 </div>

@@ -30,6 +30,12 @@ let spotifyOptions = writable({ ...defaults.spotifyOptions });
 
 let lastFmOptions = writable({ ...defaults.lastFmOptions });
 
+let screenWidth = writable(1280);
+
+let showAddAlbumModal = writable(defaults.showAddAlbumModal);
+
+let addAlbumModalOptions = writable({});
+
 export {
   currentChartStyle,
   albumCollageOptions,
@@ -41,4 +47,7 @@ export {
   current_tier_list,
   searchProvider,
   lastFmOptions,
+  screenWidth,
+  showAddAlbumModal,
+  addAlbumModalOptions,
 };

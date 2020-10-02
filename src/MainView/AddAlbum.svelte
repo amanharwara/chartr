@@ -2,11 +2,21 @@
   import Searchbox from "../shared/Searchbox.svelte";
   import SearchResults from "./SearchResults.svelte";
   import Button from "../shared/Button.svelte";
-  import { currentChartStyle, current_list, searchProvider } from "../store";
+  import {
+    addAlbumModalOptions,
+    currentChartStyle,
+    current_list,
+    current_tier_list,
+    screenWidth,
+    searchProvider,
+    showAddAlbumModal,
+  } from "../store";
   import Loader from "../shared/Loader.svelte";
   import searchItunes from "../utils/searchItunes";
   import searchDiscogs from "../utils/searchDiscogs";
   import searchLastFm from "../utils/searchLastFm";
+
+  export let isInModal = false;
 
   let currentSearchResults = [];
   let showLoader = false;
@@ -63,12 +73,38 @@
       id: "cloned" + Math.random() * 10 + e.target.id,
     };
 
-    if ($currentChartStyle === "album_collage") {
-      addAlbumToCollage(img);
+    if (isInModal) {
+      let options = $addAlbumModalOptions;
+      console.log(options);
+
+      switch ($currentChartStyle) {
+        case "album_collage":
+          if (
+            options.row_index !== undefined &&
+            options.column_index !== undefined
+          )
+            $current_list[options.row_index][options.column_index] = img;
+          break;
+        case "tier_list":
+          if (options.tier !== undefined) {
+            let tier = $current_tier_list[`tier_${options.tier}`];
+            tier = [...tier, img];
+            $current_tier_list[`tier_${options.tier}`] = tier;
+            console.log($current_tier_list);
+          }
+          break;
+        default:
+          break;
+      }
+
+      $addAlbumModalOptions = {};
+      $showAddAlbumModal = false;
+    } else if ($currentChartStyle === "album_collage") {
+      addAlbumToEmptyCollageItem(img);
     }
   };
 
-  const addAlbumToCollage = (img) => {
+  const addAlbumToEmptyCollageItem = (img) => {
     let temp_list = $current_list;
 
     let empty_spot = {
@@ -96,22 +132,6 @@
 
     $current_list = temp_list;
   };
-
-  let collapsed = false;
-
-  const collapseIfMobile = (e) => {
-    if (document.documentElement.clientWidth < 539) {
-      if (!e) {
-        collapsed = !collapsed;
-      } else if (e.target && e.target.id !== "clear-search-results") {
-        collapsed = !collapsed;
-      }
-    } else {
-      collapsed = false;
-    }
-  };
-
-  collapseIfMobile();
 </script>
 
 <style lang="scss">
@@ -126,14 +146,20 @@
     }
   }
 
+  .isInModal {
+    .search-heading {
+      display: none;
+    }
+  }
+
   .center {
     display: flex;
     flex-direction: column;
   }
 </style>
 
-<div class="add-album" class:collapsed class:center={showLoader}>
-  <div class="search-heading" on:click={collapseIfMobile}>
+<div class="add-album" class:center={showLoader} class:isInModal>
+  <div class="search-heading">
     <div class="heading">Add Album:</div>
     <Button
       label="Clear"

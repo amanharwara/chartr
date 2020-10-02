@@ -6,6 +6,7 @@
   export let labelOnly = false;
   export let onClick = () => {};
   export let extraProps = {};
+  export let className = "";
 </script>
 
 <style lang="scss">
@@ -71,7 +72,7 @@
 </style>
 
 <button
-  class="button"
+  class="button {className}"
   type="button"
   class:iconOnly
   class:labelOnly

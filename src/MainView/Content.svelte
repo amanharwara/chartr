@@ -1,10 +1,11 @@
 <script>
-  import { currentChartStyle } from "../store";
+  import { currentChartStyle, screenWidth, showAddAlbumModal } from "../store";
   import AlbumCollage from "./AlbumCollage.svelte";
   import LastFmChart from "./LastFmChart/LastFmChart.svelte";
   import SpotifyTop5Artists from "./SpotifyCharts/SpotifyTop5Artists.svelte";
   import SpotifyTopTracks from "./SpotifyCharts/SpotifyTopTracks.svelte";
   import TierList from "./TierList/TierList.svelte";
+  import AddAlbumModal from "./AddAlbumModal.svelte";
 
   let center_content = false;
 
@@ -75,3 +76,7 @@
     <LastFmChart />
   {/if}
 </main>
+
+{#if $screenWidth < 539}
+  <AddAlbumModal />
+{/if}

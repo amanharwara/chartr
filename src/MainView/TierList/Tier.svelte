@@ -1,8 +1,15 @@
 <script>
   import Button from "../../shared/Button.svelte";
   import DeleteIcon from "../../icons/DeleteIcon.svelte";
-  import { currentChartStyle, current_tier_list } from "../../store";
+  import {
+    addAlbumModalOptions,
+    current_tier_list,
+    showAddAlbumModal,
+  } from "../../store";
   export let tier;
+
+  import CaretUp from "../../icons/CaretUp.svelte";
+  import CaretDown from "../../icons/CaretDown.svelte";
 
   const onDragStart = (e) => {
     e.dataTransfer.setData("text", e.target.id);
@@ -48,6 +55,33 @@
       (item) => item.id !== id
     );
     $current_tier_list = temp_tier_list;
+  };
+
+  const move = (id, direction, tier) => {
+    let tier_keys = Object.keys($current_tier_list);
+    let current_tier_index = tier_keys.indexOf(`tier_${tier}`);
+    let destination_index;
+    if (direction === "up") {
+      destination_index = current_tier_index - 1;
+    } else {
+      destination_index = current_tier_index + 1;
+    }
+    let destination_tier = tier_keys[destination_index];
+    $current_tier_list[destination_tier] = [
+      ...$current_tier_list[destination_tier],
+      $current_tier_list[`tier_${tier}`].find((item) => item.id === id),
+    ];
+    removeTierItem(tier, id);
+  };
+
+  let buttonsHidden = true;
+
+  const showButtons = (e) => {
+    buttonsHidden = false;
+  };
+
+  const hideButtons = () => {
+    buttonsHidden = true;
   };
 </script>
 
@@ -101,12 +135,22 @@
 
   :global(.item button) {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    display: none !important;
+    display: flex;
   }
-  :global(.item:hover button, .column:focus button) {
-    display: flex !important;
+
+  :global(.item .delete-button) {
+    top: 5%;
+    right: 5%;
+  }
+
+  :global(.item .move-up-button) {
+    top: 5%;
+    left: 5%;
+  }
+
+  :global(.item .move-down-button) {
+    bottom: 5%;
+    left: 5%;
   }
 
   @media screen and (min-width: 1367px) {
@@ -116,6 +160,13 @@
   }
 </style>
 
+<svelte:body
+  on:click={(e) => {
+    if (!e.target.closest('.item')) {
+      hideButtons();
+    }
+  }} />
+
 <div
   class="tier"
   id="tier_{tier}"
@@ -124,19 +175,54 @@
   on:dragstart={onDragStart}
   on:dragenter={preventDefault}>
   <div class="tier-label label-{tier}">{tier.toUpperCase()}</div>
-  <div class="tier-content">
+  <div
+    class="tier-content"
+    on:click={(e) => {
+      console.log(e.target);
+      if (!e.target.classList.contains('tier-content')) {
+        e.preventDefault();
+      } else {
+        $showAddAlbumModal = true;
+        $addAlbumModalOptions = { tier };
+      }
+    }}>
     {#each $current_tier_list[`tier_${tier}`] as item}
-      <div class="item">
-        <img src={item.src} alt={item.title} title={item.title} id={item.id} />
-        <Button
-          iconOnly
-          id="delete-{item.id}"
-          onClick={() => {
-            removeTierItem(tier, item.id);
-          }}
-          extraProps={{ 'data-id': item.id, 'data-tier': tier }}>
-          <DeleteIcon />
-        </Button>
+      <div class="item" on:click={showButtons}>
+        <img
+          src={item.src || item.img_url}
+          alt={item.title}
+          title={item.title}
+          id={item.id} />
+        <div style="display: {buttonsHidden ? 'none' : 'block'}">
+          <Button
+            iconOnly
+            id="delete-{item.id}"
+            className="delete-button"
+            onClick={() => {
+              removeTierItem(tier, item.id);
+            }}
+            extraProps={{ 'data-id': item.id, 'data-tier': tier }}>
+            <DeleteIcon />
+          </Button>
+          {#if tier !== 's'}
+            <Button
+              iconOnly
+              id="move-up-{item.id}"
+              className="move-up-button"
+              onClick={() => move(item.id, 'up', tier)}>
+              <CaretUp />
+            </Button>
+          {/if}
+          {#if tier !== 'f'}
+            <Button
+              iconOnly
+              id="move-down-{item.id}"
+              className="move-down-button"
+              onClick={() => move(item.id, 'down', tier)}>
+              <CaretDown />
+            </Button>
+          {/if}
+        </div>
       </div>
     {/each}
   </div>

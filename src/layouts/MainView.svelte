@@ -12,12 +12,12 @@
     current_tier_list,
     albumCollageOptions,
     spotifyOptions,
+    screenWidth,
   } from "../store";
   import domtoimage from "dom-to-image-more";
   import { onMount } from "svelte";
   import SupportModal from "../shared/SupportModal.svelte";
   import { saveAs } from "file-saver";
-  import { polyfill } from "mobile-drag-drop";
   import defaults from "../defaults";
 
   if (window.location.toString().includes("authorizeSpotify")) {
@@ -86,8 +86,8 @@
   };
 
   onMount(() => {
+    $screenWidth = document.documentElement.clientWidth;
     loadSettings();
-    polyfill();
   });
 
   function dataURItoBlob(dataURI) {
@@ -188,6 +188,11 @@
   }
 </style>
 
+<svelte:window
+  on:resize={() => {
+    $screenWidth = document.documentElement.clientWidth;
+  }} />
+
 <div class="main-view">
   <Header
     on:download-chart={downloadChart}
@@ -198,7 +203,7 @@
     <LeftSidebar />
     <RightSidebar />
   </div>
-  {#if supportModalVisible}
-    <SupportModal on:close-modal={() => (supportModalVisible = false)} />
-  {/if}
+  <SupportModal
+    on:close-modal={() => (supportModalVisible = false)}
+    visible={supportModalVisible} />
 </div>

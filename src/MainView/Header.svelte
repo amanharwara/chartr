@@ -1,5 +1,5 @@
 <script>
-  import { currentChartTitle, settingsVisible } from "../store";
+  import { currentChartTitle, screenWidth, settingsVisible } from "../store";
   import Button from "../shared/Button.svelte";
   import DownloadIcon from "../icons/DownloadIcon.svelte";
   import ResetIcon from "../icons/ResetIcon.svelte";
@@ -30,7 +30,7 @@
   };
 
   $: {
-    if (document.documentElement.clientWidth < 500) {
+    if ($screenWidth < 500) {
       iconOnly = true;
     } else {
       iconOnly = false;

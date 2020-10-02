@@ -1,8 +1,19 @@
 <script>
-  import { albumCollageOptions, current_list } from "../store";
+  import { createEventDispatcher } from "svelte";
+
+  import {
+    addAlbumModalOptions,
+    albumCollageOptions,
+    current_list,
+    screenWidth,
+    showAddAlbumModal,
+  } from "../store";
+  import AddAlbumModal from "./AddAlbumModal.svelte";
   import Column from "./Column.svelte";
 
   const allowDrop = (e) => e.preventDefault();
+
+  let dispatch = createEventDispatcher();
 
   $: {
     let temp_list = $current_list;
@@ -166,6 +177,44 @@
     temp_list[row_index][column_index] = undefined;
     $current_list = temp_list;
   };
+
+  const moveColumn = (e, direction) => {
+    let temp_list = $current_list;
+
+    let { row_index, column_index } = e.detail;
+
+    let destination_row;
+    let destination_column;
+
+    switch (direction) {
+      case "up":
+        destination_row = row_index - 1;
+        destination_column = column_index;
+        break;
+      case "down":
+        destination_row = row_index + 1;
+        destination_column = column_index;
+        break;
+      case "left":
+        destination_row = row_index;
+        destination_column = column_index - 1;
+        break;
+      case "right":
+        destination_row = row_index;
+        destination_column = column_index + 1;
+        break;
+      default:
+        break;
+    }
+
+    let current_item = temp_list[row_index][column_index];
+    let destination_item = temp_list[destination_row][destination_column];
+
+    temp_list[destination_row][destination_column] = current_item;
+    temp_list[row_index][column_index] = destination_item;
+
+    $current_list = temp_list;
+  };
 </script>
 
 <style lang="scss">
@@ -263,6 +312,22 @@
             onDrop={dropCover}
             onDragOver={allowDrop}
             onDragStart={dragCover}
+            on:add-album={(e) => {
+              $showAddAlbumModal = true;
+              $addAlbumModalOptions = { row_index: e.detail.row_index, column_index: e.detail.column_index };
+            }}
+            on:move-up={(e) => {
+              moveColumn(e, 'up');
+            }}
+            on:move-down={(e) => {
+              moveColumn(e, 'down');
+            }}
+            on:move-left={(e) => {
+              moveColumn(e, 'left');
+            }}
+            on:move-right={(e) => {
+              moveColumn(e, 'right');
+            }}
             on:delete-column={deleteColumn} />
         {/each}
       </div>
