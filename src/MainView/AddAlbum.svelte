@@ -75,7 +75,6 @@
 
     if (isInModal) {
       let options = $addAlbumModalOptions;
-      console.log(options);
 
       switch ($currentChartStyle) {
         case "album_collage":

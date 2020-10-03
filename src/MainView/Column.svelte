@@ -53,21 +53,7 @@
     e.preventDefault();
   };
 
-  let clicked = 0;
-
-  let buttonsHidden = true;
-
-  const showButtons = (e) => {
-    if (clicked === 0) {
-      e.preventDefault();
-      clicked++;
-    } else {
-      buttonsHidden = false;
-    }
-  };
-  const hideButtons = () => {
-    buttonsHidden = true;
-  };
+  let buttonsVisible = false;
 </script>
 
 <style lang="scss">
@@ -89,6 +75,12 @@
   }
   .empty {
     background: #fff;
+  }
+  .buttons {
+    display: none;
+  }
+  .visible {
+    display: block;
   }
   :global(.column button) {
     position: absolute;
@@ -155,8 +147,8 @@
 
 <svelte:body
   on:click={(e) => {
-    if (!e.target.closest('.column')) {
-      hideButtons();
+    if (!e.target.closest('.column') || e.target.closest('.column').id !== `column-${row_index}-${column_index}`) {
+      buttonsVisible = false;
     }
   }} />
 
@@ -170,8 +162,10 @@
   on:dragover={onDragOver}
   on:dragstart={onDragStart}
   on:dragenter={onDragEnter}
-  on:click={showButtons}
   class:empty={current_list[row_index][column_index] === undefined}
+  on:click={() => {
+    buttonsVisible = true;
+  }}
   draggable="true">
   {#if current_list[row_index] && current_list[row_index][column_index]}
     <img
@@ -180,11 +174,10 @@
       data-artist={current_list[row_index][column_index].artist}
       data-album={current_list[row_index][column_index].album}
       id={current_list[row_index][column_index].id}
-      on:click={showButtons}
       draggable="true"
       on:dragstart={onDragStart}
       on:load={onImgLoad} />
-    <div style="display: {buttonsHidden ? 'none' : 'block'}">
+    <div class="buttons" class:visible={buttonsVisible}>
       <Button
         iconOnly
         className="delete-item-button"
