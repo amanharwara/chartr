@@ -51,8 +51,6 @@
   @media screen and (max-width: 539px) {
     .content {
       height: 100%;
-      grid-column: auto;
-      grid-row: 2 / 3;
     }
   }
 
@@ -67,6 +65,11 @@
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollage />
   {:else if $currentChartStyle === 'tier_list'}
+    {#if $screenWidth < 539}
+      <div style="margin-bottom: 0.5rem">
+        You can click on any tier letter or empty space to add an album.
+      </div>
+    {/if}
     <TierList />
   {:else if $currentChartStyle === 'spotify_top5_artists'}
     <SpotifyTop5Artists />

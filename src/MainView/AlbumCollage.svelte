@@ -1,19 +1,13 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-
   import {
     addAlbumModalOptions,
     albumCollageOptions,
     current_list,
-    screenWidth,
     showAddAlbumModal,
   } from "../store";
-  import AddAlbumModal from "./AddAlbumModal.svelte";
   import Column from "./Column.svelte";
 
   const allowDrop = (e) => e.preventDefault();
-
-  let dispatch = createEventDispatcher();
 
   $: {
     let temp_list = $current_list;

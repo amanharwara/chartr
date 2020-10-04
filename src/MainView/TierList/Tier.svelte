@@ -1,15 +1,12 @@
 <script>
-  import Button from "../../shared/Button.svelte";
-  import DeleteIcon from "../../icons/DeleteIcon.svelte";
   import {
     addAlbumModalOptions,
     current_tier_list,
     showAddAlbumModal,
   } from "../../store";
-  export let tier;
+  import TierItem from "./TierItem.svelte";
 
-  import CaretUp from "../../icons/CaretUp.svelte";
-  import CaretDown from "../../icons/CaretDown.svelte";
+  export let tier;
 
   const onDragStart = (e) => {
     e.dataTransfer.setData("text", e.target.id);
@@ -88,6 +85,7 @@
 <style lang="scss">
   .tier {
     display: flex;
+    width: 100%;
   }
   .tier-label {
     font-size: 1.35rem;
@@ -101,10 +99,6 @@
     flex-grow: 2;
     display: flex;
     flex-wrap: wrap;
-
-    img {
-      max-width: 6rem;
-    }
   }
   .label-s {
     background: #f86e6e;
@@ -127,37 +121,6 @@
   .label-f {
     background: #c167eb;
   }
-
-  .item {
-    position: relative;
-    display: flex;
-  }
-
-  :global(.item button) {
-    position: absolute;
-    display: flex;
-  }
-
-  :global(.item .delete-button) {
-    top: 5%;
-    right: 5%;
-  }
-
-  :global(.item .move-up-button) {
-    top: 5%;
-    left: 5%;
-  }
-
-  :global(.item .move-down-button) {
-    bottom: 5%;
-    left: 5%;
-  }
-
-  @media screen and (min-width: 1367px) {
-    img {
-      max-width: 6vw;
-    }
-  }
 </style>
 
 <svelte:body
@@ -173,57 +136,25 @@
   on:drop={onDrop}
   on:dragover={preventDefault}
   on:dragstart={onDragStart}
-  on:dragenter={preventDefault}>
+  on:dragenter={preventDefault}
+  on:click={(e) => {
+    if (!e.target.closest('.item')) {
+      $showAddAlbumModal = true;
+      $addAlbumModalOptions = { tier };
+    }
+  }}>
   <div class="tier-label label-{tier}">{tier.toUpperCase()}</div>
-  <div
-    class="tier-content"
-    on:click={(e) => {
-      console.log(e.target);
-      if (!e.target.classList.contains('tier-content')) {
-        e.preventDefault();
-      } else {
-        $showAddAlbumModal = true;
-        $addAlbumModalOptions = { tier };
-      }
-    }}>
+  <div class="tier-content">
     {#each $current_tier_list[`tier_${tier}`] as item}
-      <div class="item" on:click={showButtons}>
-        <img
-          src={item.src || item.img_url}
-          alt={item.title}
-          title={item.title}
-          id={item.id} />
-        <div style="display: {buttonsHidden ? 'none' : 'block'}">
-          <Button
-            iconOnly
-            id="delete-{item.id}"
-            className="delete-button"
-            onClick={() => {
-              removeTierItem(tier, item.id);
-            }}
-            extraProps={{ 'data-id': item.id, 'data-tier': tier }}>
-            <DeleteIcon />
-          </Button>
-          {#if tier !== 's'}
-            <Button
-              iconOnly
-              id="move-up-{item.id}"
-              className="move-up-button"
-              onClick={() => move(item.id, 'up', tier)}>
-              <CaretUp />
-            </Button>
-          {/if}
-          {#if tier !== 'f'}
-            <Button
-              iconOnly
-              id="move-down-{item.id}"
-              className="move-down-button"
-              onClick={() => move(item.id, 'down', tier)}>
-              <CaretDown />
-            </Button>
-          {/if}
-        </div>
-      </div>
+      <TierItem
+        {item}
+        {tier}
+        on:move-item={(e) => {
+          move(e.detail.id, e.detail.dir, e.detail.tier);
+        }}
+        on:remove-tier-item={(e) => {
+          removeTierItem(e.detail.tier, e.detail.id);
+        }} />
     {/each}
   </div>
 </div>

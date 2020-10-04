@@ -7,6 +7,16 @@
   #tier-list {
     background: #000;
   }
+
+  @media screen and (max-width: 539px) {
+    #tier-list {
+      display: flex;
+      box-sizing: border-box;
+      flex-direction: column;
+      width: max-content;
+      min-width: 100%;
+    }
+  }
 </style>
 
 <div id="tier-list">
