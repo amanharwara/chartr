@@ -1,5 +1,10 @@
 <script>
-  import { currentChartTitle, screenWidth, settingsVisible } from "../store";
+  import {
+    currentChartTitle,
+    screenWidth,
+    settingsVisible,
+    showBackupRestoreModal,
+  } from "../store";
   import Button from "../shared/Button.svelte";
   import DownloadIcon from "../icons/DownloadIcon.svelte";
   import ResetIcon from "../icons/ResetIcon.svelte";
@@ -9,6 +14,7 @@
   import BugIcon from "../icons/BugIcon.svelte";
   import ChartrLogo from "../icons/ChartrLogoMark.svelte";
   import ChartrLogoText from "../icons/ChartrLogoText.svelte";
+  import RestoreIcon from "../icons/RestoreIcon.svelte";
 
   let dispatch = createEventDispatcher();
 
@@ -17,6 +23,9 @@
   const handleClick = (e) => {
     if (e.target.closest("#download-chart")) {
       dispatch("download-chart", true);
+    }
+    if (e.target.closest("#backup-restore-chart")) {
+      $showBackupRestoreModal = true;
     }
     if (e.target.closest("#reset-chart")) {
       dispatch("reset-chart", true);
@@ -81,7 +90,7 @@
     align-items: center;
     padding: 0 0.75rem;
   }
-  :global(.right > :first-child),
+  :global(.right > :not(:last-child)),
   :global(.buttons > :not(:last-child)) {
     margin-right: 0.5rem;
   }
@@ -157,6 +166,13 @@
     </Button>
     <Button label="Reset" {iconOnly} outlined={true} id="reset-chart">
       <ResetIcon />
+    </Button>
+    <Button
+      label="Backup/Restore Chart"
+      iconOnly={true}
+      outlined={true}
+      id="backup-restore-chart">
+      <RestoreIcon />
     </Button>
   </div>
 </header>

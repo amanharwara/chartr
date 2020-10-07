@@ -34,6 +34,8 @@ let screenWidth = writable(1280);
 
 let showAddAlbumModal = writable(defaults.showAddAlbumModal);
 
+let showBackupRestoreModal = writable(defaults.showBackupRestoreModal);
+
 let addAlbumModalOptions = writable({});
 
 export {
@@ -50,4 +52,5 @@ export {
   screenWidth,
   showAddAlbumModal,
   addAlbumModalOptions,
+  showBackupRestoreModal,
 };

@@ -15,6 +15,8 @@ const current_list = [];
 
 const showAddAlbumModal = false;
 
+const showBackupRestoreModal = false;
+
 const current_tier_list = {
   tier_s: [],
   tier_a: [],
@@ -66,6 +68,7 @@ const defaults = {
   searchProvider,
   lastFmOptions,
   showAddAlbumModal,
+  showBackupRestoreModal,
 };
 
 export default defaults;

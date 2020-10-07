@@ -19,6 +19,7 @@
   import SupportModal from "../shared/SupportModal.svelte";
   import { saveAs } from "file-saver";
   import defaults from "../defaults";
+  import BackupRestoreModal from "../MainView/BackupRestoreModal.svelte";
 
   if (window.location.toString().includes("authorizeSpotify")) {
     if (window.location.hash.length > 0) {
@@ -206,4 +207,5 @@
   <SupportModal
     on:close-modal={() => (supportModalVisible = false)}
     visible={supportModalVisible} />
+  <BackupRestoreModal />
 </div>
