@@ -3,6 +3,7 @@
   export let value;
   export let label;
   export let labelFor;
+  export let style = "";
 </script>
 
 <style lang="scss">
@@ -67,7 +68,7 @@
   }
 </style>
 
-<div class="chart-option {type}-option">
+<div class="chart-option {type}-option" {style}>
   {#if type === 'checkbox'}
     <input type="checkbox" id={labelFor} bind:checked={value} />
     <label for={labelFor}>{label}</label>

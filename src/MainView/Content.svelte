@@ -56,7 +56,7 @@
 
   @media screen and (min-width: 540px) and (max-width: 1024px) {
     .content {
-      grid-column: 1 / 3;
+      grid-column: 1 / 4;
     }
   }
 </style>

@@ -24,6 +24,7 @@
     "dom-to-image-more": "^2.8.0",
     "file-saver": "^2.0.2",
     "mobile-drag-drop": "^2.3.0-rc.2",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "svelte-select": "^3.12.0"
   }
 }

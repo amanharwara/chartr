@@ -3,27 +3,21 @@
   import AlbumCollageOptions from "./AlbumCollageOptions.svelte";
   import SpotifyChartOptions from "./SpotifyCharts/SpotifyChartOptions.svelte";
   import LastFmChartOptions from "./LastFmChart/LastFmChartOptions.svelte";
-  import ChartOption from "../shared/ChartOption.svelte";
+  import Select from "svelte-select";
 
-  let collapsed = false;
+  const chartStyleSelectItems = [
+    { value: "album_collage", label: "Album Collage" },
+    { value: "tier_list", label: "Tier List" },
+    { value: "spotify_top_tracks", label: "Spotify: Top Tracks" },
+    { value: "spotify_top5_artists", label: "Spotify: Top 5 Artists" },
+    { value: "lastfm_top5", label: "Last.fm Top 5" },
+  ];
 
-  const collapseIfMobile = () => {
-    if ($screenWidth < 539) {
-      collapsed = !collapsed;
-    } else {
-      collapsed = false;
-    }
-  };
+  let chartStyle = chartStyleSelectItems.find(
+    (item) => item.value === $currentChartStyle
+  );
 
-  $: {
-    if ($screenWidth < 539) {
-      collapsed = true;
-    } else {
-      collapsed = false;
-    }
-  }
-
-  collapseIfMobile();
+  $: $currentChartStyle = chartStyle.value ? chartStyle.value : chartStyle;
 </script>
 
 <style lang="scss">
@@ -43,9 +37,17 @@
     margin-bottom: 0.75rem;
   }
 
+  .chart-style-select {
+    margin-bottom: 0.75rem;
+  }
+
   @media screen and (min-width: 1367px) {
     .left-sidebar {
       padding: 0.5vw 0.75vw;
+    }
+
+    .chart-style-select {
+      margin-bottom: 0.75vw;
     }
   }
 
@@ -64,24 +66,20 @@
   }
 </style>
 
-<aside class="left-sidebar" class:collapsed>
-  <div class="heading" on:click={collapseIfMobile}>Chart Options:</div>
+<aside class="left-sidebar">
+  <div class="heading">Chart Options:</div>
 
-  <ChartOption
-    type="select"
-    label="Style:"
-    labelFor="chart-style-select"
-    bind:value={$currentChartStyle}>
-    <option slot="select" value="album_collage">Album Collage</option>
-    <option slot="select" value="tier_list">Tier List</option>
-    <option slot="select" value="spotify_top5_artists">
-      Spotify: Top 5 Artists
-    </option>
-    <option slot="select" value="spotify_top_tracks">
-      Spotify: Top Tracks
-    </option>
-    <option slot="select" value="lastfm_top5">Last.fm Top 5</option>
-  </ChartOption>
+  <div class="chart-style-select">
+    <Select
+      bind:selectedValue={chartStyle}
+      items={chartStyleSelectItems}
+      isClearable={false}
+      isSearchable={false}
+      showIndicator={true}
+      listAutoWidth={false}
+      listPlacement="bottom"
+      showChevron={true} />
+  </div>
 
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollageOptions />

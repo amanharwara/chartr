@@ -18,6 +18,13 @@ body {
   height: 100%;
 }
 
+@media screen and (max-width: 539px) {
+  html,
+  body {
+    height: auto;
+  }
+}
+
 body {
   margin: 0;
   box-sizing: border-box;
@@ -71,13 +78,38 @@ input[disabled] {
   }
 }
 
-.collapsed :not(.heading):not(.search-heading) {
-  display: none !important;
+.indicator {
+  transform: translateY(-50%);
 }
 
-.collapsed .heading::after {
-  content: "Click To Expand";
-  font-weight: 100;
+.selectContainer {
+  --padding: 0 0.5rem !important;
+  --height: 2.25rem !important;
+  --itemPadding: 0.75rem 0.5rem;
+  font-size: 0.95rem;
+  --indicatorTop: 50%;
+  --indicatorRight: 0.5rem;
+  color: #fff;
+  --background: #434a53;
+  --listBackground: #434a53;
+  --itemHoverBG: #26292e;
+  --border: 1px solid transparent;
+}
+
+.selectContainer input[readonly] {
+  display: none;
+}
+
+.selectContainer .listItem {
+  --height: 1rem;
+}
+
+.selectContainer .item {
+  cursor: pointer !important;
+}
+
+label {
   font-size: 1.1rem;
-  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  display: block;
 }

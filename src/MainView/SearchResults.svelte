@@ -1,18 +1,11 @@
 <script>
   import { screenWidth } from "../store";
+  import blobToDataUrl from "../utils/blobToDataUrl";
 
   export let results = [];
 
   const dragCover = (e) => {
     e.dataTransfer.setData("text", e.target.id);
-  };
-
-  const blobToDataUrl = (blob, callback) => {
-    let a = new FileReader();
-    a.onload = function (e) {
-      callback(e.target.result);
-    };
-    a.readAsDataURL(blob);
   };
 
   const onImgLoad = async (e) => {

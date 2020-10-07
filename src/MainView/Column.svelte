@@ -8,6 +8,7 @@
   import CaretDown from "../icons/CaretDown.svelte";
   import CaretLeft from "../icons/CaretLeft.svelte";
   import CaretRight from "../icons/CaretRight.svelte";
+  import blobToDataUrl from "../utils/blobToDataUrl";
 
   export let row_index;
   export let column_index;
@@ -18,14 +19,6 @@
   export let onDragStart;
 
   let dispatch = createEventDispatcher();
-
-  const blobToDataUrl = (blob, callback) => {
-    let a = new FileReader();
-    a.onload = function (e) {
-      callback(e.target.result);
-    };
-    a.readAsDataURL(blob);
-  };
 
   const onImgLoad = async (e) => {
     let img = e.target;

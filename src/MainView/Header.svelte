@@ -20,24 +20,6 @@
 
   let iconOnly = false;
 
-  const handleClick = (e) => {
-    if (e.target.closest("#download-chart")) {
-      dispatch("download-chart", true);
-    }
-    if (e.target.closest("#backup-restore-chart")) {
-      $showBackupRestoreModal = true;
-    }
-    if (e.target.closest("#reset-chart")) {
-      dispatch("reset-chart", true);
-    }
-    if (e.target.closest("#toggle-settings")) {
-      settingsVisible.update(() => !$settingsVisible);
-    }
-    if (e.target.closest("#toggle-support-modal")) {
-      dispatch("toggle-modal", true);
-    }
-  };
-
   $: {
     if ($screenWidth < 500) {
       iconOnly = true;
@@ -134,17 +116,29 @@
   }
 </style>
 
-<header on:click={handleClick}>
+<header>
   <div class="left">
     <div class="logo">
       <ChartrLogo />
       <ChartrLogoText />
     </div>
     <div class="buttons">
-      <Button iconOnly={true} outlined={true} id="toggle-settings">
+      <Button
+        iconOnly={true}
+        outlined={true}
+        id="toggle-settings"
+        onClick={() => {
+          settingsVisible.set(!$settingsVisible);
+        }}>
         <SettingsIcon />
       </Button>
-      <Button iconOnly={true} outlined={true} id="toggle-support-modal">
+      <Button
+        iconOnly={true}
+        outlined={true}
+        id="toggle-support-modal"
+        onClick={() => {
+          dispatch('toggle-modal', true);
+        }}>
         <SupportIcon />
       </Button>
       <Button
@@ -161,17 +155,33 @@
     <input type="text" bind:value={$currentChartTitle} />
   </div>
   <div class="right">
-    <Button label="Download" {iconOnly} id="download-chart">
+    <Button
+      label="Download"
+      {iconOnly}
+      id="download-chart"
+      onClick={() => {
+        dispatch('download-chart', true);
+      }}>
       <DownloadIcon />
     </Button>
-    <Button label="Reset" {iconOnly} outlined={true} id="reset-chart">
+    <Button
+      label="Reset"
+      {iconOnly}
+      outlined={true}
+      id="reset-chart"
+      onClick={() => {
+        dispatch('reset-chart', true);
+      }}>
       <ResetIcon />
     </Button>
     <Button
       label="Backup/Restore Chart"
       iconOnly={true}
       outlined={true}
-      id="backup-restore-chart">
+      id="backup-restore-chart"
+      onClick={() => {
+        $showBackupRestoreModal = true;
+      }}>
       <RestoreIcon />
     </Button>
   </div>

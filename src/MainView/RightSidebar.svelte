@@ -46,7 +46,7 @@
   @media screen and (min-width: 540px) and (max-width: 1024px) {
     .right-sidebar {
       grid-row: 3 / 4;
-      grid-column: 2 / 3;
+      grid-column: 2 / 4;
       max-height: 100%;
       overflow: hidden;
     }

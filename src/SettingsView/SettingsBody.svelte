@@ -97,11 +97,16 @@
     color: #fff;
     margin-bottom: 1.5rem;
 
+    input {
+      box-sizing: border-box;
+    }
+
     &.vertical {
       flex-direction: column;
 
       .info {
         margin-bottom: 0.85rem;
+        margin-right: 0;
       }
     }
 
