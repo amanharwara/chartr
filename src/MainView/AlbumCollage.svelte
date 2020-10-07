@@ -9,6 +9,17 @@
 
   const allowDrop = (e) => e.preventDefault();
 
+  if (localStorage.getItem("current_album_collage_list")) {
+    $current_list = JSON.parse(
+      localStorage.getItem("current_album_collage_list")
+    );
+  } else {
+    localStorage.setItem(
+      "current_album_collage_list",
+      JSON.stringify($current_list)
+    );
+  }
+
   $: {
     let temp_list = $current_list;
     for (
@@ -40,6 +51,10 @@
       }
     }
     current_list.set(temp_list);
+    localStorage.setItem(
+      "current_album_collage_list",
+      JSON.stringify($current_list)
+    );
   }
 
   const dropCover = (e) => {
@@ -52,12 +67,21 @@
       row_index: undefined,
       column_index: undefined,
       img: undefined,
+      element: dragged_element,
     };
     let target = {
       row_index: undefined,
       column_index: undefined,
       img: undefined,
+      element: e.target,
     };
+
+    if (
+      !dragged_element.classList.contains("empty") &&
+      dragged_element.querySelector("img")
+    ) {
+      dragged_element = dragged_element.querySelector("img");
+    }
 
     if (
       dragged_element &&

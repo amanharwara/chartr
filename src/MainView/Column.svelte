@@ -143,6 +143,11 @@
       --item-size: 20vw;
     }
   }
+  @media screen and (min-width: 1024px) {
+    .column:hover .buttons {
+      display: block;
+    }
+  }
 </style>
 
 <svelte:body
