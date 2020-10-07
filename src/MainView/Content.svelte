@@ -51,6 +51,8 @@
   @media screen and (max-width: 539px) {
     .content {
       height: 100%;
+      height: max-content;
+      max-height: max-content;
     }
   }
 
