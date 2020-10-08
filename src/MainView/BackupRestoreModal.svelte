@@ -5,38 +5,27 @@
   import Modal from "../shared/Modal.svelte";
   import {
     currentChartStyle,
-    current_list,
-    current_tier_list,
     showBackupRestoreModal,
-    currentChartTitle,
-    albumCollageOptions,
+    currentChartList,
+    currentChartId,
   } from "../store";
 
+  // @TODO: Backup/restore the whole current chart and not specific chart type
+
   const backupChart = () => {
-    let backupJSON = {
-      chart_style: $currentChartStyle,
-      chart_title: $currentChartTitle,
-    };
+    let currentIndex = $currentChartList.findIndex(
+      (chart) => chart.id === $currentChartId
+    );
 
-    switch ($currentChartStyle) {
-      case "album_collage":
-        backupJSON.chart_data = $current_list;
-        backupJSON.chart_options = $albumCollageOptions;
-        break;
-
-      case "tier_list":
-        backupJSON.chart_data = $current_tier_list;
-        break;
-
-      default:
-        break;
-    }
+    let backupJSON = $currentChartList[currentIndex];
 
     backupJSON = JSON.stringify(backupJSON);
 
     saveAs(
       new Blob([backupJSON], { type: "application/json" }),
-      `${$currentChartTitle.toLowerCase().replaceAll(/\W/g, "-")}-backup.json`
+      `${$currentChartList[currentIndex].name
+        .toLowerCase()
+        .replaceAll(/\W/g, "-")}-backup.json`
     );
   };
 
@@ -47,34 +36,22 @@
 
   const restoreFromFile = async (e) => {
     for (const file of e.target.files) {
-      let file_text = await file.text();
-      let { chart_style, chart_title, chart_data, chart_options } = JSON.parse(
-        file_text
+      let fileText = await file.text();
+      let parsedChart = JSON.parse(fileText);
+      let parsedChartIndex = $currentChartList.findIndex(
+        (chart) => chart.id === parsedChart.id
       );
 
-      $currentChartTitle = chart_title || "Untitled Chart";
-      $currentChartStyle = chart_style;
-
-      switch ($currentChartStyle) {
-        case "album_collage":
-          $current_list = chart_data;
-
-          if (chart_options) {
-            $albumCollageOptions = chart_options;
-          }
-
-          break;
-
-        case "tier_list":
-          $current_tier_list = chart_data;
-          break;
-
-        default:
-          break;
+      if (parsedChartIndex !== -1) {
+        $currentChartList[parsedChartIndex] = parsedChart;
+      } else {
+        $currentChartList = [...$currentChartList, parsedChart];
+        $currentChartId = parsedChart.id;
       }
 
       $showBackupRestoreModal = false;
     }
+    e.target.value = "";
   };
 </script>
 
@@ -102,5 +79,5 @@
     id="restore-file"
     style="display: none;"
     accept="application/json"
-    on:change={restoreFromFile} />
+    on:input={restoreFromFile} />
 </Modal>

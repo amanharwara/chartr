@@ -11,8 +11,6 @@
   export let tier;
 
   let buttonsVisible = false;
-
-  console.log(buttonsVisible);
 </script>
 
 <style lang="scss">

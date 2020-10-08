@@ -1,20 +1,24 @@
 <script>
   import {
-    currentChartTitle,
     screenWidth,
     settingsVisible,
     showBackupRestoreModal,
+    currentChartId,
+    currentChartList,
   } from "../store";
   import Button from "../shared/Button.svelte";
   import DownloadIcon from "../icons/DownloadIcon.svelte";
   import ResetIcon from "../icons/ResetIcon.svelte";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import SettingsIcon from "../icons/SettingsIcon.svelte";
   import SupportIcon from "../icons/SupportIcon.svelte";
   import BugIcon from "../icons/BugIcon.svelte";
   import ChartrLogo from "../icons/ChartrLogoMark.svelte";
   import ChartrLogoText from "../icons/ChartrLogoText.svelte";
   import RestoreIcon from "../icons/RestoreIcon.svelte";
+  import Select from "svelte-select";
+  import defaults from "../defaults";
+  import DeleteIcon from "../icons/DeleteIcon.svelte";
 
   let dispatch = createEventDispatcher();
 
@@ -27,6 +31,89 @@
       iconOnly = false;
     }
   }
+
+  if (localStorage.getItem("currentChartList")) {
+    let storedChartList = JSON.parse(localStorage.getItem("currentChartList"));
+    if (storedChartList.length > 0) {
+      $currentChartList = storedChartList;
+    }
+  }
+  if (localStorage.getItem("currentChartId")) {
+    let storedChartId = localStorage.getItem("currentChartId");
+    if (storedChartId.length > 0) {
+      $currentChartId = storedChartId;
+    }
+  }
+
+  let chartListItems = $currentChartList.map((chart) => {
+    return {
+      value: chart.id,
+      label: chart.name,
+    };
+  });
+
+  $: {
+    chartListItems = $currentChartList.map((chart) => {
+      return {
+        value: chart.id,
+        label: chart.name,
+      };
+    });
+  }
+
+  let selectedChart = chartListItems.find(
+    (chart) => chart.value === $currentChartId
+  );
+
+  $: {
+    $currentChartId = selectedChart.value.toLowerCase().replaceAll(/\W/g, "-");
+    localStorage.setItem("currentChartId", $currentChartId);
+  }
+
+  $: {
+    if (
+      $currentChartList.findIndex(
+        (chart) =>
+          chart.id === selectedChart.value.toLowerCase().replaceAll(/\W/g, "-")
+      ) === -1
+    ) {
+      $currentChartList = [
+        ...$currentChartList,
+        {
+          id: selectedChart.value.toLowerCase().replaceAll(/\W/g, "-"),
+          name: selectedChart.label,
+          albumCollageOptions: defaults.albumCollageOptions,
+          albumCollageList: defaults.currentAlbumCollageList,
+          tierList: defaults.currentTierList,
+          spotifyOptions: defaults.spotifyOptions,
+          lastFmOptions: defaults.lastFmOptions,
+        },
+      ];
+
+      localStorage.setItem(
+        "currentChartList",
+        JSON.stringify($currentChartList)
+      );
+
+      document.querySelector(".center input").blur();
+    }
+  }
+
+  $: {
+    localStorage.setItem("currentChartList", JSON.stringify($currentChartList));
+  }
+
+  onMount(() => {
+    if (!localStorage.getItem("currentChartList")) {
+      localStorage.setItem(
+        "currentChartList",
+        JSON.stringify($currentChartList)
+      );
+    }
+    if (!localStorage.getItem("currentChartId")) {
+      localStorage.setItem("currentChartId", $currentChartId);
+    }
+  });
 </script>
 
 <style lang="scss">
@@ -62,10 +149,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    :first-child {
+      margin-right: 0.75rem;
+    }
   }
-  input {
-    background: transparent;
-    text-align: center;
+  :global(.center .selectContainer) {
+    width: 25%;
+    --inputColor: #fff;
   }
   .right {
     display: flex;
@@ -93,10 +184,20 @@
     .center {
       padding: 0 1rem;
       padding-left: 0.5rem;
+      justify-content: flex-start;
+
+      :first-child {
+        display: none;
+      }
     }
-    input {
-      text-align: left;
-      width: 100%;
+    :global(.center .selectContainer) {
+      width: 75%;
+    }
+  }
+
+  @media screen and (max-width: 425px) {
+    .center {
+      max-width: 35vw;
     }
   }
 
@@ -152,7 +253,32 @@
     </div>
   </div>
   <div class="center">
-    <input type="text" bind:value={$currentChartTitle} />
+    <div>Current Chart:</div>
+    <Select
+      bind:selectedValue={selectedChart}
+      items={chartListItems}
+      isClearable={false}
+      isCreatable={true}
+      showIndicator={true}
+      listAutoWidth={false}
+      listPlacement="bottom"
+      showChevron={true} />
+    <Button
+      iconOnly={true}
+      outlined={true}
+      id="remove-current-chart"
+      label="Remove Current Chart"
+      disabled={$currentChartList.length <= 1}
+      onClick={() => {
+        if ($currentChartList.length > 1) {
+          let idToRemove = $currentChartId;
+          $currentChartId = $currentChartList[0].id;
+          selectedChart = chartListItems.find((item) => item.value === $currentChartId);
+          $currentChartList = $currentChartList.filter((chart) => chart.id !== idToRemove);
+        }
+      }}>
+      <DeleteIcon />
+    </Button>
   </div>
   <div class="right">
     <Button

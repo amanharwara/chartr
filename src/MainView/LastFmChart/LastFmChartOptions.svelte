@@ -1,6 +1,6 @@
 <script>
   import ChartOption from "../../shared/ChartOption.svelte";
-  import { lastFmOptions } from "../../store";
+  import { currentChartList, currentChartId } from "../../store";
   import Select from "svelte-select";
 
   const chartTypeItems = [
@@ -10,10 +10,16 @@
   ];
 
   let chartType = chartTypeItems.find(
-    (item) => item.value === $lastFmOptions.type
+    (item) =>
+      item.value ===
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].lastFmOptions.type
   );
 
-  $: $lastFmOptions.type = chartType.value ? chartType.value : chartType;
+  $: $currentChartList[
+    $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+  ].lastFmOptions.type = chartType.value ? chartType.value : chartType;
 
   const timeRangeItems = [
     { value: "overall", label: "Overall" },
@@ -25,10 +31,16 @@
   ];
 
   let timeRange = timeRangeItems.find(
-    (item) => item.value === $lastFmOptions.time_range
+    (item) =>
+      item.value ===
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].lastFmOptions.time_range
   );
 
-  $: $lastFmOptions.time_range = timeRange.value ? timeRange.value : timeRange;
+  $: $currentChartList[
+    $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+  ].lastFmOptions.time_range = timeRange.value ? timeRange.value : timeRange;
 </script>
 
 <style>
@@ -68,9 +80,9 @@
   type="text"
   label="Background:"
   labelFor="bg-color"
-  bind:value={$lastFmOptions.background} />
+  bind:value={$currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].lastFmOptions.background} />
 <ChartOption
   type="text"
   label="Foreground:"
   labelFor="fg-color"
-  bind:value={$lastFmOptions.foreground} />
+  bind:value={$currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].lastFmOptions.foreground} />

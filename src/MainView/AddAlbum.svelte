@@ -5,9 +5,8 @@
   import {
     addAlbumModalOptions,
     currentChartStyle,
-    current_list,
-    current_tier_list,
-    screenWidth,
+    currentChartList,
+    currentChartId,
     searchProvider,
     showAddAlbumModal,
   } from "../store";
@@ -82,14 +81,26 @@
             options.row_index !== undefined &&
             options.column_index !== undefined
           )
-            $current_list[options.row_index][options.column_index] = img;
+            $currentChartList[
+              $currentChartList.findIndex(
+                (chart) => chart.id === $currentChartId
+              )
+            ].albumCollageList[options.row_index][options.column_index] = img;
           break;
         case "tier_list":
           if (options.tier !== undefined) {
-            let tier = $current_tier_list[`tier_${options.tier}`];
+            let tier =
+              $currentChartList[
+                $currentChartList.findIndex(
+                  (chart) => chart.id === $currentChartId
+                )
+              ].tierList[`tier_${options.tier}`];
             tier = [...tier, img];
-            $current_tier_list[`tier_${options.tier}`] = tier;
-            console.log($current_tier_list);
+            $currentChartList[
+              $currentChartList.findIndex(
+                (chart) => chart.id === $currentChartId
+              )
+            ].tierList[`tier_${options.tier}`] = tier;
           }
           break;
         default:
@@ -104,7 +115,9 @@
   };
 
   const addAlbumToEmptyCollageItem = (img) => {
-    let temp_list = $current_list;
+    let temp_list = $currentChartList.find(
+      (chart) => chart.id === $currentChartId
+    ).albumCollageList;
 
     let empty_spot = {
       rowIndex: -1,
@@ -129,7 +142,9 @@
       temp_list[empty_spot.rowIndex][empty_spot.columnIndex] = img;
     }
 
-    $current_list = temp_list;
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].albumCollageList = temp_list;
   };
 </script>
 

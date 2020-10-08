@@ -1,5 +1,5 @@
 <script>
-  import { settings, spotifyOptions } from "../../store";
+  import { settings, currentChartList, currentChartId } from "../../store";
   import Button from "../../shared/Button.svelte";
   import Loader from "../../shared/Loader.svelte";
   import SpotifyIcon from "../../icons/SpotifyIcon.svelte";
@@ -27,7 +27,11 @@
       showLoader = true;
       fetch(
         `https://api.spotify.com/v1/me/top/tracks?time_range=${time_range}&limit=${
-          $spotifyOptions.tracks_style === "top_5" ? 5 : 10
+          $currentChartList[
+            $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+          ].spotifyOptions.tracks_style === "top_5"
+            ? 5
+            : 10
         }`,
         {
           headers: new Headers([
@@ -61,7 +65,11 @@
     }
   };
 
-  $: getResults($spotifyOptions.time_range);
+  $: getResults(
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].spotifyOptions.time_range
+  );
 </script>
 
 <style lang="scss">
@@ -145,21 +153,25 @@
 </style>
 
 <div
-  class="spotify-top-tracks {$spotifyOptions.tracks_style}"
+  class="spotify-top-tracks {$currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.tracks_style}"
   id="spotify-top-tracks"
-  style="background: {$spotifyOptions.background}; color: {$spotifyOptions.foreground};">
+  style="background: {$currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.background}; color: {$currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.foreground};">
   <div class="chart-heading">
     <h1>
       My
-      {#if $spotifyOptions.tracks_style === 'top_5'}Top 5{:else}Top 10{/if}
+      {#if $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.tracks_style === 'top_5'}
+        Top 5
+      {:else}Top 10{/if}
       Tracks
     </h1>
     <h4>
-      {#if $spotifyOptions.time_range === 'short_term'}
+      {#if $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.time_range === 'short_term'}
         Last 4 weeks
-      {:else if $spotifyOptions.time_range === 'medium_term'}
+      {:else if $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.time_range === 'medium_term'}
         Last 6 months
-      {:else if $spotifyOptions.time_range === 'long_term'}All Time{/if}
+      {:else if $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.time_range === 'long_term'}
+        All Time
+      {/if}
     </h4>
   </div>
   {#if showLoader}
@@ -168,7 +180,7 @@
     </div>
   {:else}
     <div class="tracks">
-      {#if $spotifyOptions.tracks_style === 'top_5'}
+      {#if $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.tracks_style === 'top_5'}
         {#each tracks as track, index}
           <TrackStyle1 {track} {index} />
         {/each}

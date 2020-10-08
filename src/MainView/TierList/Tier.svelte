@@ -1,8 +1,9 @@
 <script>
   import {
     addAlbumModalOptions,
-    current_tier_list,
     showAddAlbumModal,
+    currentChartList,
+    currentChartId,
   } from "../../store";
   import TierItem from "./TierItem.svelte";
 
@@ -20,7 +21,10 @@
 
     let tier = e.target.closest(".tier").id;
 
-    let temp_tier_list = $current_tier_list;
+    let temp_tier_list =
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].tierList;
 
     if (dragged_element && dragged_element.src) {
       temp_tier_list[tier] = [
@@ -39,7 +43,9 @@
       ].filter((item) => item.id !== dragged_element.id);
     }
 
-    $current_tier_list = temp_tier_list;
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].tierList = temp_tier_list;
   };
 
   const preventDefault = (e) => {
@@ -47,15 +53,24 @@
   };
 
   const removeTierItem = (tier, id) => {
-    let temp_tier_list = $current_tier_list;
+    let temp_tier_list =
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].tierList;
     temp_tier_list[`tier_${tier}`] = temp_tier_list[`tier_${tier}`].filter(
       (item) => item.id !== id
     );
-    $current_tier_list = temp_tier_list;
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].tierList = temp_tier_list;
   };
 
   const move = (id, direction, tier) => {
-    let tier_keys = Object.keys($current_tier_list);
+    let tier_keys = Object.keys(
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].tierList
+    );
     let current_tier_index = tier_keys.indexOf(`tier_${tier}`);
     let destination_index;
     if (direction === "up") {
@@ -64,9 +79,15 @@
       destination_index = current_tier_index + 1;
     }
     let destination_tier = tier_keys[destination_index];
-    $current_tier_list[destination_tier] = [
-      ...$current_tier_list[destination_tier],
-      $current_tier_list[`tier_${tier}`].find((item) => item.id === id),
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].tierList[destination_tier] = [
+      ...$currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].tierList[destination_tier],
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].tierList[`tier_${tier}`].find((item) => item.id === id),
     ];
     removeTierItem(tier, id);
   };
@@ -145,7 +166,7 @@
   }}>
   <div class="tier-label label-{tier}">{tier.toUpperCase()}</div>
   <div class="tier-content">
-    {#each $current_tier_list[`tier_${tier}`] as item}
+    {#each $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].tierList[`tier_${tier}`] as item}
       <TierItem
         {item}
         {tier}

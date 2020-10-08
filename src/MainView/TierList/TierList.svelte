@@ -1,22 +1,5 @@
 <script>
-  import { current_tier_list } from "../../store";
   import Tier from "./Tier.svelte";
-
-  if (localStorage.getItem("current_tier_list")) {
-    $current_tier_list = JSON.parse(localStorage.getItem("current_tier_list"));
-  } else {
-    localStorage.setItem(
-      "current_tier_list",
-      JSON.stringify($current_tier_list)
-    );
-  }
-
-  $: {
-    localStorage.setItem(
-      "current_tier_list",
-      JSON.stringify($current_tier_list)
-    );
-  }
 </script>
 
 <style lang="scss">

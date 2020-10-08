@@ -5,14 +5,11 @@
   import RightSidebar from "../MainView/RightSidebar.svelte";
   import {
     currentChartStyle,
-    currentChartTitle,
     settings,
     searchProvider,
-    current_list,
-    current_tier_list,
-    albumCollageOptions,
-    spotifyOptions,
     screenWidth,
+    currentChartList,
+    currentChartId,
   } from "../store";
   import domtoimage from "dom-to-image-more";
   import { onMount } from "svelte";
@@ -104,17 +101,38 @@
       .then((res) => {
         let blob = dataURItoBlob(res);
         console.log("using saveAs");
-        saveAs(blob, `${$currentChartTitle}.png`);
+        saveAs(
+          blob,
+          `${
+            $currentChartList.find((chart) => chart.id === $currentChartId).name
+          }.png`
+        );
       })
       .catch((err) => console.error(err));
   };
 
   const resetChart = () => {
-    $current_list = defaults.current_list;
-    $current_tier_list = defaults.current_tier_list;
-    $albumCollageOptions = defaults.albumCollageOptions;
-    $currentChartTitle = defaults.currentChartTitle;
-    $spotifyOptions = defaults.spotifyOptions;
+    let currentIndex = $currentChartList.findIndex(
+      (chart) => chart.id === $currentChartId
+    );
+    switch ($currentChartStyle) {
+      case "album_collage":
+        $currentChartList[currentIndex].albumCollageList =
+          defaults.currentAlbumCollageList;
+        $currentChartList[currentIndex].albumCollageOptions =
+          defaults.albumCollageOptions;
+        break;
+      case "tier_list":
+        $currentChartList[currentIndex].tierList = defaults.currentTierList;
+        break;
+      case "lastfm_top5":
+        $currentChartList[currentIndex].lastFmOptions = defaults.lastFmOptions;
+        break;
+      default:
+        $currentChartList[currentIndex].spotifyOptions =
+          defaults.spotifyOptions;
+        break;
+    }
   };
 
   let supportModalVisible = false;

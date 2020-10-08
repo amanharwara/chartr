@@ -1,5 +1,10 @@
 <script>
-  import { settings, lastFmOptions, settingsVisible } from "../../store";
+  import {
+    settings,
+    settingsVisible,
+    currentChartList,
+    currentChartId,
+  } from "../../store";
   import Loader from "../../shared/Loader.svelte";
   import Button from "../../shared/Button.svelte";
   import LastFmIcon from "../../icons/LastFmIcon.svelte";
@@ -45,7 +50,16 @@
     }
   };
 
-  $: getResults($lastFmOptions.time_range, $lastFmOptions.type);
+  let currentIndex = "";
+
+  $: currentIndex = $currentChartList.findIndex(
+    (chart) => chart.id === $currentChartId
+  );
+
+  $: getResults(
+    $currentChartList[currentIndex].lastFmOptions.time_range,
+    $currentChartList[currentIndex].lastFmOptions.type
+  );
 </script>
 
 <style lang="scss">
@@ -208,28 +222,30 @@
 </style>
 
 <div
-  class="lastfm-top5 {$lastFmOptions.type}"
+  class="lastfm-top5 {$currentChartList[currentIndex].lastFmOptions.type}"
   id="lastfm-top5"
-  style="background: {$lastFmOptions.background}; color: {$lastFmOptions.foreground};">
+  style="background: {$currentChartList[currentIndex].lastFmOptions.background}; color: {$currentChartList[currentIndex].lastFmOptions.foreground};">
   <div class="chart-heading">
     <h1>
       My Top 5
-      {$lastFmOptions.type
+      {$currentChartList[currentIndex].lastFmOptions.type
         .charAt(0)
-        .toLocaleUpperCase() + $lastFmOptions.type.slice(1)}
+        .toLocaleUpperCase() + $currentChartList[currentIndex].lastFmOptions.type.slice(1)}
     </h1>
     <h4>
-      {#if $lastFmOptions.time_range === 'overall'}
+      {#if $currentChartList[currentIndex].lastFmOptions.time_range === 'overall'}
         Overall
-      {:else if $lastFmOptions.time_range === '7day'}
+      {:else if $currentChartList[currentIndex].lastFmOptions.time_range === '7day'}
         Last 7 days
-      {:else if $lastFmOptions.time_range === '1month'}
+      {:else if $currentChartList[currentIndex].lastFmOptions.time_range === '1month'}
         Last 1 month
-      {:else if $lastFmOptions.time_range === '3month'}
+      {:else if $currentChartList[currentIndex].lastFmOptions.time_range === '3month'}
         Last 3 months
-      {:else if $lastFmOptions.time_range === '6month'}
+      {:else if $currentChartList[currentIndex].lastFmOptions.time_range === '6month'}
         Last 6 months
-      {:else if $lastFmOptions.time_range === '12month'}Last 12 months{/if}
+      {:else if $currentChartList[currentIndex].lastFmOptions.time_range === '12month'}
+        Last 12 months
+      {/if}
     </h4>
   </div>
   {#if showLoader}
@@ -247,7 +263,7 @@
               {:else}
                 <div
                   class="empty-img"
-                  style="background: {$lastFmOptions.background}" />
+                  style="background: {$currentChartList[currentIndex].lastFmOptions.background}" />
               {/if}
             </div>
             <div class="info">

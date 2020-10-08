@@ -3,7 +3,7 @@
   import Button from "../shared/Button.svelte";
   import { createEventDispatcher } from "svelte";
   import AddIcon from "../icons/AddIcon.svelte";
-  import { albumCollageOptions, screenWidth } from "../store";
+  import { screenWidth, currentChartList, currentChartId } from "../store";
   import CaretUp from "../icons/CaretUp.svelte";
   import CaretDown from "../icons/CaretDown.svelte";
   import CaretLeft from "../icons/CaretLeft.svelte";
@@ -197,7 +197,7 @@
           <CaretUp />
         </Button>
       {/if}
-      {#if row_index !== $albumCollageOptions.rows - 1}
+      {#if row_index !== $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].albumCollageOptions.rows - 1}
         <Button
           iconOnly
           id="move-down-{row_index}-{column_index}"
@@ -215,7 +215,7 @@
           <CaretLeft />
         </Button>
       {/if}
-      {#if column_index !== $albumCollageOptions.columns - 1}
+      {#if column_index !== $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].albumCollageOptions.columns - 1}
         <Button
           iconOnly
           id="move-right-{row_index}-{column_index}"

@@ -1,5 +1,5 @@
 <script>
-  import { spotifyOptions } from "../../store";
+  import { currentChartList, currentChartId } from "../../store";
   import ChartOption from "../../shared/ChartOption.svelte";
   import Select from "svelte-select";
   export let style;
@@ -10,10 +10,16 @@
   ];
 
   let tracksStyle = tracksStyleItems.find(
-    (item) => item.value === $spotifyOptions.tracks_style
+    (item) =>
+      item.value ===
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].spotifyOptions.tracks_style
   );
 
-  $: $spotifyOptions.tracks_style = tracksStyle.value
+  $: $currentChartList[
+    $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+  ].spotifyOptions.tracks_style = tracksStyle.value
     ? tracksStyle.value
     : tracksStyle;
 
@@ -24,10 +30,16 @@
   ];
 
   let timeRange = timeRangeItems.find(
-    (item) => item.value === $spotifyOptions.time_range
+    (item) =>
+      item.value ===
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].spotifyOptions.time_range
   );
 
-  $: $spotifyOptions.time_range = timeRange.value ? timeRange.value : timeRange;
+  $: $currentChartList[
+    $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+  ].spotifyOptions.time_range = timeRange.value ? timeRange.value : timeRange;
 </script>
 
 <style lang="scss">
@@ -54,12 +66,12 @@
   type="text"
   label="Background:"
   labelFor="bg-color"
-  bind:value={$spotifyOptions.background} />
+  bind:value={$currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.background} />
 <ChartOption
   type="text"
   label="Foreground:"
   labelFor="fg-color"
-  bind:value={$spotifyOptions.foreground} />
+  bind:value={$currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].spotifyOptions.foreground} />
 <div class="time_range_select">
   <label for="time_range">Time Range:</label>
   <Select

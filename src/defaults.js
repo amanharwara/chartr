@@ -11,23 +11,9 @@ const settings = {
   resizableLayout: false,
 };
 
-const current_list = [];
-
 const showAddAlbumModal = false;
 
 const showBackupRestoreModal = false;
-
-const current_tier_list = {
-  tier_s: [],
-  tier_a: [],
-  tier_b: [],
-  tier_c: [],
-  tier_d: [],
-  tier_e: [],
-  tier_f: [],
-};
-
-const currentChartTitle = "Untitled Chart";
 
 const albumCollageOptions = {
   showAlbumTitles: false,
@@ -56,19 +42,46 @@ const lastFmOptions = {
   type: "albums",
 };
 
+const currentChartId = "untitled-chart";
+
+const currentAlbumCollageList = [];
+
+const currentTierList = {
+  tier_s: [],
+  tier_a: [],
+  tier_b: [],
+  tier_c: [],
+  tier_d: [],
+  tier_e: [],
+  tier_f: [],
+};
+
+const currentChartList = [
+  {
+    id: "untitled-chart",
+    name: "Untitled Chart",
+    albumCollageOptions,
+    albumCollageList: currentAlbumCollageList,
+    tierList: currentTierList,
+    spotifyOptions,
+    lastFmOptions,
+  },
+];
+
 const defaults = {
   currentChartStyle,
   albumCollageOptions,
-  currentChartTitle,
   spotifyOptions,
   settingsVisible,
   settings,
-  current_list,
-  current_tier_list,
   searchProvider,
   lastFmOptions,
   showAddAlbumModal,
   showBackupRestoreModal,
+  currentAlbumCollageList,
+  currentTierList,
+  currentChartId,
+  currentChartList,
 };
 
 export default defaults;

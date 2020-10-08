@@ -5,9 +5,11 @@
 </script>
 
 <style>
-  :global(#add-album-modal) {
-    align-items: flex-start;
-    padding-top: 10vh;
+  @media screen and (max-width: 539px) {
+    :global(#add-album-modal) {
+      align-items: flex-start;
+      padding-top: 10vh;
+    }
   }
 </style>
 

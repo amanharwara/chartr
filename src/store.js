@@ -18,18 +18,6 @@ let searchProvider = writable(defaults.searchProvider);
 
 let settings = writable(defaults.settings);
 
-let current_list = writable([...defaults.current_list]);
-
-let current_tier_list = writable({ ...defaults.current_tier_list });
-
-let currentChartTitle = writable(defaults.currentChartTitle);
-
-let albumCollageOptions = writable({ ...defaults.albumCollageOptions });
-
-let spotifyOptions = writable({ ...defaults.spotifyOptions });
-
-let lastFmOptions = writable({ ...defaults.lastFmOptions });
-
 let screenWidth = writable(1280);
 
 let showAddAlbumModal = writable(defaults.showAddAlbumModal);
@@ -38,19 +26,19 @@ let showBackupRestoreModal = writable(defaults.showBackupRestoreModal);
 
 let addAlbumModalOptions = writable({});
 
+let currentChartId = writable(defaults.currentChartId);
+
+let currentChartList = writable(defaults.currentChartList);
+
 export {
   currentChartStyle,
-  albumCollageOptions,
-  currentChartTitle,
-  spotifyOptions,
   settingsVisible,
   settings,
-  current_list,
-  current_tier_list,
   searchProvider,
-  lastFmOptions,
   screenWidth,
   showAddAlbumModal,
   addAlbumModalOptions,
   showBackupRestoreModal,
+  currentChartId,
+  currentChartList,
 };

@@ -113,3 +113,11 @@ label {
   margin-bottom: 0.5rem;
   display: block;
 }
+
+.center .selectContainer {
+  margin-right: 0.75rem;
+}
+
+.center .selectContainer input:focus ~ .selectedItem {
+  visibility: hidden;
+}

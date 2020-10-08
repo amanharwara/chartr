@@ -1,37 +1,35 @@
 <script>
   import {
     addAlbumModalOptions,
-    albumCollageOptions,
-    current_list,
     showAddAlbumModal,
+    currentChartList,
+    currentChartId,
   } from "../store";
   import Column from "./Column.svelte";
 
   const allowDrop = (e) => e.preventDefault();
 
-  if (localStorage.getItem("current_album_collage_list")) {
-    $current_list = JSON.parse(
-      localStorage.getItem("current_album_collage_list")
-    );
-  } else {
-    localStorage.setItem(
-      "current_album_collage_list",
-      JSON.stringify($current_list)
-    );
-  }
-
   $: {
-    let temp_list = $current_list;
+    let temp_list = $currentChartList.find(
+      (chart) => chart.id === $currentChartId
+    ).albumCollageList;
     for (
       let row_index = 0;
-      row_index < $albumCollageOptions.rows;
+      row_index <
+      $currentChartList.find((chart) => chart.id === $currentChartId)
+        .albumCollageOptions.rows;
       row_index++
     ) {
-      if (!$current_list[row_index]) {
+      if (
+        !$currentChartList.find((chart) => chart.id === $currentChartId)
+          .albumCollageList[row_index]
+      ) {
         let row = [];
         for (
           let column_index = 0;
-          column_index < $albumCollageOptions.columns;
+          column_index <
+          $currentChartList.find((chart) => chart.id === $currentChartId)
+            .albumCollageOptions.columns;
           column_index++
         ) {
           let column = undefined;
@@ -41,7 +39,9 @@
       } else {
         for (
           let column_index = 0;
-          column_index < $albumCollageOptions.columns;
+          column_index <
+          $currentChartList.find((chart) => chart.id === $currentChartId)
+            .albumCollageOptions.columns;
           column_index++
         ) {
           if (!temp_list[row_index][column_index]) {
@@ -50,11 +50,10 @@
         }
       }
     }
-    current_list.set(temp_list);
-    localStorage.setItem(
-      "current_album_collage_list",
-      JSON.stringify($current_list)
-    );
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].albumCollageList = temp_list;
+    localStorage.setItem("currentChartList", JSON.stringify($currentChartList));
   }
 
   const dropCover = (e) => {
@@ -130,7 +129,9 @@
   };
 
   const updateCurrentListAfterDrag = (dragged, target) => {
-    let temp_list = $current_list;
+    let temp_list = $currentChartList.find(
+      (chart) => chart.id === $currentChartId
+    ).albumCollageList;
 
     if (!dragged.row_index && dragged.img) {
       console.log("Dragging search result");
@@ -182,7 +183,9 @@
       }
     }
 
-    $current_list = temp_list;
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].albumCollageList = temp_list;
   };
 
   const dragCover = (e) => {
@@ -190,14 +193,20 @@
   };
 
   const deleteColumn = (e) => {
-    let temp_list = $current_list;
+    let temp_list = $currentChartList.find(
+      (chart) => chart.id === $currentChartId
+    ).albumCollageList;
     let { row_index, column_index } = e.detail;
     temp_list[row_index][column_index] = undefined;
-    $current_list = temp_list;
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].albumCollageList = temp_list;
   };
 
   const moveColumn = (e, direction) => {
-    let temp_list = $current_list;
+    let temp_list = $currentChartList.find(
+      (chart) => chart.id === $currentChartId
+    ).albumCollageList;
 
     let { row_index, column_index } = e.detail;
 
@@ -231,8 +240,30 @@
     temp_list[destination_row][destination_column] = current_item;
     temp_list[row_index][column_index] = destination_item;
 
-    $current_list = temp_list;
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].albumCollageList = temp_list;
   };
+
+  let currentList = $currentChartList.find(
+    (chart) => chart.id === $currentChartId
+  ).albumCollageList;
+
+  let albumCollageOptions = $currentChartList.find(
+    (chart) => chart.id === $currentChartId
+  ).albumCollageOptions;
+
+  $: {
+    currentList = $currentChartList.find(
+      (chart) => chart.id === $currentChartId
+    ).albumCollageList;
+  }
+
+  $: {
+    albumCollageOptions = $currentChartList.find(
+      (chart) => chart.id === $currentChartId
+    ).albumCollageOptions;
+  }
 </script>
 
 <style lang="scss">
@@ -312,21 +343,21 @@
 
 <div
   id="album-collage"
-  style="background: {$albumCollageOptions.background}; font-family: {$albumCollageOptions.font};">
+  style="background: {albumCollageOptions.background}; font-family: {albumCollageOptions.font};">
   <div
     id="collage-container"
-    style="background: {$albumCollageOptions.background}; padding: {$albumCollageOptions.padding}px">
-    {#each { length: $albumCollageOptions.rows } as _, row_index}
+    style="background: {albumCollageOptions.background}; padding: {albumCollageOptions.padding}px">
+    {#each { length: albumCollageOptions.rows } as _, row_index}
       <div
         class="row"
-        style="margin-bottom: {$albumCollageOptions.gap}px;"
-        class:addExtraMargin={$albumCollageOptions.titlesBelowCover}>
-        {#each { length: $albumCollageOptions.columns } as _, column_index}
+        style="margin-bottom: {albumCollageOptions.gap}px;"
+        class:addExtraMargin={albumCollageOptions.titlesBelowCover}>
+        {#each { length: albumCollageOptions.columns } as _, column_index}
           <Column
             {row_index}
             {column_index}
-            current_list={$current_list}
-            gap={$albumCollageOptions.gap}
+            current_list={currentList}
+            gap={albumCollageOptions.gap}
             onDrop={dropCover}
             onDragOver={allowDrop}
             onDragStart={dragCover}
@@ -349,20 +380,20 @@
             on:delete-column={deleteColumn} />
         {/each}
       </div>
-      {#if $albumCollageOptions.showAlbumTitles && $albumCollageOptions.titlesBelowCover}
+      {#if albumCollageOptions.showAlbumTitles && albumCollageOptions.titlesBelowCover}
         <div
           class="inline-name-row"
-          style="margin-bottom: {$albumCollageOptions.gap}px;">
-          {#each { length: $albumCollageOptions.columns } as _, column_index}
+          style="margin-bottom: {albumCollageOptions.gap}px;">
+          {#each { length: albumCollageOptions.columns } as _, column_index}
             <div
               class="name"
-              contenteditable={$albumCollageOptions.allowEditTitles}
+              contenteditable={albumCollageOptions.allowEditTitles}
               on:input={(e) => {
-                $current_list[row_index][column_index].title = e.target.textContent;
+                currentList[row_index][column_index].title = e.target.textContent;
               }}
-              style="margin-right: {$albumCollageOptions.gap}px;">
-              {#if $current_list[row_index][column_index]}
-                {$current_list[row_index][column_index].title}
+              style="margin-right: {albumCollageOptions.gap}px;">
+              {#if currentList[row_index][column_index]}
+                {currentList[row_index][column_index].title}
               {/if}
             </div>
           {/each}
@@ -370,21 +401,21 @@
       {/if}
     {/each}
   </div>
-  {#if $albumCollageOptions.showAlbumTitles && !$albumCollageOptions.titlesBelowCover}
+  {#if albumCollageOptions.showAlbumTitles && !albumCollageOptions.titlesBelowCover}
     <div
       id="name-container"
-      style="background: {$albumCollageOptions.background}; color: {$albumCollageOptions.fontColor};  padding: {$albumCollageOptions.padding}px;">
-      {#each { length: $albumCollageOptions.rows } as _, row_index}
+      style="background: {albumCollageOptions.background}; color: {albumCollageOptions.fontColor};  padding: {albumCollageOptions.padding}px;">
+      {#each { length: albumCollageOptions.rows } as _, row_index}
         <div class="name-row">
-          {#each { length: $albumCollageOptions.columns } as _, column_index}
+          {#each { length: albumCollageOptions.columns } as _, column_index}
             <div
               class="name"
-              contenteditable={$albumCollageOptions.allowEditTitles}
+              contenteditable={albumCollageOptions.allowEditTitles}
               on:input={(e) => {
-                $current_list[row_index][column_index].title = e.target.textContent;
+                currentList[row_index][column_index].title = e.target.textContent;
               }}>
-              {#if $current_list[row_index] && $current_list[row_index][column_index]}
-                {$current_list[row_index][column_index].title}
+              {#if currentList[row_index] && currentList[row_index][column_index]}
+                {currentList[row_index][column_index].title}
               {/if}
             </div>
           {/each}

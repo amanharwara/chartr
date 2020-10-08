@@ -7,6 +7,7 @@
   export let onClick = () => {};
   export let extraProps = {};
   export let className = "";
+  export let disabled = false;
 </script>
 
 <style lang="scss">
@@ -29,6 +30,10 @@
       margin-left: 0.45rem;
     }
 
+    &[disabled] {
+      cursor: not-allowed;
+    }
+
     &.iconOnly .label {
       display: none;
     }
@@ -37,7 +42,7 @@
       margin-left: 0 !important;
     }
 
-    &:hover {
+    &:not([disabled]):hover {
       background: #31363d;
     }
 
@@ -45,7 +50,7 @@
       background: transparent;
       border: 1px solid #434a53;
 
-      &:hover {
+      &:not([disabled]):hover {
         background: #434a53;
       }
     }
@@ -79,6 +84,7 @@
   class:outlined
   on:click={onClick}
   title={label}
+  {disabled}
   {...extraProps}
   {id}>
   <slot />
