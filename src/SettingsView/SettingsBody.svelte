@@ -1,5 +1,6 @@
 <script>
   import BackIcon from "../icons/BackIcon.svelte";
+  import DeleteIcon from "../icons/DeleteIcon.svelte";
   import SpotifyIcon from "../icons/SpotifyIcon.svelte";
   import Button from "../shared/Button.svelte";
   import Toggle from "../shared/Toggle.svelte";
@@ -38,6 +39,11 @@
       saveToLocalStorage();
     }
   }
+
+  const clearAllData = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
 </script>
 
 <style lang="scss">
@@ -288,6 +294,20 @@
         bind:value={$settings.lastFmUsername}
         on:input={() => saveToLocalStorage()}
         style="margin-right: 0.5rem" />
+    </div>
+    <div class="setting vertical">
+      <div class="info">
+        <div class="title">Clear all stored data:</div>
+        <div class="desc">
+          Clearing all the data can sometimes help with bugs. Only do this if
+          nothing else works.
+        </div>
+      </div>
+      {#if $settings.spotifyToken.length === 0}
+        <Button label="Clear Data" onClick={clearAllData}>
+          <DeleteIcon />
+        </Button>
+      {/if}
     </div>
   </div>
 </main>
