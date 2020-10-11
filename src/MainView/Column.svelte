@@ -144,7 +144,9 @@
     }
   }
   @media screen and (min-width: 1024px) {
-    .column:hover .buttons {
+    .column:hover .buttons,
+    .column:focus .buttons,
+    .column:active .buttons {
       display: block;
     }
   }
@@ -171,6 +173,7 @@
   on:click={() => {
     buttonsVisible = true;
   }}
+  tabindex="0"
   draggable="true">
   {#if current_list[row_index] && current_list[row_index][column_index]}
     <img
