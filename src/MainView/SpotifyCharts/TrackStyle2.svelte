@@ -10,10 +10,7 @@
       return;
     } else {
       if (img && img.tagName === "IMG") {
-        let img_blob = await fetch(
-          "https://chartr-cors-proxy.herokuapp.com/" +
-            e.target.src.replace("https://", "").replace(".co/", ".co:443/")
-        );
+        let img_blob = await fetch(img.src);
         img_blob = await img_blob.blob();
         blobToDataUrl(img_blob, (data_url) => {
           if (e.target) {

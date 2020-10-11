@@ -91,8 +91,8 @@ input[disabled] {
   --indicatorRight: 0.5rem;
   color: #fff;
   --background: #434a53;
-  --listBackground: #434a53;
-  --itemHoverBG: #26292e;
+  --listBackground: #292c30;
+  --itemHoverBG: #434a53;
   --border: 1px solid transparent;
 }
 
@@ -114,8 +114,21 @@ label {
   display: block;
 }
 
-.center .selectContainer {
+.center > * {
   margin-right: 0.75rem;
+}
+
+@media screen and (max-width: 800px) {
+  .center > * {
+    margin-right: 0.5rem;
+  }
+  .center .selectContainer {
+    border-left: 0 !important;
+  }
+}
+
+.center :last-child {
+  margin-right: 0;
 }
 
 .center .selectContainer input:focus ~ .selectedItem {

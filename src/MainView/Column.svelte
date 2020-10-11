@@ -26,10 +26,17 @@
       return;
     } else {
       if (img && img.tagName === "IMG") {
-        let img_blob = await fetch(
-          "https://chartr-cors-proxy.herokuapp.com/" +
-            e.target.src.replace("https://", "").replace(".com/", ".com:443/")
-        );
+        let src = "";
+
+        if (img.src.includes("lastfm") || img.src.includes("scdn")) {
+          src = img.src;
+        } else {
+          src =
+            "https://chartr-cors-proxy.herokuapp.com/" +
+            e.target.src.replace("https://", "").replace(".com/", ".com:443/");
+        }
+
+        let img_blob = await fetch(src);
         img_blob = await img_blob.blob();
         blobToDataUrl(img_blob, (data_url) => {
           if (e.target) {
@@ -180,6 +187,7 @@
         iconOnly
         className="delete-item-button"
         id="delete-{row_index}-{column_index}"
+        label="Delete Item"
         onClick={() => {
           if (document.getElementById(`delete-${row_index}-${column_index}`).style.display !== 'none') {
             dispatch('delete-column', { row_index, column_index });
@@ -193,6 +201,7 @@
           iconOnly
           id="move-up-{row_index}-{column_index}"
           className="move-up-button"
+          label="Move Up"
           onClick={() => dispatch('move-up', { row_index, column_index })}>
           <CaretUp />
         </Button>
@@ -202,6 +211,7 @@
           iconOnly
           id="move-down-{row_index}-{column_index}"
           className="move-down-button"
+          label="Move Down"
           onClick={() => dispatch('move-down', { row_index, column_index })}>
           <CaretDown />
         </Button>
@@ -211,6 +221,7 @@
           iconOnly
           id="move-left-{row_index}-{column_index}"
           className="move-left-button"
+          label="Move Left"
           onClick={() => dispatch('move-left', { row_index, column_index })}>
           <CaretLeft />
         </Button>
@@ -220,6 +231,7 @@
           iconOnly
           id="move-right-{row_index}-{column_index}"
           className="move-right-button"
+          label="Move Right"
           onClick={() => dispatch('move-right', { row_index, column_index })}>
           <CaretRight />
         </Button>

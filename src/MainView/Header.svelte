@@ -19,10 +19,14 @@
   import Select from "svelte-select";
   import defaults from "../defaults";
   import DeleteIcon from "../icons/DeleteIcon.svelte";
+  import EditIcon from "../icons/EditIcon.svelte";
+  import CloseIcon from "../icons/CloseIcon.svelte";
 
   let dispatch = createEventDispatcher();
 
   let iconOnly = false;
+
+  let editingCurrentTitle = false;
 
   $: {
     if ($screenWidth < 500) {
@@ -76,13 +80,19 @@
       $currentChartList.findIndex(
         (chart) =>
           chart.id === selectedChart.value.toLowerCase().replaceAll(/\W/g, "-")
-      ) === -1
+      ) === -1 &&
+      !editingCurrentTitle
     ) {
+      let newChart = {
+        id: selectedChart.value.toLowerCase().replaceAll(/\W/g, "-"),
+        name: selectedChart.label,
+      };
+
       $currentChartList = [
         ...$currentChartList,
         {
-          id: selectedChart.value.toLowerCase().replaceAll(/\W/g, "-"),
-          name: selectedChart.label,
+          id: newChart.id,
+          name: newChart.name,
           albumCollageOptions: defaults.albumCollageOptions,
           albumCollageList: defaults.currentAlbumCollageList,
           tierList: defaults.currentTierList,
@@ -90,6 +100,11 @@
           lastFmOptions: defaults.lastFmOptions,
         },
       ];
+
+      selectedChart = {
+        value: newChart.id,
+        label: newChart.name,
+      };
 
       localStorage.setItem(
         "currentChartList",
@@ -152,10 +167,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    :first-child {
-      margin-right: 0.75rem;
-    }
   }
   :global(.center .selectContainer) {
     width: 25%;
@@ -177,30 +188,28 @@
 
   @media screen and (max-width: 800px) {
     header {
-      grid-template-columns: 1fr 0.25fr;
-      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
       box-sizing: border-box;
     }
     .left {
       grid-column: 1 / 3;
     }
     .center {
-      padding: 0 1rem;
-      padding-left: 0.5rem;
+      padding: 0 0.75rem;
       justify-content: flex-start;
+      grid-row: 2 / 3;
 
       :first-child {
         display: none;
       }
     }
+    .right {
+      justify-content: flex-end;
+      grid-row: 3 / 4;
+    }
     :global(.center .selectContainer) {
       width: 75%;
-    }
-  }
-
-  @media screen and (max-width: 425px) {
-    .center {
-      max-width: 35vw;
     }
   }
 
@@ -257,15 +266,57 @@
   </div>
   <div class="center">
     <div>Current Chart:</div>
-    <Select
-      bind:selectedValue={selectedChart}
-      items={chartListItems}
-      isClearable={false}
-      isCreatable={true}
-      showIndicator={true}
-      listAutoWidth={false}
-      listPlacement="bottom"
-      showChevron={true} />
+    {#if !editingCurrentTitle}
+      <Select
+        bind:selectedValue={selectedChart}
+        items={chartListItems}
+        isClearable={false}
+        isCreatable={true}
+        showIndicator={true}
+        listAutoWidth={false}
+        listPlacement="bottom"
+        showChevron={true} />
+    {:else}
+      <input
+        type="text"
+        id="current-title"
+        value={selectedChart.label}
+        on:keydown={(e) => {
+          if (e.key === 'Enter') {
+            let id = e.target.value.toLowerCase().replaceAll(/\W/g, '-');
+            let name = e.target.value;
+
+            let prevChartId = $currentChartId;
+
+            selectedChart = { value: id, label: name };
+
+            let currentChart = $currentChartList[$currentChartList.findIndex((chart) => chart.id === prevChartId)];
+            $currentChartList[$currentChartList.findIndex((chart) => chart.id === prevChartId)] = { ...currentChart, id, name };
+
+            editingCurrentTitle = false;
+          }
+        }} />
+    {/if}
+    <Button
+      iconOnly={true}
+      outlined={true}
+      id="edit-chart-title"
+      label="Edit Current Chart Title"
+      onClick={() => {
+        editingCurrentTitle = !editingCurrentTitle;
+
+        setTimeout(() => {
+          if (document.getElementById('current-title')) {
+            document.getElementById('current-title').focus();
+          }
+        }, 1);
+      }}>
+      {#if editingCurrentTitle}
+        <CloseIcon />
+      {:else}
+        <EditIcon />
+      {/if}
+    </Button>
     <Button
       iconOnly={true}
       outlined={true}

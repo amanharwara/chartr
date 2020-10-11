@@ -1,5 +1,5 @@
 <script>
-  import { currentChartStyle, screenWidth, showAddAlbumModal } from "../store";
+  import { currentChartStyle, screenWidth } from "../store";
   import AlbumCollage from "./AlbumCollage.svelte";
   import LastFmChart from "./LastFmChart/LastFmChart.svelte";
   import SpotifyTop5Artists from "./SpotifyCharts/SpotifyTop5Artists.svelte";
