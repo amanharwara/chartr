@@ -38,6 +38,7 @@
       $currentChartList = storedChartList;
     }
   }
+
   if (localStorage.getItem("currentChartId")) {
     let storedChartId = localStorage.getItem("currentChartId");
     if (storedChartId.length > 0) {
@@ -96,6 +97,8 @@
       );
 
       document.querySelector(".center input").blur();
+
+      $currentChartList = JSON.parse(localStorage.getItem("currentChartList"));
     }
   }
 
