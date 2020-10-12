@@ -48,6 +48,15 @@
     }
   }
 
+  .album-collage-hotkeys {
+    margin-top: 0.75vw;
+
+    span:last-child {
+      display: inline-block;
+      margin-top: 0.5vw;
+    }
+  }
+
   @media screen and (max-width: 539px) {
     .content {
       height: 100%;
@@ -66,6 +75,31 @@
 <main class="content" class:center_content>
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollage />
+    {#if $screenWidth > 539}
+      <div class="album-collage-hotkeys">
+        <span>Use
+          <kbd>↑</kbd>
+          /
+          <kbd>↓</kbd>
+          /
+          <kbd>←</kbd>
+          /
+          <kbd>→</kbd>
+          to select any item.</span>
+        <span>Use
+          <kbd>Ctrl</kbd>+
+          <kbd>↑</kbd>
+          /
+          <kbd>↓</kbd>
+          /
+          <kbd>←</kbd>
+          /
+          <kbd>→</kbd>
+          to move any selected item.</span>
+        <br />
+        <span>Use <kbd>Del</kbd> to delete any selected item.</span>
+      </div>
+    {/if}
   {:else if $currentChartStyle === 'tier_list'}
     {#if $screenWidth < 539}
       <div style="margin-bottom: 0.5rem">

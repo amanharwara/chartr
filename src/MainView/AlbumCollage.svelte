@@ -243,6 +243,13 @@
     $currentChartList[
       $currentChartList.findIndex((chart) => chart.id === $currentChartId)
     ].albumCollageList = temp_list;
+
+    setTimeout(() => {
+      document.getElementById("album-collage").click();
+      document
+        .getElementById(`column-${destination_row}-${destination_column}`)
+        .focus();
+    }, 1);
   };
 
   let currentList = $currentChartList.find(
@@ -341,9 +348,67 @@
   }
 </style>
 
+<svelte:body
+  on:keydown={(e) => {
+    let activeElement = document.activeElement;
+    console.log(activeElement.tagName);
+    if (document.getElementById('album-collage') && activeElement.tagName !== 'INPUT' && !document.querySelector('.listContainer')) {
+      if (e.key.includes('Arrow') && !e.ctrlKey && !activeElement.classList.contains('column')) {
+        if (document.querySelector('.column')) document
+            .querySelector('.column')
+            .focus();
+        activeElement = document.activeElement;
+      }
+    }
+  }} />
+
 <div
   id="album-collage"
-  style="background: {albumCollageOptions.background}; font-family: {albumCollageOptions.font};">
+  style="background: {albumCollageOptions.background}; font-family: {albumCollageOptions.font};"
+  tabindex="0"
+  on:keydown={(e) => {
+    let activeElement = document.activeElement;
+
+    if (document.getElementById('album-collage')) {
+      if (e.key.includes('Arrow') && !activeElement.classList.contains('column')) {
+        if (document.querySelector('.column')) document
+            .querySelector('.column')
+            .focus();
+        activeElement = document.activeElement;
+      }
+
+      if (activeElement.classList.contains('column')) {
+        let row_index = parseInt(activeElement.dataset.row_index);
+        let column_index = parseInt(activeElement.dataset.column_index);
+
+        if (e.key === 'ArrowUp' && row_index !== 0) {
+          document.getElementById('album-collage').click();
+          document
+            .getElementById(`column-${row_index - 1}-${column_index}`)
+            .focus();
+        }
+        if (e.key === 'ArrowDown' && row_index !== currentList.length - 1) {
+          document.getElementById('album-collage').click();
+          console.log(row_index + 1, column_index);
+          document
+            .getElementById(`column-${row_index + 1}-${column_index}`)
+            .focus();
+        }
+        if (e.key === 'ArrowLeft' && column_index !== 0) {
+          document.getElementById('album-collage').click();
+          document
+            .getElementById(`column-${row_index}-${column_index - 1}`)
+            .focus();
+        }
+        if (e.key === 'ArrowRight' && column_index !== currentList[0].length - 1) {
+          document.getElementById('album-collage').click();
+          document
+            .getElementById(`column-${row_index}-${column_index + 1}`)
+            .focus();
+        }
+      }
+    }
+  }}>
   <div
     id="collage-container"
     style="background: {albumCollageOptions.background}; padding: {albumCollageOptions.padding}px">

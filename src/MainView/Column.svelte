@@ -72,6 +72,10 @@
     &:last-child {
       margin-right: 0 !important;
     }
+
+    &:focus {
+      outline: 2px solid #155ab6;
+    }
   }
   .empty {
     background: #fff;
@@ -144,9 +148,7 @@
     }
   }
   @media screen and (min-width: 1024px) {
-    .column:hover .buttons,
-    .column:focus .buttons,
-    .column:active .buttons {
+    .column:hover .buttons {
       display: block;
     }
   }
@@ -172,6 +174,27 @@
   class:empty={current_list[row_index][column_index] === undefined}
   on:click={() => {
     buttonsVisible = true;
+  }}
+  on:keydown={(e) => {
+    if (e.key === 'Delete') {
+      dispatch('delete-column', { row_index, column_index });
+    }
+
+    if (e.ctrlKey && e.key === 'ArrowUp' && row_index !== 0) {
+      dispatch('move-up', { row_index, column_index });
+    }
+
+    if (e.ctrlKey && e.key === 'ArrowDown' && row_index !== current_list.length - 1) {
+      dispatch('move-down', { row_index, column_index });
+    }
+
+    if (e.ctrlKey && e.key === 'ArrowLeft' && column_index !== 0) {
+      dispatch('move-left', { row_index, column_index });
+    }
+
+    if (e.ctrlKey && e.key === 'ArrowRight' && column_index !== current_list[0].length - 1) {
+      dispatch('move-right', { row_index, column_index });
+    }
   }}
   tabindex="0"
   draggable="true">
