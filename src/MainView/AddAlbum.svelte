@@ -186,6 +186,9 @@
   {#if showLoader}
     <Loader />
   {:else}
-    <SearchResults results={currentSearchResults} on:click={onClickResult} />
+    <SearchResults
+      results={currentSearchResults}
+      on:click={onClickResult}
+      on:enter={(e) => onClickResult(e.detail)} />
   {/if}
 </div>

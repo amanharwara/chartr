@@ -82,6 +82,26 @@
         );
       }
     }
+
+    if (localStorage && localStorage.getItem("currentChartList")) {
+      let chartList = JSON.parse(localStorage.getItem("currentChartList"));
+      chartList.forEach((chart, index) => {
+        let collageOptions = chart.albumCollageOptions;
+        Object.keys(defaults.albumCollageOptions).forEach((option) => {
+          if (!collageOptions[option]) {
+            if ($currentChartList[index].albumCollageOptions[option]) {
+              collageOptions[option] =
+                $currentChartList[index].albumCollageOptions[option];
+            } else {
+              collageOptions[option] = defaults.albumCollageOptions[option];
+            }
+          }
+        });
+        $currentChartList[index].albumCollageOptions = collageOptions;
+      });
+    } else {
+      localStorage.setItem("currentChartList", $currentChartList);
+    }
   };
 
   onMount(() => {
@@ -185,7 +205,12 @@
 
 <svelte:window
   on:resize={() => {
-    $screenWidth = document.documentElement.clientWidth;
+    let width = document.documentElement.clientWidth;
+    if (width < 539) {
+      $screenWidth = width;
+    } else if (width < 1280) {
+      $screenWidth = width;
+    }
   }} />
 
 <div class="main-view">

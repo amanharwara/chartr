@@ -4,6 +4,9 @@
   export let label;
   export let labelFor;
   export let style = "";
+  export let onInput = undefined;
+  export let onBlur = undefined;
+  export let bindValue = true;
 </script>
 
 <style lang="scss">
@@ -84,7 +87,21 @@
         <slot name="select" />
       </select>
     {:else if type === 'text'}
-      <input type="text" id={labelFor} bind:value />
+      {#if bindValue}
+        <input
+          type="text"
+          id={labelFor}
+          bind:value
+          on:input={onInput}
+          on:blur={onBlur} />
+      {:else}
+        <input
+          type="text"
+          id={labelFor}
+          value
+          on:input={onInput}
+          on:blur={onBlur} />
+      {/if}
     {/if}
   {/if}
 </div>

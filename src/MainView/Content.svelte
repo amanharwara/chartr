@@ -49,7 +49,7 @@
   }
 
   .album-collage-hotkeys {
-    margin-top: 0.75vw;
+    margin: 1vw 0;
 
     span:last-child {
       display: inline-block;

@@ -5,6 +5,7 @@
     currentChartList,
     currentChartId,
   } from "../store";
+  import isValidURL from "../utils/isValidURL";
   import Column from "./Column.svelte";
 
   const allowDrop = (e) => e.preventDefault();
@@ -364,7 +365,7 @@
 
 <div
   id="album-collage"
-  style="background: {albumCollageOptions.background}; font-family: {albumCollageOptions.font};"
+  style="background: {isValidURL(albumCollageOptions.background) ? `url(${albumCollageOptions.background})` : albumCollageOptions.background}; font-family: {albumCollageOptions.font};"
   tabindex="0"
   on:keydown={(e) => {
     let activeElement = document.activeElement;
@@ -380,7 +381,6 @@
       if (activeElement.classList.contains('column')) {
         let row_index = parseInt(activeElement.dataset.row_index);
         let column_index = parseInt(activeElement.dataset.column_index);
-
         if (e.key === 'ArrowUp' && row_index !== 0) {
           document.getElementById('album-collage').click();
           document
@@ -411,7 +411,7 @@
   }}>
   <div
     id="collage-container"
-    style="background: {albumCollageOptions.background}; padding: {albumCollageOptions.padding}px">
+    style="background: transparent; padding: {albumCollageOptions.padding}px">
     {#each { length: albumCollageOptions.rows } as _, row_index}
       <div
         class="row"
@@ -448,7 +448,7 @@
       {#if albumCollageOptions.showAlbumTitles && albumCollageOptions.titlesBelowCover}
         <div
           class="inline-name-row"
-          style="margin-bottom: {albumCollageOptions.gap}px;">
+          style="margin-bottom: {albumCollageOptions.gap}px; color: {albumCollageOptions.fontColor}">
           {#each { length: albumCollageOptions.columns } as _, column_index}
             <div
               class="name"
@@ -469,7 +469,7 @@
   {#if albumCollageOptions.showAlbumTitles && !albumCollageOptions.titlesBelowCover}
     <div
       id="name-container"
-      style="background: {albumCollageOptions.background}; color: {albumCollageOptions.fontColor};  padding: {albumCollageOptions.padding}px;">
+      style="background: transparent; color: {albumCollageOptions.fontColor};  padding: {albumCollageOptions.padding}px;">
       {#each { length: albumCollageOptions.rows } as _, row_index}
         <div class="name-row">
           {#each { length: albumCollageOptions.columns } as _, column_index}

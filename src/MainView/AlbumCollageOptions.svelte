@@ -43,7 +43,7 @@
   bind:value={$currentChartList[currentIndex].albumCollageOptions.font} />
 <ChartOption
   type="text"
-  label="Background Color:"
+  label="Background Color / URL:"
   labelFor="bg-color"
   bind:value={$currentChartList[currentIndex].albumCollageOptions.background} />
 <ChartOption

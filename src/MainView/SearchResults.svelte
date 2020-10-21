@@ -1,4 +1,7 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
   import { screenWidth } from "../store";
   import blobToDataUrl from "../utils/blobToDataUrl";
 
@@ -119,7 +122,13 @@
           draggable="true"
           on:click
           on:dragstart={dragCover}
-          on:load={onImgLoad} />
+          on:load={onImgLoad}
+          tabindex="0"
+          on:keydown={(e) => {
+            if (e.key === 'Enter') {
+              dispatch('enter', e);
+            }
+          }} />
       {/if}
     {:else if $screenWidth > 539}
       <div
