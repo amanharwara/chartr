@@ -1,17 +1,6 @@
 <script>
   import AddAlbum from "./AddAlbum.svelte";
-  import { currentChartStyle, screenWidth } from "../store";
-  import AddAlbumModal from "./AddAlbumModal.svelte";
-
-  let hidden = false;
-
-  $: {
-    if ($screenWidth < 539) {
-      hidden = true;
-    } else {
-      hidden = false;
-    }
-  }
+  import { currentChartStyle } from "../store";
 </script>
 
 <style lang="scss">
@@ -22,18 +11,16 @@
     grid-column: 3 / 4;
     padding: 0.5rem 0.75rem;
   }
+
   p {
     text-align: center;
-  }
-
-  .hidden {
-    display: none;
   }
 
   @media screen and (max-width: 539px) {
     .right-sidebar {
       grid-column: auto;
       grid-row: 4 / 5;
+      display: none;
     }
   }
 
@@ -53,7 +40,7 @@
   }
 </style>
 
-<aside class="right-sidebar" class:hidden>
+<aside class="right-sidebar">
   {#if $currentChartStyle === 'album_collage' || $currentChartStyle === 'tier_list'}
     <AddAlbum />
   {:else}

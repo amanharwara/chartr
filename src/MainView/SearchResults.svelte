@@ -2,7 +2,6 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
-  import { screenWidth } from "../store";
   import blobToDataUrl from "../utils/blobToDataUrl";
 
   export let results = [];
@@ -71,7 +70,7 @@
     background: #fff;
   }
 
-  @media screen and (max-width: 425px) {
+  @media screen and (max-width: 539px) {
     .search-results {
       gap: 0.5rem;
       max-height: 65vh;
@@ -82,6 +81,10 @@
       box-sizing: border-box;
       width: 28vw;
       height: 28vw;
+    }
+
+    .empty {
+      display: none;
     }
   }
 
@@ -130,7 +133,7 @@
             }
           }} />
       {/if}
-    {:else if $screenWidth > 539}
+    {:else}
       <div
         class="search-result empty"
         draggable="true"

@@ -1,5 +1,5 @@
 <script>
-  import { currentChartStyle, screenWidth } from "../store";
+  import { currentChartStyle } from "../store";
   import AlbumCollage from "./AlbumCollage.svelte";
   import LastFmChart from "./LastFmChart/LastFmChart.svelte";
   import SpotifyTop5Artists from "./SpotifyCharts/SpotifyTop5Artists.svelte";
@@ -57,11 +57,21 @@
     }
   }
 
+  .tier-list-message {
+    display: none;
+  }
+
   @media screen and (max-width: 539px) {
     .content {
       height: 100%;
       height: max-content;
       max-height: max-content;
+    }
+    .tier-list-message {
+      display: block;
+    }
+    .album-collage-hotkeys {
+      display: none;
     }
   }
 
@@ -75,37 +85,33 @@
 <main class="content" class:center_content>
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollage />
-    {#if $screenWidth > 539}
-      <div class="album-collage-hotkeys">
-        <span>Use
-          <kbd>↑</kbd>
-          /
-          <kbd>↓</kbd>
-          /
-          <kbd>←</kbd>
-          /
-          <kbd>→</kbd>
-          to select any item.</span>
-        <span>Use
-          <kbd>Ctrl</kbd>+
-          <kbd>↑</kbd>
-          /
-          <kbd>↓</kbd>
-          /
-          <kbd>←</kbd>
-          /
-          <kbd>→</kbd>
-          to move any selected item.</span>
-        <br />
-        <span>Use <kbd>Del</kbd> to delete any selected item.</span>
-      </div>
-    {/if}
+    <div class="album-collage-hotkeys">
+      <span>Use
+        <kbd>↑</kbd>
+        /
+        <kbd>↓</kbd>
+        /
+        <kbd>←</kbd>
+        /
+        <kbd>→</kbd>
+        to select any item.</span>
+      <span>Use
+        <kbd>Ctrl</kbd>+
+        <kbd>↑</kbd>
+        /
+        <kbd>↓</kbd>
+        /
+        <kbd>←</kbd>
+        /
+        <kbd>→</kbd>
+        to move any selected item.</span>
+      <br />
+      <span>Use <kbd>Del</kbd> to delete any selected item.</span>
+    </div>
   {:else if $currentChartStyle === 'tier_list'}
-    {#if $screenWidth < 539}
-      <div style="margin-bottom: 0.5rem">
-        You can click on any tier letter or empty space to add an album.
-      </div>
-    {/if}
+    <div class="tier-list-message" style="margin-bottom: 0.5rem">
+      You can click on any tier letter or empty space to add an album.
+    </div>
     <TierList />
   {:else if $currentChartStyle === 'spotify_top5_artists'}
     <SpotifyTop5Artists />
@@ -115,7 +121,4 @@
     <LastFmChart />
   {/if}
 </main>
-
-{#if $screenWidth < 539}
-  <AddAlbumModal />
-{/if}
+<AddAlbumModal />
