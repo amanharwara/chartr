@@ -278,7 +278,6 @@
   #album-collage {
     display: inline-flex;
     width: max-content;
-    max-width: 70vw;
   }
   #name-container {
     background: #000;
@@ -352,7 +351,6 @@
 <svelte:body
   on:keydown={(e) => {
     let activeElement = document.activeElement;
-    console.log(activeElement.tagName);
     if (document.getElementById('album-collage') && activeElement.tagName !== 'INPUT' && !document.querySelector('.listContainer')) {
       if (e.key.includes('Arrow') && !e.ctrlKey && !activeElement.classList.contains('column')) {
         if (document.querySelector('.column')) document
