@@ -1,9 +1,14 @@
 <script>
   import DeleteIcon from "../icons/DeleteIcon.svelte";
   import Button from "../shared/Button.svelte";
-  import { createEventDispatcher } from "svelte";
+  import { beforeUpdate, createEventDispatcher } from "svelte";
   import AddIcon from "../icons/AddIcon.svelte";
-  import { screenWidth, currentChartList, currentChartId } from "../store";
+  import {
+    screenWidth,
+    currentChartList,
+    currentChartId,
+    currentChartStyle,
+  } from "../store";
   import CaretUp from "../icons/CaretUp.svelte";
   import CaretDown from "../icons/CaretDown.svelte";
   import CaretLeft from "../icons/CaretLeft.svelte";
@@ -17,6 +22,8 @@
   export let onDrop;
   export let onDragOver;
   export let onDragStart;
+
+  let draggable = true;
 
   let dispatch = createEventDispatcher();
 
@@ -49,9 +56,19 @@
     }
   };
 
-  const onDragEnter = (e) => {
+  let onDragEnter = (e) => {
     e.preventDefault();
   };
+
+  $: {
+    if ($currentChartStyle === "lastfm_collage") {
+      onDragEnter = undefined;
+      onDrop = undefined;
+      onDragOver = undefined;
+      onDragStart = undefined;
+      draggable = false;
+    }
+  }
 
   let buttonsVisible = false;
 </script>
@@ -197,7 +214,7 @@
     }
   }}
   tabindex="0"
-  draggable="true">
+  {draggable}>
   {#if current_list[row_index] && current_list[row_index][column_index]}
     <img
       src={current_list[row_index][column_index].img_url}
@@ -205,7 +222,7 @@
       data-artist={current_list[row_index][column_index].artist}
       data-album={current_list[row_index][column_index].album}
       id={current_list[row_index][column_index].id}
-      draggable="true"
+      {draggable}
       on:dragstart={onDragStart}
       on:load={onImgLoad} />
     <div class="buttons" class:visible={buttonsVisible}>

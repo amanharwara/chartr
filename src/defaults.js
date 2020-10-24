@@ -56,12 +56,28 @@ const currentTierList = {
   tier_f: [],
 };
 
+const lastfmCollageOptions = {
+  showAlbumTitles: false,
+  titlesBelowCover: false,
+  allowEditTitles: false,
+  rows: 3,
+  columns: 3,
+  background: "#000",
+  font: "Inter",
+  gap: 5,
+  padding: 7,
+  fontColor: "#fff",
+  time_range: "overall",
+};
+
 const currentChartList = [
   {
     id: "untitled-chart",
     name: "Untitled Chart",
     albumCollageOptions,
     albumCollageList: currentAlbumCollageList,
+    lastfmCollageList: [],
+    lastfmCollageOptions,
     tierList: currentTierList,
     spotifyOptions,
     lastFmOptions,
@@ -76,6 +92,7 @@ const defaults = {
   settings,
   searchProvider,
   lastFmOptions,
+  lastfmCollageOptions,
   showAddAlbumModal,
   showBackupRestoreModal,
   currentAlbumCollageList,

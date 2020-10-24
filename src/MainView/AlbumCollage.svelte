@@ -1,9 +1,15 @@
 <script>
+  import LastFmIcon from "../icons/LastFmIcon.svelte";
+  import Button from "../shared/Button.svelte";
+  import Loader from "../shared/Loader.svelte";
   import {
     addAlbumModalOptions,
     showAddAlbumModal,
     currentChartList,
     currentChartId,
+    currentChartStyle,
+    settings,
+    settingsVisible,
   } from "../store";
   import isValidURL from "../utils/isValidURL";
   import Column from "./Column.svelte";
@@ -11,49 +17,47 @@
   const allowDrop = (e) => e.preventDefault();
 
   $: {
-    let temp_list = $currentChartList.find(
+    let current_chart = $currentChartList.find(
       (chart) => chart.id === $currentChartId
-    ).albumCollageList;
-    for (
-      let row_index = 0;
-      row_index <
-      $currentChartList.find((chart) => chart.id === $currentChartId)
-        .albumCollageOptions.rows;
-      row_index++
-    ) {
-      if (
-        !$currentChartList.find((chart) => chart.id === $currentChartId)
-          .albumCollageList[row_index]
-      ) {
+    );
+    let collageList, rows, columns;
+    switch ($currentChartStyle) {
+      case "lastfm_collage":
+        collageList = current_chart.lastfmCollageList;
+        rows = current_chart.lastfmCollageOptions.rows;
+        columns = current_chart.lastfmCollageOptions.columns;
+        break;
+      default:
+        collageList = current_chart.albumCollageList;
+        rows = current_chart.albumCollageOptions.rows;
+        columns = current_chart.albumCollageOptions.columns;
+        break;
+    }
+    let temp_list = collageList;
+    for (let row_index = 0; row_index < rows; row_index++) {
+      if (!collageList[row_index]) {
         let row = [];
-        for (
-          let column_index = 0;
-          column_index <
-          $currentChartList.find((chart) => chart.id === $currentChartId)
-            .albumCollageOptions.columns;
-          column_index++
-        ) {
+        for (let column_index = 0; column_index < columns; column_index++) {
           let column = undefined;
           row.push(column);
         }
         temp_list.push(row);
       } else {
-        for (
-          let column_index = 0;
-          column_index <
-          $currentChartList.find((chart) => chart.id === $currentChartId)
-            .albumCollageOptions.columns;
-          column_index++
-        ) {
+        for (let column_index = 0; column_index < columns; column_index++) {
           if (!temp_list[row_index][column_index]) {
             temp_list[row_index][column_index] = undefined;
           }
         }
       }
     }
-    $currentChartList[
-      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
-    ].albumCollageList = temp_list;
+    switch ($currentChartStyle) {
+      case "lastfm_collage":
+        current_chart.lastfmCollageList = temp_list;
+        break;
+      default:
+        current_chart.albumCollageList = temp_list;
+        break;
+    }
     localStorage.setItem("currentChartList", JSON.stringify($currentChartList));
   }
 
@@ -253,31 +257,180 @@
     }, 1);
   };
 
-  let currentList = $currentChartList.find(
-    (chart) => chart.id === $currentChartId
-  ).albumCollageList;
+  let currentList;
+  let albumCollageOptions;
 
-  let albumCollageOptions = $currentChartList.find(
-    (chart) => chart.id === $currentChartId
-  ).albumCollageOptions;
-
-  $: {
-    currentList = $currentChartList.find(
-      (chart) => chart.id === $currentChartId
-    ).albumCollageList;
+  switch ($currentChartStyle) {
+    case "lastfm_collage":
+      currentList = $currentChartList.find(
+        (chart) => chart.id === $currentChartId
+      ).lastfmCollageList;
+      albumCollageOptions = $currentChartList.find(
+        (chart) => chart.id === $currentChartId
+      ).lastfmCollageOptions;
+      break;
+    default:
+      currentList = $currentChartList.find(
+        (chart) => chart.id === $currentChartId
+      ).albumCollageList;
+      albumCollageOptions = $currentChartList.find(
+        (chart) => chart.id === $currentChartId
+      ).albumCollageOptions;
+      break;
   }
 
   $: {
-    albumCollageOptions = $currentChartList.find(
-      (chart) => chart.id === $currentChartId
-    ).albumCollageOptions;
+    switch ($currentChartStyle) {
+      case "lastfm_collage":
+        currentList = $currentChartList.find(
+          (chart) => chart.id === $currentChartId
+        ).lastfmCollageList;
+        albumCollageOptions = $currentChartList.find(
+          (chart) => chart.id === $currentChartId
+        ).lastfmCollageOptions;
+        break;
+      default:
+        currentList = $currentChartList.find(
+          (chart) => chart.id === $currentChartId
+        ).albumCollageList;
+        albumCollageOptions = $currentChartList.find(
+          (chart) => chart.id === $currentChartId
+        ).albumCollageOptions;
+        break;
+    }
+  }
+
+  let askForReAuth = false;
+  let reAuthReason = null;
+  let showLoader = false;
+  let lastFmItems;
+
+  const getResults = (time_range, username) => {
+    if (username && username.length > 0) {
+      showLoader = true;
+      fetch(
+        `https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&limit=50&period=${time_range}&user=${
+          username ? username : ""
+        }&api_key=LASTFM_KEY&format=json`
+      )
+        .then((res) => res.json())
+        .then((results) => {
+          if (results.error) {
+            askForReAuth = true;
+            reAuthReason = results.message + ".";
+            showLoader = false;
+          } else if (results[`topalbums`]) {
+            let items = results[`topalbums`][`album`];
+            lastFmItems = items.map((item) => {
+              let img_url = item.image[3]["#text"];
+              return {
+                artist: item.artist.name,
+                album: item.name,
+                title: `${item.artist.name} - ${item.name}`,
+                id: `col-${Math.random() * 10 + Math.random()}-${
+                  item.artist.name
+                }-${item.name}`,
+                img_url,
+              };
+            });
+            showLoader = false;
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          showLoader = false;
+        });
+    }
+  };
+
+  let time_range = $currentChartList.find(
+    (chart) => chart.id === $currentChartId
+  ).lastfmCollageOptions.time_range;
+
+  $: {
+    time_range = $currentChartList.find((chart) => chart.id === $currentChartId)
+      .lastfmCollageOptions.time_range;
+  }
+
+  $: {
+    if ($currentChartStyle === "lastfm_collage") {
+      let lastFmUsername = $settings.lastFmUsername;
+      if (lastFmUsername === null || lastFmUsername.length === 0) {
+        askForReAuth = true;
+        reAuthReason = "Last.fm Username Not Added To Settings.";
+      }
+      if (lastFmUsername !== null && lastFmUsername.length !== 0) {
+        getResults(time_range, $settings.lastFmUsername);
+        /* 
+          // For tests only
+          lastFmItems = Array(25)
+          .fill({
+            artist: "Eno",
+            album: "Green World",
+            title: `Eno - Green World`,
+            img_url: "favicon.png",
+          })
+          .map((item) => {
+            return {
+              ...item,
+              id:
+                "col" +
+                Math.random() * 10 +
+                20 * Math.random() +
+                "eno-green-world",
+            };
+          }); */
+      }
+    }
+  }
+
+  $: {
+    if (
+      $currentChartStyle === "lastfm_collage" &&
+      lastFmItems &&
+      lastFmItems.length > 0
+    ) {
+      let current_chart = $currentChartList.find(
+        (chart) => chart.id === $currentChartId
+      );
+      let lastFmCollageList = [];
+      let current_column = 0;
+      for (
+        let row_index = 0;
+        row_index < current_chart.lastfmCollageOptions.rows;
+        row_index++
+      ) {
+        let row = [];
+        for (
+          let column_index = 0;
+          column_index < current_chart.lastfmCollageOptions.columns;
+          column_index++
+        ) {
+          let column = null;
+          column = lastFmItems[current_column];
+          row.push(column);
+          current_column += 1;
+        }
+        lastFmCollageList.push(row);
+      }
+      current_chart.lastfmCollageList = lastFmCollageList;
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ] = current_chart;
+    }
+  }
+
+  $: {
+    localStorage.setItem("currentChartList", JSON.stringify($currentChartList));
   }
 </script>
 
 <style lang="scss">
-  #album-collage {
+  #album-collage,
+  #lastfm-collage {
     display: inline-flex;
     width: max-content;
+    position: relative;
   }
   #name-container {
     background: #000;
@@ -340,8 +493,27 @@
     border-radius: 0 !important;
   }
 
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: #303030e3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .reason {
+    margin-bottom: 0.75rem;
+  }
+
   @media screen and (max-width: 1024px) {
-    #album-collage {
+    #album-collage,
+    #lastfm-collage {
       max-width: none;
       box-sizing: border-box;
     }
@@ -351,7 +523,7 @@
 <svelte:body
   on:keydown={(e) => {
     let activeElement = document.activeElement;
-    if (document.getElementById('album-collage') && activeElement.tagName !== 'INPUT' && !document.querySelector('.listContainer')) {
+    if ($currentChartStyle === 'album_collage' && document.getElementById('album-collage') && activeElement.tagName !== 'INPUT' && !document.querySelector('.listContainer')) {
       if (e.key.includes('Arrow') && !e.ctrlKey && !activeElement.classList.contains('column')) {
         if (document.querySelector('.column')) document
             .querySelector('.column')
@@ -362,13 +534,13 @@
   }} />
 
 <div
-  id="album-collage"
+  id={$currentChartStyle === 'lastfm_collage' ? 'lastfm-collage' : 'album-collage'}
   style="background: {isValidURL(albumCollageOptions.background) ? `url(${albumCollageOptions.background})` : albumCollageOptions.background}; font-family: {albumCollageOptions.font};"
   tabindex="0"
   on:keydown={(e) => {
     let activeElement = document.activeElement;
 
-    if (document.getElementById('album-collage')) {
+    if (document.getElementById('album-collage') && $currentChartStyle === 'album_collage') {
       if (e.key.includes('Arrow') && !activeElement.classList.contains('column')) {
         if (document.querySelector('.column')) document
             .querySelector('.column')
@@ -407,6 +579,21 @@
       }
     }
   }}>
+  {#if $currentChartStyle === 'lastfm_collage'}
+    <div class:overlay={showLoader || askForReAuth}>
+      {#if reAuthReason}
+        <div class="reason">Error: {reAuthReason}</div>
+        <Button
+          label="Add LastFm Username"
+          onClick={() => settingsVisible.set(true)}>
+          <LastFmIcon />
+        </Button>
+      {/if}
+      {#if showLoader}
+        <Loader />
+      {/if}
+    </div>
+  {/if}
   <div
     id="collage-container"
     style="background: transparent; padding: {albumCollageOptions.padding}px">

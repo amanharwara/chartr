@@ -27,18 +27,14 @@
   };
 
   const saveToLocalStorage = () => {
-    if (localStorage) {
-      localStorage.setItem("settings", JSON.stringify($settings));
-      localStorage.setItem("searchProvider", $searchProvider);
-      localStorage.setItem("currentChartStyle", $currentChartStyle);
-    }
+    setTimeout(() => {
+      if (localStorage) {
+        console.log("Yaeh");
+        localStorage.setItem("settings", JSON.stringify($settings));
+        localStorage.setItem("searchProvider", $searchProvider);
+      }
+    }, 1);
   };
-
-  $: {
-    if ($searchProvider) {
-      saveToLocalStorage();
-    }
-  }
 
   const clearAllData = () => {
     localStorage.clear();
@@ -207,25 +203,6 @@
   <div class="settings">
     <div class="setting vertical">
       <div class="info">
-        <div class="title">Default Chart Style:</div>
-        <div class="desc">
-          The chart style you want to show first whenever you load the app.
-        </div>
-      </div>
-      <select
-        id="chart-style-select"
-        bind:value={$currentChartStyle}
-        on:input={() => saveToLocalStorage()}
-        default="album_collage">
-        <option value="album_collage">Album Collage</option>
-        <option value="tier_list">Tier List</option>
-        <option value="spotify_top_tracks">Spotify Top Tracks</option>
-        <option value="spotify_top5_artists">Spotify Top 5 Artists</option>
-        <option value="lastfm_top5">Last.fm Top 5</option>
-      </select>
-    </div>
-    <div class="setting vertical">
-      <div class="info">
         <div class="title">Search Provider:</div>
         <div class="desc">
           Select which search provider you want to use for getting the album
@@ -235,7 +212,8 @@
       <select
         id="search-provider-select"
         bind:value={$searchProvider}
-        default="itunes">
+        default="itunes"
+        on:input={() => saveToLocalStorage()}>
         <option value="itunes">iTunes</option>
         <option value="discogs">Discogs</option>
         <option value="lastfm">Last.fm</option>

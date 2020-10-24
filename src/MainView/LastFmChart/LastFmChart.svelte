@@ -56,10 +56,12 @@
     (chart) => chart.id === $currentChartId
   );
 
-  $: getResults(
-    $currentChartList[currentIndex].lastFmOptions.time_range,
-    $currentChartList[currentIndex].lastFmOptions.type
-  );
+  $: {
+    getResults(
+      $currentChartList[currentIndex].lastFmOptions.time_range,
+      $currentChartList[currentIndex].lastFmOptions.type
+    );
+  }
 </script>
 
 <style lang="scss">

@@ -7,6 +7,8 @@
   export let onInput = undefined;
   export let onBlur = undefined;
   export let bindValue = true;
+  export let min = 1;
+  export let max = 10;
 </script>
 
 <style lang="scss">
@@ -79,8 +81,8 @@
     <label for={labelFor}>{label}</label>
     {#if type === 'range'}
       <div class="range">
-        <input type="range" id={labelFor} min="1" max="10" bind:value />
-        <input type="number" bind:value min="1" max="10" />
+        <input type="range" id={labelFor} {min} {max} bind:value />
+        <input type="number" bind:value {min} {max} />
       </div>
     {:else if type === 'select'}
       <select id={labelFor} default={value} bind:value>

@@ -83,7 +83,7 @@
 </style>
 
 <main class="content" class:center_content>
-  {#if $currentChartStyle === 'album_collage'}
+  {#if $currentChartStyle === 'album_collage' || $currentChartStyle === 'lastfm_collage'}
     <AlbumCollage />
     <div class="album-collage-hotkeys">
       <span>Use

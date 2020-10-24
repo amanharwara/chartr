@@ -5,7 +5,8 @@ import defaults from "./defaults";
 // 2. spotify_top_tracks
 // 3. spotify_top5_artists
 // 4. lastfm_top5
-// 5. tier_list
+// 5. lastfm_collage
+// 6. tier_list
 let currentChartStyle = writable(defaults.currentChartStyle);
 
 let settingsVisible = writable(defaults.settingsVisible);

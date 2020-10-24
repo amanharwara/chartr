@@ -4,13 +4,15 @@
   import SpotifyChartOptions from "./SpotifyCharts/SpotifyChartOptions.svelte";
   import LastFmChartOptions from "./LastFmChart/LastFmChartOptions.svelte";
   import Select from "svelte-select";
+  import LastFmCollageOptions from "./LastFmChart/LastFmCollageOptions.svelte";
 
   const chartStyleSelectItems = [
     { value: "album_collage", label: "Album Collage" },
     { value: "tier_list", label: "Tier List" },
     { value: "spotify_top_tracks", label: "Spotify: Top Tracks" },
     { value: "spotify_top5_artists", label: "Spotify: Top 5 Artists" },
-    { value: "lastfm_top5", label: "Last.fm Top 5" },
+    { value: "lastfm_top5", label: "Last.fm: Top 5" },
+    { value: "lastfm_collage", label: "Last.fm: Collage" },
   ];
 
   let chartStyle = chartStyleSelectItems.find(
@@ -83,6 +85,8 @@
 
   {#if $currentChartStyle === 'album_collage'}
     <AlbumCollageOptions />
+  {:else if $currentChartStyle === 'lastfm_collage'}
+    <LastFmCollageOptions />
   {:else if $currentChartStyle === 'spotify_top5_artists' || $currentChartStyle === 'spotify_top_tracks'}
     <SpotifyChartOptions style={$currentChartStyle} />
   {:else if $currentChartStyle === 'lastfm_top5'}

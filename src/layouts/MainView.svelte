@@ -70,10 +70,7 @@
     }
 
     if (localStorage && localStorage.getItem("currentChartStyle")) {
-      $currentChartStyle = localStorage
-        .getItem("currentChartStyle")
-        .toString()
-        .replaceAll(/\W/g, "");
+      $currentChartStyle = localStorage.getItem("currentChartStyle");
     } else {
       if ($currentChartStyle) {
         localStorage.setItem(
@@ -86,18 +83,39 @@
     if (localStorage && localStorage.getItem("currentChartList")) {
       let chartList = JSON.parse(localStorage.getItem("currentChartList"));
       chartList.forEach((chart, index) => {
-        let collageOptions = chart.albumCollageOptions;
+        // Custom Album Collage Options
+        let albumCollageOptions = chart.albumCollageOptions;
         Object.keys(defaults.albumCollageOptions).forEach((option) => {
-          if (!collageOptions[option]) {
+          if (!albumCollageOptions[option]) {
             if ($currentChartList[index].albumCollageOptions[option]) {
-              collageOptions[option] =
+              albumCollageOptions[option] =
                 $currentChartList[index].albumCollageOptions[option];
             } else {
-              collageOptions[option] = defaults.albumCollageOptions[option];
+              albumCollageOptions[option] =
+                defaults.albumCollageOptions[option];
             }
           }
         });
-        $currentChartList[index].albumCollageOptions = collageOptions;
+        $currentChartList[index].albumCollageOptions = albumCollageOptions;
+
+        // Last.fm Collage Options
+        let lastfmCollageOptions = chart.lastfmCollageOptions || {};
+        Object.keys(defaults.lastfmCollageOptions).forEach((option) => {
+          if (!lastfmCollageOptions[option]) {
+            if ($currentChartList[index].lastfmCollageOptions[option]) {
+              lastfmCollageOptions[option] =
+                $currentChartList[index].lastfmCollageOptions[option];
+            } else {
+              lastfmCollageOptions[option] =
+                defaults.lastfmCollageOptions[option];
+            }
+          }
+        });
+        $currentChartList[index].lastfmCollageOptions = lastfmCollageOptions;
+
+        if (!chart.lastfmCollageList) {
+          $currentChartList[index].lastfmCollageList = [];
+        }
       });
     } else {
       localStorage.setItem("currentChartList", $currentChartList);
@@ -141,6 +159,11 @@
           defaults.currentAlbumCollageList;
         $currentChartList[currentIndex].albumCollageOptions =
           defaults.albumCollageOptions;
+        break;
+      case "lastfm_collage":
+        $currentChartList[currentIndex].lastfmCollageList = [];
+        $currentChartList[currentIndex].lastfmCollageOptions =
+          defaults.lastfmCollageOptions;
         break;
       case "tier_list":
         $currentChartList[currentIndex].tierList = defaults.currentTierList;
