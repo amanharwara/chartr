@@ -46,6 +46,11 @@
   }
 
   const loadSettings = () => {
+    if (!chart.lastfmCollageOptions) {
+      $currentChartList[index].lastfmCollageOptions =
+        defaults.lastfmCollageOptions;
+    }
+
     if (localStorage && localStorage.getItem("settings")) {
       let _settings = JSON.parse(localStorage.getItem("settings"));
       Object.keys($settings).forEach((key) => {
@@ -99,10 +104,6 @@
         $currentChartList[index].albumCollageOptions = albumCollageOptions;
 
         // Last.fm Collage Options
-        if (!chart.lastfmCollageOptions) {
-          $currentChartList[index].lastfmCollageOptions =
-            defaults.lastfmCollageOptions;
-        }
         let lastfmCollageOptions = chart.lastfmCollageOptions || {};
         Object.keys(defaults.lastfmCollageOptions).forEach((option) => {
           if (!lastfmCollageOptions[option]) {
