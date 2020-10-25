@@ -99,6 +99,10 @@
         $currentChartList[index].albumCollageOptions = albumCollageOptions;
 
         // Last.fm Collage Options
+        if (!chart.lastfmCollageOptions) {
+          $currentChartList[index].lastfmCollageOptions =
+            defaults.lastfmCollageOptions;
+        }
         let lastfmCollageOptions = chart.lastfmCollageOptions || {};
         Object.keys(defaults.lastfmCollageOptions).forEach((option) => {
           if (!lastfmCollageOptions[option]) {
