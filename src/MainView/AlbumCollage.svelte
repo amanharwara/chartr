@@ -1,4 +1,6 @@
 <script>
+  import defaults from "../defaults";
+
   import LastFmIcon from "../icons/LastFmIcon.svelte";
   import Button from "../shared/Button.svelte";
   import Loader from "../shared/Loader.svelte";
@@ -15,6 +17,15 @@
   import Column from "./Column.svelte";
 
   const allowDrop = (e) => e.preventDefault();
+
+  if (
+    !$currentChartList.find((chart) => chart.id === $currentChartId)
+      .lastfmCollageOptions
+  ) {
+    $currentChartList[
+      $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+    ].lastfmCollageOptions = defaults.lastfmCollageOptions;
+  }
 
   $: {
     let current_chart = $currentChartList.find(
