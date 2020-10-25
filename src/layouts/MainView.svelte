@@ -46,16 +46,6 @@
   }
 
   const loadSettings = () => {
-    if (
-      !$currentChartList[
-        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
-      ].lastfmCollageOptions
-    ) {
-      $currentChartList[
-        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
-      ].lastfmCollageOptions = defaults.lastfmCollageOptions;
-    }
-
     if (localStorage && localStorage.getItem("settings")) {
       let _settings = JSON.parse(localStorage.getItem("settings"));
       Object.keys($settings).forEach((key) => {
@@ -109,9 +99,16 @@
         $currentChartList[index].albumCollageOptions = albumCollageOptions;
 
         // Last.fm Collage Options
-        let lastfmCollageOptions = chart.lastfmCollageOptions || {};
+        let lastfmCollageOptions = chart.lastfmCollageOptions || undefined;
+        if (!lastfmCollageOptions) {
+          lastfmCollageOptions = defaults.lastfmCollageOptions;
+        }
+        console.log(lastfmCollageOptions);
         Object.keys(defaults.lastfmCollageOptions).forEach((option) => {
-          if (!lastfmCollageOptions[option]) {
+          if (
+            !lastfmCollageOptions[option] &&
+            $currentChartList[index].lastfmCollageOptions
+          ) {
             if ($currentChartList[index].lastfmCollageOptions[option]) {
               lastfmCollageOptions[option] =
                 $currentChartList[index].lastfmCollageOptions[option];
