@@ -46,9 +46,14 @@
   }
 
   const loadSettings = () => {
-    if (!chart.lastfmCollageOptions) {
-      $currentChartList[index].lastfmCollageOptions =
-        defaults.lastfmCollageOptions;
+    if (
+      !$currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].lastfmCollageOptions
+    ) {
+      $currentChartList[
+        $currentChartList.findIndex((chart) => chart.id === $currentChartId)
+      ].lastfmCollageOptions = defaults.lastfmCollageOptions;
     }
 
     if (localStorage && localStorage.getItem("settings")) {
