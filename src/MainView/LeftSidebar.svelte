@@ -19,7 +19,10 @@
     (item) => item.value === $currentChartStyle
   );
 
-  $: $currentChartStyle = chartStyle.value ? chartStyle.value : chartStyle;
+  $: {
+    $currentChartStyle = chartStyle.value ? chartStyle.value : chartStyle;
+    localStorage.setItem("currentChartStyle", $currentChartStyle);
+  }
 </script>
 
 <style lang="scss">

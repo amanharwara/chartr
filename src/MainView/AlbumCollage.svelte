@@ -437,8 +437,8 @@
 </script>
 
 <style lang="scss">
-  #album-collage,
-  #lastfm-collage {
+  .album-collage,
+  .lastfm-collage {
     display: inline-flex;
     width: max-content;
     position: relative;
@@ -523,8 +523,8 @@
   }
 
   @media screen and (max-width: 1024px) {
-    #album-collage,
-    #lastfm-collage {
+    .album-collage,
+    .lastfm-collage {
       max-width: none;
       box-sizing: border-box;
     }
@@ -546,6 +546,7 @@
 
 <div
   id={$currentChartStyle === 'lastfm_collage' ? 'lastfm-collage' : 'album-collage'}
+  class={$currentChartStyle === 'lastfm_collage' ? 'lastfm-collage' : 'album-collage'}
   style="background: {isValidURL(albumCollageOptions.background) ? `url(${albumCollageOptions.background})` : albumCollageOptions.background}; font-family: {albumCollageOptions.font};"
   tabindex="0"
   on:keydown={(e) => {

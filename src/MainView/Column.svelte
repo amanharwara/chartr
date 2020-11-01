@@ -23,6 +23,15 @@
   export let onDragOver;
   export let onDragStart;
 
+  let onDragEnter = (e) => {
+    e.preventDefault();
+  };
+
+  let onDropFunc = onDrop;
+  let onDragOverFunc = onDragOver;
+  let onDragStartFunc = onDragStart;
+  let onDragEnterFunc = onDragEnter;
+
   let draggable = true;
 
   let dispatch = createEventDispatcher();
@@ -56,10 +65,6 @@
     }
   };
 
-  let onDragEnter = (e) => {
-    e.preventDefault();
-  };
-
   $: {
     if ($currentChartStyle === "lastfm_collage") {
       onDragEnter = undefined;
@@ -67,6 +72,12 @@
       onDragOver = undefined;
       onDragStart = undefined;
       draggable = false;
+    } else {
+      onDragEnter = onDragEnterFunc;
+      onDrop = onDropFunc;
+      onDragOver = onDragOverFunc;
+      onDragStart = onDragStartFunc;
+      draggable = true;
     }
   }
 

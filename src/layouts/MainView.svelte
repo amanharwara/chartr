@@ -135,14 +135,70 @@
   });
 
   const downloadChart = () => {
-    console.log(
-      "start render",
-      document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
-    );
+    let use_cloned = false;
+    let cloned_el = undefined;
+
+    if ($currentChartStyle.includes("collage")) {
+      console.log("start collage clone");
+      cloned_el = document
+        .getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
+        .cloneNode(true);
+      cloned_el.id = "cloned-" + cloned_el;
+      cloned_el.style.setProperty("--item-size", `25vw`);
+      cloned_el.style.setProperty("position", `absolute`);
+      cloned_el.style.setProperty("top", `0`);
+      cloned_el.style.setProperty("left", `0`);
+      cloned_el.style.setProperty("z-index", `-1000`);
+      cloned_el.style.setProperty("font-size", `2vw`);
+      cloned_el.style.setProperty("background-size", `cover`);
+      cloned_el.style.setProperty(
+        "background",
+        cloned_el.style.getPropertyValue("background") +
+          " no-repeat scroll 0% 0%"
+      );
+      cloned_el.querySelectorAll(`[style*="padding"]`).forEach((padded) => {
+        padded.style.setProperty(
+          "padding",
+          parseInt(padded.style.getPropertyValue("padding").replace("px", "")) *
+            2 +
+            "px"
+        );
+      });
+      cloned_el
+        .querySelectorAll(`[style*="margin-right"]`)
+        .forEach((padded) => {
+          padded.style.setProperty(
+            "margin-right",
+            parseInt(
+              padded.style.getPropertyValue("margin-right").replace("px", "")
+            ) *
+              2 +
+              "px"
+          );
+        });
+      cloned_el
+        .querySelectorAll(`[style*="margin-bottom"]`)
+        .forEach((padded) => {
+          padded.style.setProperty(
+            "margin-bottom",
+            parseInt(
+              padded.style.getPropertyValue("margin-bottom").replace("px", "")
+            ) *
+              2 +
+              "px"
+          );
+        });
+      document.body.appendChild(cloned_el);
+      use_cloned = true;
+    }
+
+    let node =
+      use_cloned && cloned_el
+        ? cloned_el
+        : document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`);
+    console.log("start render", node);
     domtoimage
-      .toPng(
-        document.getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
-      )
+      .toPng(node)
       .then((res) => {
         let blob = dataURItoBlob(res);
         console.log("using saveAs");
@@ -152,6 +208,7 @@
             $currentChartList.find((chart) => chart.id === $currentChartId).name
           }.png`
         );
+        if (cloned_el) cloned_el.remove();
       })
       .catch((err) => console.error(err));
   };
