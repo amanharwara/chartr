@@ -52,6 +52,7 @@
     flex-grow: 2;
     box-sizing: border-box;
     padding-top: 3rem;
+    overflow: auto;
   }
 
   :global(#close-settings) {

@@ -60,4 +60,5 @@
   type="range"
   label="Gap Between Items:"
   labelFor="gap"
+  min="0"
   bind:value={$currentChartList[currentIndex].albumCollageOptions.gap} />
