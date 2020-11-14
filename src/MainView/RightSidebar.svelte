@@ -1,6 +1,13 @@
 <script>
   import AddAlbum from "./AddAlbum.svelte";
-  import { currentChartStyle } from "../store";
+  import {
+    currentChartStyle,
+    settings,
+    currentChartList,
+    currentChartId,
+  } from "../store";
+  import Button from "../shared/Button.svelte";
+  import ResetIcon from "../icons/ResetIcon.svelte";
 </script>
 
 <style lang="scss">
@@ -43,6 +50,17 @@
 <aside class="right-sidebar">
   {#if $currentChartStyle === 'album_collage' || $currentChartStyle === 'tier_list'}
     <AddAlbum />
+  {:else if $currentChartStyle === 'lastfm_collage' && $settings.lastFmUsername}
+    <div class="heading">Update Chart:</div>
+    <Button
+      label="Update Chart"
+      id="update-lastfm-chart"
+      extraProps={{ title: 'Updates chart by fetching new data from Last.fm.' }}
+      onClick={() => {
+        $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].lastfmCollageList = [];
+      }}>
+      <ResetIcon />
+    </Button>
   {:else}
     <p>No extra options available for this chart.</p>
   {/if}
