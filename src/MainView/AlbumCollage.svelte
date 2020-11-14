@@ -27,6 +27,8 @@
     ].lastfmCollageOptions = defaults.lastfmCollageOptions;
   }
 
+  let chartHasItems = false;
+
   $: {
     let current_chart = $currentChartList.find(
       (chart) => chart.id === $currentChartId
@@ -57,6 +59,8 @@
         for (let column_index = 0; column_index < columns; column_index++) {
           if (!temp_list[row_index][column_index]) {
             temp_list[row_index][column_index] = undefined;
+          } else {
+            chartHasItems = true;
           }
         }
       }
@@ -592,8 +596,9 @@
     }
   }}>
   {#if $currentChartStyle === 'lastfm_collage'}
-    <div class:overlay={showLoader || askForReAuth}>
-      {#if reAuthReason}
+    <div
+      class:overlay={(chartHasItems ? false : askForReAuth ? true : false) || showLoader}>
+      {#if chartHasItems ? false : askForReAuth && reAuthReason ? true : false}
         <div class="reason">Error: {reAuthReason}</div>
         <Button
           label="Add LastFm Username"
