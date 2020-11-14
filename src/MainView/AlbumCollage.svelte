@@ -59,11 +59,14 @@
         for (let column_index = 0; column_index < columns; column_index++) {
           if (!temp_list[row_index][column_index]) {
             temp_list[row_index][column_index] = undefined;
-          } else {
-            chartHasItems = true;
           }
         }
       }
+    }
+    if (collageList[0][0]) {
+      chartHasItems = true;
+    } else {
+      chartHasItems = false;
     }
     switch ($currentChartStyle) {
       case "lastfm_collage":
@@ -370,11 +373,11 @@
   $: {
     if ($currentChartStyle === "lastfm_collage") {
       let lastFmUsername = $settings.lastFmUsername;
-      if (lastFmUsername === null || lastFmUsername.length === 0) {
+      if (!lastFmUsername || lastFmUsername.length === 0) {
         askForReAuth = true;
         reAuthReason = "Last.fm Username Not Added To Settings.";
       }
-      if (lastFmUsername !== null && lastFmUsername.length !== 0) {
+      if (lastFmUsername && lastFmUsername.length !== 0 && !chartHasItems) {
         getResults(time_range, $settings.lastFmUsername);
         /* 
           // For tests only
