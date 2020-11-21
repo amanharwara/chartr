@@ -138,7 +138,10 @@
     let use_cloned = false;
     let cloned_el = undefined;
 
-    if ($currentChartStyle.includes("collage")) {
+    if (
+      $currentChartStyle.includes("collage") &&
+      document.documentElement.clientWidth > 600
+    ) {
       console.log("start collage clone");
       cloned_el = document
         .getElementById(`${$currentChartStyle.replaceAll("_", "-")}`)
