@@ -16,12 +16,13 @@
       if (img && img.tagName === "IMG") {
         let src = "";
 
-        if (img.src.includes("lastfm") || img.src.includes("scdn")) {
+        if (img.src.includes("lastfm") || img.src.includes("scdn")|| window.location.href.includes("localhost")) {
           src = img.src;
         } else {
-          e.target.src =
+          src =
             "https://chartr-cors-proxy.herokuapp.com/" +
             e.target.src.replace("https://", "").replace(".com/", ".com:443/");
+          e.target.src = src;
         }
       }
     }
