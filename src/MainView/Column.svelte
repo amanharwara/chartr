@@ -52,7 +52,7 @@
             e.target.src.replace("https://", "").replace(".com/", ".com:443/");
         }
 
-        let img_blob = await fetch(src);
+        /* let img_blob = await fetch(src);
         img_blob = await img_blob.blob();
         blobToDataUrl(img_blob, (data_url) => {
           if (e.target) {
@@ -60,7 +60,7 @@
           } else if (e.path) {
             e.path[0].src = data_url;
           }
-        });
+        }); */
       }
     }
   };
