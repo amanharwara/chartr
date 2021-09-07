@@ -47,20 +47,10 @@
         if (img.src.includes("lastfm") || img.src.includes("scdn")) {
           src = img.src;
         } else {
-          src =
+          e.target.src =
             "https://chartr-cors-proxy.herokuapp.com/" +
             e.target.src.replace("https://", "").replace(".com/", ".com:443/");
         }
-
-        /* let img_blob = await fetch(src);
-        img_blob = await img_blob.blob();
-        blobToDataUrl(img_blob, (data_url) => {
-          if (e.target) {
-            e.target.src = data_url;
-          } else if (e.path) {
-            e.path[0].src = data_url;
-          }
-        }); */
       }
     }
   };
