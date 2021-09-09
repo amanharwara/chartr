@@ -36,26 +36,6 @@
 
   let dispatch = createEventDispatcher();
 
-  const onImgLoad = async (e) => {
-    let img = e.target;
-    if (img.src.includes("data:") || img.src.includes("favicon.png")) {
-      return;
-    } else {
-      if (img && img.tagName === "IMG") {
-        let src = "";
-
-        if (img.src.includes("lastfm") || img.src.includes("scdn") || window.location.href.includes("localhost")) {
-          src = img.src;
-        } else {
-          src =
-            "https://chartr-cors-proxy.herokuapp.com/" +
-            e.target.src.replace("https://", "").replace(".com/", ".com:443/");
-          e.target.src = src;
-        }
-      }
-    }
-  };
-
   $: {
     if ($currentChartStyle === "lastfm_collage") {
       onDragEnter = undefined;
@@ -225,8 +205,7 @@
       data-album={current_list[row_index][column_index].album}
       id={current_list[row_index][column_index].id}
       {draggable}
-      on:dragstart={onDragStart}
-      on:load={onImgLoad} />
+      on:dragstart={onDragStart} />
     <div class="buttons" class:visible={buttonsVisible}>
       <Button
         iconOnly

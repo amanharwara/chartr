@@ -7,26 +7,6 @@
   const dragCover = (e) => {
     e.dataTransfer.setData("text", e.target.id);
   };
-
-  const onImgLoad = async (e) => {
-    let img = e.target;
-    if (img.src.includes("data:") || img.src.includes("favicon.png")) {
-      return;
-    } else {
-      if (img && img.tagName === "IMG") {
-        let src = "";
-
-        if (img.src.includes("lastfm") || img.src.includes("scdn")|| window.location.href.includes("localhost")) {
-          src = img.src;
-        } else {
-          src =
-            "https://chartr-cors-proxy.herokuapp.com/" +
-            e.target.src.replace("https://", "").replace(".com/", ".com:443/");
-          e.target.src = src;
-        }
-      }
-    }
-  };
 </script>
 
 <style lang="scss">
@@ -114,7 +94,6 @@
           draggable="true"
           on:click
           on:dragstart={dragCover}
-          on:load={onImgLoad}
           tabindex="0"
           on:keydown={(e) => {
             if (e.key === 'Enter') {
