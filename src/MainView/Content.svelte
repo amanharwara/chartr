@@ -86,6 +86,7 @@
   {#if $currentChartStyle === 'album_collage' || $currentChartStyle === 'lastfm_collage'}
     <AlbumCollage />
     <div class="album-collage-hotkeys">
+      <span>Use <kbd>Shift</kbd>+<kbd>Click</kbd> on an empty tile to manually add album details.</span>
       <span>Use
         <kbd>↑</kbd>
         /

@@ -578,7 +578,6 @@
         }
         if (e.key === 'ArrowDown' && row_index !== currentList.length - 1) {
           document.getElementById('album-collage').click();
-          console.log(row_index + 1, column_index);
           document
             .getElementById(`column-${row_index + 1}-${column_index}`)
             .focus();

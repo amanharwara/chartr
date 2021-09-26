@@ -14,6 +14,8 @@
   import searchItunes from "../utils/searchItunes";
   import searchDiscogs from "../utils/searchDiscogs";
   import searchLastFm from "../utils/searchLastFm";
+  import isValidURL from "../utils/isValidURL";
+  import { v4 as uuid } from 'uuid';
 
   export let isInModal = false;
 
@@ -24,6 +26,20 @@
     currentSearchResults = [];
   };
   const handleSearch = async (e) => {
+    currentSearchResults = [];
+    if (isValidURL(e.detail)) {
+      currentSearchResults = [
+        {
+          artist: "",
+          album: "",
+          title: e.detail,
+          id: uuid(),
+          img_url: e.detail,
+        },
+        undefined,
+      ];
+      return;
+    };
     if (!isProd && $searchProvider === "test") {
       currentSearchResults = [
         {

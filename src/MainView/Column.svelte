@@ -90,31 +90,8 @@
     display: flex;
   }
   :global(.column .delete-item-button) {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  :global(.column .move-up-button) {
     top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  :global(.column .move-down-button) {
-    bottom: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  :global(.column .move-left-button) {
-    left: 3%;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0.45rem !important;
-  }
-  :global(.column .move-right-button) {
-    right: 3%;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0.45rem !important;
+    right: 5%;
   }
   :global(.empty button) {
     position: relative !important;
@@ -171,8 +148,11 @@
   on:dragstart={onDragStart}
   on:dragenter={onDragEnter}
   class:empty={current_list[row_index][column_index] === undefined}
-  on:click={() => {
+  on:click={(e) => {
     buttonsVisible = true;
+    if (e.shiftKey) {
+      console.log("shift");
+    }
   }}
   on:keydown={(e) => {
     if (e.key === 'Delete') {
@@ -220,46 +200,6 @@
         extraProps={{ 'data-row_index': row_index, 'data-column_index': column_index }}>
         <DeleteIcon />
       </Button>
-      {#if row_index !== 0}
-        <Button
-          iconOnly
-          id="move-up-{row_index}-{column_index}"
-          className="move-up-button"
-          label="Move Up"
-          onClick={() => dispatch('move-up', { row_index, column_index })}>
-          <CaretUp />
-        </Button>
-      {/if}
-      {#if row_index !== $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].albumCollageOptions.rows - 1}
-        <Button
-          iconOnly
-          id="move-down-{row_index}-{column_index}"
-          className="move-down-button"
-          label="Move Down"
-          onClick={() => dispatch('move-down', { row_index, column_index })}>
-          <CaretDown />
-        </Button>
-      {/if}
-      {#if column_index !== 0}
-        <Button
-          iconOnly
-          id="move-left-{row_index}-{column_index}"
-          className="move-left-button"
-          label="Move Left"
-          onClick={() => dispatch('move-left', { row_index, column_index })}>
-          <CaretLeft />
-        </Button>
-      {/if}
-      {#if column_index !== $currentChartList[$currentChartList.findIndex((chart) => chart.id === $currentChartId)].albumCollageOptions.columns - 1}
-        <Button
-          iconOnly
-          id="move-right-{row_index}-{column_index}"
-          className="move-right-button"
-          label="Move Right"
-          onClick={() => dispatch('move-right', { row_index, column_index })}>
-          <CaretRight />
-        </Button>
-      {/if}
     </div>
   {/if}
   {#if current_list[row_index][column_index] === undefined && $screenWidth < 539}
