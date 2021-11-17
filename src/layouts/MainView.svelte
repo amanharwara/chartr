@@ -87,9 +87,9 @@
         let albumCollageOptions = chart.albumCollageOptions;
         Object.keys(defaults.albumCollageOptions).forEach((option) => {
           if (!albumCollageOptions[option]) {
-            if ($currentChartList[index].albumCollageOptions[option]) {
-              albumCollageOptions[option] =
-                $currentChartList[index].albumCollageOptions[option];
+            const currentOption = $currentChartList[index].albumCollageOptions[option];
+            if (typeof currentOption !== 'undefined' && currentOption !== null) {
+              albumCollageOptions[option] = currentOption;
             } else {
               albumCollageOptions[option] =
                 defaults.albumCollageOptions[option];
@@ -103,15 +103,14 @@
         if (!lastfmCollageOptions) {
           lastfmCollageOptions = defaults.lastfmCollageOptions;
         }
-        console.log(lastfmCollageOptions);
         Object.keys(defaults.lastfmCollageOptions).forEach((option) => {
           if (
             !lastfmCollageOptions[option] &&
             $currentChartList[index].lastfmCollageOptions
           ) {
-            if ($currentChartList[index].lastfmCollageOptions[option]) {
-              lastfmCollageOptions[option] =
-                $currentChartList[index].lastfmCollageOptions[option];
+            const currentOption = $currentChartList[index].lastfmCollageOptions[option];
+            if (typeof currentOption !== 'undefined' && currentOption !== null) {
+              lastfmCollageOptions[option] = currentOption;
             } else {
               lastfmCollageOptions[option] =
                 defaults.lastfmCollageOptions[option];
