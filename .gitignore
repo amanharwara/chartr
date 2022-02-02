@@ -1,6 +1,2 @@
-/node_modules/
-/public/build/
-
-.DS_Store
-
-.env
+node_modules
+dist
