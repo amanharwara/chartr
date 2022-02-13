@@ -477,7 +477,8 @@
   }
 
   :root {
-    --item-size: 12vw;
+    --item-scale: 12vw;
+    --item-size: calc(var(--item-scale) * var(--item-zoom));
   }
 
   .inline-name-row {

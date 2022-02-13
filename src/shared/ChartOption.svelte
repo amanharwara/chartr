@@ -9,7 +9,80 @@
   export let bindValue = true;
   export let min = 1;
   export let max = 10;
+  export let step = 1;
+
+  const decrement = () => {
+    let decrementedValue = value - step;
+    if (decrementedValue < min) {
+      value = min;
+    } else {
+      value = decrementedValue;
+    }
+  };
+
+  const increment = () => {
+    let incrementedValue = value + step;
+    if (incrementedValue > max) {
+      value = max;
+    } else {
+      value = incrementedValue;
+    }
+  };
+
+  const forceMinMax = (e) => {
+    e.preventDefault();
+    let newValue = e.target.value;
+    if (newValue > max) {
+      newValue = max;
+    } else if (newValue < min) {
+      newValue = min;
+    }
+    value = newValue;
+  };
 </script>
+
+<div class="chart-option {type}-option" {style}>
+  {#if type === "checkbox"}
+    <input type="checkbox" id={labelFor} bind:checked={value} />
+    <label for={labelFor}>{label}</label>
+  {:else}
+    <label for={labelFor}>{label}</label>
+    {#if type === "range"}
+      <div class="range">
+        <input type="range" id={labelFor} {min} {max} bind:value />
+        <input type="number" bind:value {min} {max} />
+      </div>
+    {:else if type === "select"}
+      <select id={labelFor} default={value} bind:value>
+        <slot name="select" />
+      </select>
+    {:else if type === "text-range"}
+      <div class="control">
+        <input type="number" on:change={forceMinMax} {value} {min} {max} />
+        <button type="button" on:click={decrement}>-</button>
+        <button type="button" on:click={increment}>+</button>
+      </div>
+    {:else if type === "text"}
+      {#if bindValue}
+        <input
+          type="text"
+          id={labelFor}
+          bind:value
+          on:input={onInput}
+          on:blur={onBlur}
+        />
+      {:else}
+        <input
+          type="text"
+          id={labelFor}
+          value
+          on:input={onInput}
+          on:blur={onBlur}
+        />
+      {/if}
+    {/if}
+  {/if}
+</div>
 
 <style lang="scss">
   .chart-option {
@@ -37,6 +110,14 @@
 
     input[type="number"] {
       max-width: 2.5rem;
+    }
+  }
+
+  .text-range-option .control {
+    display: flex;
+
+    & > * + * {
+      margin-left: 0.5rem;
     }
   }
 
@@ -72,38 +153,3 @@
     }
   }
 </style>
-
-<div class="chart-option {type}-option" {style}>
-  {#if type === 'checkbox'}
-    <input type="checkbox" id={labelFor} bind:checked={value} />
-    <label for={labelFor}>{label}</label>
-  {:else}
-    <label for={labelFor}>{label}</label>
-    {#if type === 'range'}
-      <div class="range">
-        <input type="range" id={labelFor} {min} {max} bind:value />
-        <input type="number" bind:value {min} {max} />
-      </div>
-    {:else if type === 'select'}
-      <select id={labelFor} default={value} bind:value>
-        <slot name="select" />
-      </select>
-    {:else if type === 'text'}
-      {#if bindValue}
-        <input
-          type="text"
-          id={labelFor}
-          bind:value
-          on:input={onInput}
-          on:blur={onBlur} />
-      {:else}
-        <input
-          type="text"
-          id={labelFor}
-          value
-          on:input={onInput}
-          on:blur={onBlur} />
-      {/if}
-    {/if}
-  {/if}
-</div>

@@ -110,17 +110,17 @@
   }
   @media screen and (max-width: 540px) {
     :root {
-      --item-size: 38vw;
+      --item-scale: 38vw;
     }
   }
   @media screen and (max-width: 380px) {
     :root {
-      --item-size: 35vw;
+      --item-scale: 35vw;
     }
   }
   @media screen and (min-width: 540px) and (max-width: 1024px) {
     :root {
-      --item-size: 20vw;
+      --item-scale: 20vw;
     }
   }
   @media screen and (min-width: 1024px) {
