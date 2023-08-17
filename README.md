@@ -1,3 +1,5 @@
+# Chartr is now unmaintained. This repo is archived in favor of [Topchart](https://github.com/amanharwara/topchart)
+
 # [Chartr](https://chartr.vercel.app)
 
 Chartr is a free, open-source web app which allows you to create your own, customized music chartrs. 
